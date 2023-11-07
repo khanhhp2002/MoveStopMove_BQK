@@ -6,12 +6,11 @@ public class Player : CharacterBase
     private float _vertical;
     private Vector3 _direction;
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         PlayerInput();
         Movement();
-        Attack();
-        SetAnimationParameters();
+        base.FixedUpdate();
     }
 
     /// <summary>
@@ -41,42 +40,11 @@ public class Player : CharacterBase
     }
 
     /// <summary>
-    /// Controls the attack of the character.
+    /// Detects when the player collides with another collider.
     /// </summary>
-    private void Attack()
+    /// <param name="other"></param>
+    protected override void OnTriggerEnter(Collider other)
     {
-        if (!_isAttack || _inAttackProcess || _isDead || _isWin || _isUlti) return;
-        _inAttackProcess = true;
-        Invoke(nameof(ThrowWeapon), .15f);
-        Invoke(nameof(EndAttackProcess), .65f);
-    }
-
-    private void ThrowWeapon()
-    {
-        var weapon = Instantiate(_weapon);
-        weapon.transform.position = _weaponHolder.position;
-        weapon.SetDestination(transform.position, transform.forward);
-    }
-
-    /// <summary>
-    /// The end of the attack process.
-    /// </summary>
-    private void EndAttackProcess()
-    {
-        _inAttackProcess = false;
-        _isAttack = false;
-    }
-
-    /// <summary>
-    /// Sets the animation parameters.
-    /// </summary>
-    private void SetAnimationParameters()
-    {
-        _animator.SetBool(IDLE_ANIMATION, _isIdle);
-        _animator.SetBool(WIN_ANIMATION, _isWin);
-        _animator.SetBool(DEAD_ANIMATION, _isDead);
-        _animator.SetBool(DANCE_ANIMATION, _isDance);
-        _animator.SetBool(ULTI_ANIMATION, _isUlti);
-        _animator.SetBool(ATTACK_ANIMATION, _isAttack);
+        base.OnTriggerEnter(other);
     }
 }

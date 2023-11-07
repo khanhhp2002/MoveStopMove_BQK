@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class WeaponBase : MonoBehaviour
 {
+    [Header("Weapon Components"), Space(5f)]
+    [SerializeField] private Collider _collider;
+
     [Header("Weapon Stats"), Space(5f)]
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotateSpeed;
@@ -13,13 +16,16 @@ public class WeaponBase : MonoBehaviour
     private float _distance;
     private float _remainingDistance;
 
+    public Collider Collider => _collider;
+
     // Start is called before the first frame update
     private void Start()
     {
         _originPoint = transform.position;
     }
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!_hasDestination) return;
 
@@ -27,7 +33,7 @@ public class WeaponBase : MonoBehaviour
 
         transform.position = Vector3.Lerp(_originPoint, _destination, 1 - (_remainingDistance / _distance));
 
-        _remainingDistance -= _moveSpeed * Time.deltaTime;
+        _remainingDistance -= _moveSpeed * Time.fixedDeltaTime;
 
         if (transform.position == _destination)
         {
@@ -47,5 +53,6 @@ public class WeaponBase : MonoBehaviour
         _destination.y = transform.position.y;
         _remainingDistance = _distance = Vector3.Distance(origin, _destination);
         _hasDestination = true;
+        _collider.enabled = true;
     }
 }
