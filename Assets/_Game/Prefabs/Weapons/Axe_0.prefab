@@ -114,4 +114,4 @@ MonoBehaviour:
   _collider: {fileID: 3447150161713667354}
   _moveSpeed: 8
   _rotateSpeed: 400
-  _range: 15
+  _range: 10
