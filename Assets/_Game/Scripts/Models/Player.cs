@@ -4,10 +4,12 @@ public class Player : CharacterBase
 {
     private void FixedUpdate()
     {
-        Move();
+        Movement();
     }
-
-    private void Move()
+    /// <summary>
+    /// Controls the movement of the character.
+    /// </summary>
+    private void Movement()
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -16,14 +18,16 @@ public class Player : CharacterBase
 
         if (direction == Vector3.zero)
         {
-            //_rigidbody.velocity = Vector3.zero;
             _animator.SetBool("IsIdle", true);
+            transform.Translate(Vector3.zero);
         }
         else
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 0.2f);
-            transform.Translate(Vector3.forward * _speed * Time.fixedDeltaTime);
             _animator.SetBool("IsIdle", false);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), _rotateSpeed);
+            transform.position = Vector3.Lerp(transform.position, transform.position + direction.normalized, _moveSpeed * Time.fixedDeltaTime);
         }
     }
+
+
 }
