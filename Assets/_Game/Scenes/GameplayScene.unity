@@ -3226,6 +3226,7 @@ MonoBehaviour:
   _animator: {fileID: 3166231813279101465}
   _weaponHolder: {fileID: 801052128}
   _rigidbody: {fileID: 8296172668588715378}
+  _weapon: {fileID: -6520620156040197038, guid: 85ca917d0f872724fa8a62af89d7f8ab, type: 3}
   _rotateSpeed: 0.3
   _moveSpeed: 7
 --- !u!1 &8404232991083997208

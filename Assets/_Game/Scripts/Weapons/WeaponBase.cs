@@ -7,9 +7,11 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] private float _rotateSpeed;
     [SerializeField] private float _range;
 
-    private Vector3? _destination = null;
+    private bool _hasDestination = false;
+    private Vector3 _destination;
     private Vector3 _originPoint;
-    private float _progress;
+    private float _distance;
+    private float _remainingDistance;
 
     // Start is called before the first frame update
     private void Start()
@@ -19,26 +21,31 @@ public class WeaponBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_destination.HasValue) return;
+        if (!_hasDestination) return;
 
-        Debug.Log(_destination.Value);
-        // Rotate the object around its local Z axis at _rotateSpeed degrees per second
         transform.Rotate(Vector3.back, _rotateSpeed * Time.deltaTime);
-        // Calculate the lerp value.
-        _progress += _moveSpeed * Time.deltaTime;
 
-        // Move the object to the lerped position.
-        transform.position = Vector3.Lerp(_originPoint, _destination.Value, _progress);
+        transform.position = Vector3.Lerp(_originPoint, _destination, 1 - (_remainingDistance / _distance));
 
-        // If the object has reached the end point, stop moving it.
+        _remainingDistance -= _moveSpeed * Time.deltaTime;
+
         if (transform.position == _destination)
         {
             Destroy(gameObject);
         }
+
     }
 
+    /// <summary>
+    /// Set the destination of the weapon that will be throwed to calculate the trajectory
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="direction"></param>
     public void SetDestination(Vector3 origin, Vector3 direction)
     {
         _destination = origin + direction * _range;
+        _destination.y = transform.position.y;
+        _remainingDistance = _distance = Vector3.Distance(origin, _destination);
+        _hasDestination = true;
     }
 }
