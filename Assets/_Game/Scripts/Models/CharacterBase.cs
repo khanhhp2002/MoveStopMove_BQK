@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
@@ -8,6 +9,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected Rigidbody _rigidbody;
     [SerializeField] protected Collider _collider;
     [SerializeField] protected WeaponBase _weapon;
+    [SerializeField] protected Canvas _infoCanvas;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
@@ -28,11 +30,19 @@ public class CharacterBase : MonoBehaviour
     protected bool _isUlti = false;
     protected bool _inAttackProcess = false;
 
+    protected virtual void Start()
+    {
 
+    }
     protected virtual void FixedUpdate()
     {
         Attack();
         SetAnimationParameters();
+    }
+
+    protected virtual void Update()
+    {
+        CanvasController();
     }
 
     /// <summary>
@@ -71,13 +81,20 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void SetAnimationParameters()
     {
-        Debug.Log(_isDead);
         _animator.SetBool(DEAD_ANIMATION, _isDead);
         _animator.SetBool(WIN_ANIMATION, _isWin);
         _animator.SetBool(DANCE_ANIMATION, _isDance);
         _animator.SetBool(ULTI_ANIMATION, _isUlti);
         _animator.SetBool(ATTACK_ANIMATION, _isAttack);
         _animator.SetBool(IDLE_ANIMATION, _isIdle);
+    }
+
+    /// <summary>
+    /// Make the canvas look at the camera.
+    /// </summary>
+    private void CanvasController()
+    {
+        _infoCanvas.transform.LookAt(Camera.main.transform);
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class Player : CharacterBase
@@ -6,6 +7,10 @@ public class Player : CharacterBase
     private float _vertical;
     private Vector3 _direction;
 
+    protected override void Start()
+    {
+        base.Start();
+    }
     protected override void FixedUpdate()
     {
         PlayerInput();
