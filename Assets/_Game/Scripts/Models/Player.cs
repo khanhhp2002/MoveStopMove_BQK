@@ -5,7 +5,6 @@ public class Player : CharacterBase
     private float _horizontal;
     private float _vertical;
     private Vector3 _direction;
-    private bool _inAttackProcess = false;
 
     private void FixedUpdate()
     {
@@ -48,9 +47,25 @@ public class Player : CharacterBase
     {
         if (!_isAttack || _inAttackProcess || _isDead || _isWin || _isUlti) return;
         _inAttackProcess = true;
+        Invoke(nameof(ThrowWeapon), .15f);
         Invoke(nameof(EndAttackProcess), .65f);
     }
 
+    private void ThrowWeapon()
+    {
+        var weapon = Instantiate(_weapon);
+        weapon.transform.position = _weaponHolder.position;
+        weapon.SetDestination(transform.position, transform.forward);
+    }
+
+    /// <summary>
+    /// The end of the attack process.
+    /// </summary>
+    private void EndAttackProcess()
+    {
+        _inAttackProcess = false;
+        _isAttack = false;
+    }
 
     /// <summary>
     /// Sets the animation parameters.
@@ -63,14 +78,5 @@ public class Player : CharacterBase
         _animator.SetBool(DANCE_ANIMATION, _isDance);
         _animator.SetBool(ULTI_ANIMATION, _isUlti);
         _animator.SetBool(ATTACK_ANIMATION, _isAttack);
-    }
-
-    /// <summary>
-    /// The end of the attack process.
-    /// </summary>
-    private void EndAttackProcess()
-    {
-        _inAttackProcess = false;
-        _isAttack = false;
     }
 }

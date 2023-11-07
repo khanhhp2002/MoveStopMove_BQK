@@ -6,6 +6,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected Animator _animator;
     [SerializeField] protected Transform _weaponHolder;
     [SerializeField] protected Rigidbody _rigidbody;
+    [SerializeField] protected WeaponBase _weapon;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
@@ -24,4 +25,5 @@ public class CharacterBase : MonoBehaviour
     protected bool _isAttack = false;
     protected bool _isDance = false;
     protected bool _isUlti = false;
+    protected bool _inAttackProcess = false;
 }
