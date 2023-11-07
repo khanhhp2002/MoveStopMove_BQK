@@ -30,10 +30,17 @@ public class CharacterBase : MonoBehaviour
     protected bool _isUlti = false;
     protected bool _inAttackProcess = false;
 
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     protected virtual void Start()
     {
 
     }
+
+    /// <summary>
+    /// FixedUpdate is called once per frame.
+    /// </summary>
     protected virtual void FixedUpdate()
     {
         Attack();
@@ -64,7 +71,7 @@ public class CharacterBase : MonoBehaviour
         var weapon = Instantiate(_weapon);
         Physics.IgnoreCollision(weapon.Collider, this._collider);
         weapon.transform.position = _weaponHolder.position;
-        weapon.SetDestination(transform.position, transform.forward);
+        weapon.SetDestination(transform.position, transform.forward, this);
     }
 
     /// <summary>
@@ -105,7 +112,7 @@ public class CharacterBase : MonoBehaviour
     {
         if (other.gameObject.layer == (byte)LayerType.Weapon)
         {
-            Debug.Log("Player is dead");
+            Debug.Log($"{gameObject.name} hit by weapon");
             _isDead = true;
         }
     }

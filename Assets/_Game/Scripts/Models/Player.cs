@@ -7,10 +7,17 @@ public class Player : CharacterBase
     private float _vertical;
     private Vector3 _direction;
 
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     protected override void Start()
     {
         base.Start();
     }
+
+    /// <summary>
+    /// FixedUpdate is called once per frame.
+    /// </summary>
     protected override void FixedUpdate()
     {
         PlayerInput();

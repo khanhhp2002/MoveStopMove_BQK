@@ -15,16 +15,29 @@ public class WeaponBase : MonoBehaviour
     private Vector3 _originPoint;
     private float _distance;
     private float _remainingDistance;
+    private CharacterBase _caster;
 
+    /// <summary>
+    /// Get the collider of the weapon.
+    /// </summary>
     public Collider Collider => _collider;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Get the caster of the weapon.
+    /// </summary>
+    public CharacterBase Caster => _caster;
+
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
     private void Start()
     {
         _originPoint = transform.position;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     void FixedUpdate()
     {
         if (!_hasDestination) return;
@@ -47,12 +60,13 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void SetDestination(Vector3 origin, Vector3 direction)
+    public void SetDestination(Vector3 origin, Vector3 direction, CharacterBase caster)
     {
         _destination = origin + direction * _range;
         _destination.y = transform.position.y;
         _remainingDistance = _distance = Vector3.Distance(origin, _destination);
         _hasDestination = true;
         _collider.enabled = true;
+        _caster = caster;
     }
 }
