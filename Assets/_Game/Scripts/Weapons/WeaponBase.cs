@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class WeaponBase : MonoBehaviour
@@ -9,23 +10,20 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotateSpeed;
     [SerializeField] private float _range;
+    [SerializeField] private float _customDestroyTime;
+    [SerializeField] private bool _piercingAble;
 
     private bool _hasDestination = false;
     private Vector3 _destination;
     private Vector3 _originPoint;
     private float _distance;
     private float _remainingDistance;
-    private CharacterBase _caster;
+    private Action _onGetKill;
 
     /// <summary>
     /// Get the collider of the weapon.
     /// </summary>
     public Collider Collider => _collider;
-
-    /// <summary>
-    /// Get the caster of the weapon.
-    /// </summary>
-    public CharacterBase Caster => _caster;
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -50,7 +48,7 @@ public class WeaponBase : MonoBehaviour
 
         if (transform.position == _destination)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, _customDestroyTime);
         }
 
     }
@@ -60,13 +58,26 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void SetDestination(Vector3 origin, Vector3 direction, CharacterBase caster)
+    public void SetDestination(Vector3 origin, Vector3 direction, Action onGetKill)
     {
         _destination = origin + direction * _range;
         _destination.y = transform.position.y;
         _remainingDistance = _distance = Vector3.Distance(origin, _destination);
         _hasDestination = true;
         _collider.enabled = true;
-        _caster = caster;
+        _onGetKill = onGetKill;
+    }
+
+    /// <summary>
+    /// Called when the weapon hit character.
+    /// </summary>
+    public void OnHit()
+    {
+        _onGetKill?.Invoke();
+
+        if (_piercingAble) return;
+
+        _collider.enabled = false;
+        Destroy(gameObject, _customDestroyTime);
     }
 }

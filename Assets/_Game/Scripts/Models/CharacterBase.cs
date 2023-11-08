@@ -15,8 +15,6 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected float _rotateSpeed;
     [SerializeField] protected float _moveSpeed;
 
-    [SerializeField] protected GameObject _mappingObject;
-
     protected static string IDLE_ANIMATION = "IsIdle";
     protected static string WIN_ANIMATION = "IsWin";
     protected static string ATTACK_ANIMATION = "IsAttack";
@@ -31,6 +29,8 @@ public class CharacterBase : MonoBehaviour
     protected bool _isDance = false;
     protected bool _isUlti = false;
     protected bool _inAttackProcess = false;
+
+    protected int _killCount = 0;
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -49,6 +49,9 @@ public class CharacterBase : MonoBehaviour
         SetAnimationParameters();
     }
 
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
     protected virtual void Update()
     {
         CanvasController();
@@ -71,9 +74,9 @@ public class CharacterBase : MonoBehaviour
     private void ThrowWeapon()
     {
         var weapon = Instantiate(_weapon);
-        Physics.IgnoreCollision(weapon.Collider, this._collider);
+        Physics.IgnoreCollision(weapon.Collider, _collider);
         weapon.transform.position = _weaponHolder.position;
-        weapon.SetDestination(transform.position, transform.forward, this);
+        weapon.SetDestination(transform.position, transform.forward, OnGetKill);
     }
 
     /// <summary>
@@ -107,6 +110,14 @@ public class CharacterBase : MonoBehaviour
     }
 
     /// <summary>
+    /// Called when the weapon that the character throws hits another character.
+    /// </summary>
+    protected void OnGetKill()
+    {
+        _killCount++;
+    }
+
+    /// <summary>
     /// Detects when the player collides with another collider.
     /// </summary>
     /// <param name="other"></param>
@@ -115,6 +126,7 @@ public class CharacterBase : MonoBehaviour
         if (other.gameObject.layer == (byte)LayerType.Weapon)
         {
             Debug.Log($"{gameObject.name} hit by weapon");
+            other.GetComponent<WeaponBase>().OnHit();
             _isDead = true;
         }
     }
