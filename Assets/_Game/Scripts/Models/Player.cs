@@ -19,9 +19,25 @@ public class Player : CharacterBase
     /// </summary>
     protected override void FixedUpdate()
     {
-        PlayerInput();
-        Movement();
-        base.FixedUpdate();
+        switch (GameplayManager.Instance.GameState)
+        {
+            case GameState.Preparing:
+
+                break;
+            case GameState.Playing:
+                PlayerInput();
+                Movement();
+                base.FixedUpdate();
+                break;
+            case GameState.Paused:
+
+                break;
+            case GameState.GameOver:
+
+                break;
+            default:
+                break;
+        }
     }
 
     /// <summary>

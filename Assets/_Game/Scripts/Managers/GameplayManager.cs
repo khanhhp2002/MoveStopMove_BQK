@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameplayManager : Singleton<GameplayManager>
 {
@@ -7,29 +6,36 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] private CharacterBase _player;
     [SerializeField] private VirtualCameraController _virualCameraController;
 
+    [SerializeField] private GameState _gameState = GameState.None;
+
     /// <summary>
-    /// Returns the player.
+    /// Start is called before the first frame update.
     /// </summary>
-    public CharacterBase Player => _player;
+    private void Start()
+    {
+        SetGameState(GameState.Preparing);
+    }
 
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.Escape) && _gameState == GameState.Playing)
         {
-            _virualCameraController.gameObject.SetActive(!_virualCameraController.gameObject.activeSelf);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
+            SetGameState(GameState.Preparing);
         }
     }
+
+    /// <summary>
+    /// Returns the player.
+    /// </summary>
+    public CharacterBase Player => _player;
+
+    /// <summary>
+    /// Returns current game state.
+    /// </summary>
+    public GameState GameState => _gameState;
 
     /// <summary>
     /// Get a random pant's skin material.
@@ -46,5 +52,40 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             return _pants[index];
         }
+    }
+
+    /// <summary>
+    /// Set game state.
+    /// </summary>
+    /// <param name="gameState"></param>
+    public void SetGameState(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.Preparing:
+                UIManager.Instance.OnGameStatePrepare();
+                CameraManager.Instance.OnGameStatePrepare();
+                //Reset bots count
+                //Reset player
+                //Spawn bots
+                break;
+            case GameState.Playing:
+                UIManager.Instance.OnGameStatePlaying();
+                CameraManager.Instance.OnGameStatePlaying();
+                //Start bots
+                //Start player
+                break;
+            case GameState.Paused:
+                //Hide Playing UI
+                //Show Pause UI
+                //Stop bots
+                //Stop player
+                break;
+            case GameState.GameOver:
+                //Hide Playing UI
+                //Show End UI
+                break;
+        }
+        _gameState = gameState;
     }
 }

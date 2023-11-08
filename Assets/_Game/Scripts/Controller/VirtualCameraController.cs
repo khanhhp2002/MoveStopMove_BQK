@@ -59,9 +59,19 @@ public class VirtualCameraController : MonoBehaviour
     /// Set the priority of the CinemachineVirtualCamera.
     /// </summary>
     /// <param name="value"></param>
-    public void OnChangePriority(int value)
+    public void ChangePriority(int value)
     {
         cinemachineVirtualCamera.Priority = value;
+        OnEnable();
+    }
+
+    /// <summary>
+    /// Change the rotation speed of the CinemachineOrbitalTransposer.
+    /// </summary>
+    /// <param name="value"></param>
+    public void ChangeCameraRotateSpeed(float value)
+    {
+        _cameraRotateSpeed = value;
         OnEnable();
     }
 }

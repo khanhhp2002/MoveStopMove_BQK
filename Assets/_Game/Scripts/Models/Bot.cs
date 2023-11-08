@@ -13,12 +13,24 @@ public class Bot : CharacterBase, IPoolable<Bot>
     /// </summary>
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
-        if (Input.GetKeyDown(KeyCode.M))
+        switch (GameplayManager.Instance.GameState)
         {
-            NavigationIndicatorControl();
+            case GameState.Preparing:
+
+                break;
+            case GameState.Playing:
+                base.FixedUpdate();
+                NavigationIndicatorControl();
+                break;
+            case GameState.Paused:
+
+                break;
+            case GameState.GameOver:
+
+                break;
+            default:
+                break;
         }
-        NavigationIndicatorControl();
     }
 
     /// <summary>
