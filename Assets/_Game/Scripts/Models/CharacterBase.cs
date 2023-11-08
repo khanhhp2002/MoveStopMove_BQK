@@ -1,4 +1,3 @@
-using Cinemachine;
 using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
@@ -10,10 +9,13 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected Collider _collider;
     [SerializeField] protected WeaponBase _weapon;
     [SerializeField] protected Canvas _infoCanvas;
+    [SerializeField] protected SkinnedMeshRenderer _pantSkin;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
     [SerializeField] protected float _moveSpeed;
+
+    [SerializeField] protected GameObject _mappingObject;
 
     protected static string IDLE_ANIMATION = "IsIdle";
     protected static string WIN_ANIMATION = "IsWin";
@@ -35,7 +37,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
-
+        _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
     }
 
     /// <summary>
