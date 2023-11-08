@@ -15,12 +15,12 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected float _rotateSpeed;
     [SerializeField] protected float _moveSpeed;
 
-    protected static string IDLE_ANIMATION = "IsIdle";
-    protected static string WIN_ANIMATION = "IsWin";
-    protected static string ATTACK_ANIMATION = "IsAttack";
-    protected static string DEAD_ANIMATION = "IsDead";
-    protected static string DANCE_ANIMATION = "IsDance";
-    protected static string ULTI_ANIMATION = "IsUlti";
+    protected const string IDLE_ANIMATION = "IsIdle";
+    protected const string WIN_ANIMATION = "IsWin";
+    protected const string ATTACK_ANIMATION = "IsAttack";
+    protected const string DEAD_ANIMATION = "IsDead";
+    protected const string DANCE_ANIMATION = "IsDance";
+    protected const string ULTI_ANIMATION = "IsUlti";
 
     protected bool _isIdle = true;
     protected bool _isDead = false;
