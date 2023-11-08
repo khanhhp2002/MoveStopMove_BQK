@@ -6,7 +6,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected Animator _animator;
     [SerializeField] protected Transform _weaponHolder;
     [SerializeField] protected Rigidbody _rigidbody;
-    [SerializeField] protected Collider _collider;
+    [SerializeField] protected Collider _hitCollider;
     [SerializeField] protected WeaponBase _weapon;
     [SerializeField] protected Canvas _infoCanvas;
     [SerializeField] protected SkinnedMeshRenderer _pantSkin;
@@ -14,6 +14,8 @@ public class CharacterBase : MonoBehaviour
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
     [SerializeField] protected float _moveSpeed;
+    [SerializeField] protected float _maxLocalScale;
+    [SerializeField] protected float _localScaleIncreaseValue;
 
     protected const string IDLE_ANIMATION = "IsIdle";
     protected const string WIN_ANIMATION = "IsWin";
@@ -74,7 +76,7 @@ public class CharacterBase : MonoBehaviour
     private void ThrowWeapon()
     {
         var weapon = Instantiate(_weapon);
-        Physics.IgnoreCollision(weapon.Collider, _collider);
+        Physics.IgnoreCollision(weapon.Collider, _hitCollider);
         weapon.transform.position = _weaponHolder.position;
         weapon.SetDestination(transform.position, transform.forward, OnGetKill);
     }
@@ -115,6 +117,7 @@ public class CharacterBase : MonoBehaviour
     protected void OnGetKill()
     {
         _killCount++;
+        transform.localScale = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _killCount)) * Vector3.one;
     }
 
     /// <summary>

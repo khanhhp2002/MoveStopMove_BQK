@@ -22,7 +22,7 @@ public class Player : CharacterBase
         switch (GameplayManager.Instance.GameState)
         {
             case GameState.Preparing:
-
+                _isIdle = true;
                 break;
             case GameState.Playing:
                 PlayerInput();
