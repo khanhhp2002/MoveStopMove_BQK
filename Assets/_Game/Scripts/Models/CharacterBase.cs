@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
@@ -10,6 +11,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected WeaponBase _weapon;
     [SerializeField] protected Canvas _infoCanvas;
     [SerializeField] protected SkinnedMeshRenderer _pantSkin;
+    [SerializeField] protected RadarController _radarController;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
@@ -33,6 +35,9 @@ public class CharacterBase : MonoBehaviour
     protected bool _inAttackProcess = false;
 
     protected int _killCount = 0;
+    protected Vector3 _direction = Vector3.zero;
+    protected CharacterBase _target;
+    protected List<CharacterBase> _targetsList = new List<CharacterBase>();
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -40,6 +45,8 @@ public class CharacterBase : MonoBehaviour
     protected virtual void Start()
     {
         _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
+        _radarController?.OnEnemyEnterCallBack(OnFoundTarget);
+        _radarController?.OnEnemyExitCallBack(OnLostTarget);
     }
 
     /// <summary>
@@ -47,6 +54,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void FixedUpdate()
     {
+        Movement();
         Attack();
         SetAnimationParameters();
     }
@@ -57,6 +65,17 @@ public class CharacterBase : MonoBehaviour
     protected virtual void Update()
     {
         CanvasController();
+    }
+
+    /// <summary>
+    /// Controls the movement of the character.
+    /// </summary>
+    private void Movement()
+    {
+        if (_isAttack || _isIdle || _isWin || _isDead) return;
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _rotateSpeed);
+        transform.position = Vector3.Lerp(transform.position, transform.position + _direction, _moveSpeed * Time.fixedDeltaTime);
     }
 
     /// <summary>
@@ -76,9 +95,8 @@ public class CharacterBase : MonoBehaviour
     private void ThrowWeapon()
     {
         var weapon = Instantiate(_weapon);
-        Physics.IgnoreCollision(weapon.Collider, _hitCollider);
         weapon.transform.position = _weaponHolder.position;
-        weapon.SetDestination(transform.position, transform.forward, OnGetKill);
+        weapon.SetDestination(transform.position, transform.forward, OnGetKill, this);
     }
 
     /// <summary>
@@ -128,9 +146,41 @@ public class CharacterBase : MonoBehaviour
     {
         if (other.gameObject.layer == (byte)LayerType.Weapon)
         {
-            Debug.Log($"{gameObject.name} hit by weapon");
-            other.GetComponent<WeaponBase>().OnHit();
-            _isDead = true;
+            WeaponBase weapon = other.GetComponent<WeaponBase>();
+            if (weapon.Caster != this)
+            {
+                weapon.OnHit();
+                _isDead = true;
+            }
+        }
+    }
+
+    protected void OnFoundTarget(CharacterBase target)
+    {
+        if (_target is null)
+        {
+            _target = target;
+        }
+        else
+        {
+            _targetsList.Add(target);
+        }
+    }
+
+    protected void OnLostTarget(CharacterBase target)
+    {
+        if (_target == target)
+        {
+            _target = null;
+            if (_targetsList.Count >= 1)
+            {
+                _target = _targetsList?[0];
+                _targetsList?.RemoveAt(0);
+            }
+        }
+        else
+        {
+            _targetsList.Remove(target);
         }
     }
 }

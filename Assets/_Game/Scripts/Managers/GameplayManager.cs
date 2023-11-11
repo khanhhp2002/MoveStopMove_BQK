@@ -25,6 +25,10 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             SetGameState(GameState.Preparing);
         }
+        if (Input.GetKeyDown(KeyCode.Space) && _gameState == GameState.Playing)
+        {
+            SetGameState(GameState.Paused);
+        }
     }
 
     /// <summary>

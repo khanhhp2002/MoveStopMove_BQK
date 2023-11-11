@@ -4,7 +4,6 @@ public class Player : CharacterBase
 {
     private float _horizontal;
     private float _vertical;
-    private Vector3 _direction;
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -26,11 +25,10 @@ public class Player : CharacterBase
                 break;
             case GameState.Playing:
                 PlayerInput();
-                Movement();
                 base.FixedUpdate();
                 break;
             case GameState.Paused:
-
+                _animator.speed = 0f;
                 break;
             case GameState.GameOver:
 
@@ -53,17 +51,6 @@ public class Player : CharacterBase
         _vertical = Input.GetAxis("Vertical");
         _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
         _isIdle = _direction == Vector3.zero;
-    }
-
-    /// <summary>
-    /// Controls the movement of the character.
-    /// </summary>
-    private void Movement()
-    {
-        if (_isAttack || _isIdle || _isWin || _isDead) return;
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _rotateSpeed);
-        transform.position = Vector3.Lerp(transform.position, transform.position + _direction, _moveSpeed * Time.fixedDeltaTime);
     }
 
     /// <summary>

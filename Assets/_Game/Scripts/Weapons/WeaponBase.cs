@@ -19,6 +19,9 @@ public class WeaponBase : MonoBehaviour
     private float _distance;
     private float _remainingDistance;
     private Action _onGetKill;
+    private CharacterBase _caster;
+
+    public CharacterBase Caster => _caster;
 
     /// <summary>
     /// Get the collider of the weapon.
@@ -58,14 +61,15 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void SetDestination(Vector3 origin, Vector3 direction, Action onGetKill)
+    public void SetDestination(Vector3 origin, Vector3 direction, Action onHit, CharacterBase caster)
     {
         _destination = origin + direction * _range;
         _destination.y = transform.position.y;
         _remainingDistance = _distance = Vector3.Distance(origin, _destination);
         _hasDestination = true;
+        _onGetKill = onHit;
+        _caster = caster;
         _collider.enabled = true;
-        _onGetKill = onGetKill;
     }
 
     /// <summary>
