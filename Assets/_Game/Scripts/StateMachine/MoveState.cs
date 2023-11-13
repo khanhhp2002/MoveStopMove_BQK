@@ -14,9 +14,14 @@ public class MoveState : IState
 
     public void OnExecute(Bot bot)
     {
+        if (bot.Target is not null)
+        {
+            bot.SetState(new AttackState());
+            return;
+        }
         if (_executeTime >= _executeDuration)
         {
-            IState state = Random.Range(0, 2) == 0 ? new IdleState() : new AttackState();
+            IState state = Random.Range(0, 3) == 0 ? new IdleState() : new MoveState();
             bot.SetState(state);
         }
         _executeTime += Time.fixedDeltaTime;
@@ -24,6 +29,6 @@ public class MoveState : IState
 
     public void OnExit(Bot bot)
     {
-
+        bot.SetMoveDirection();
     }
 }

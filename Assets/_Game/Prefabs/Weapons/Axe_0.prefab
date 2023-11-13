@@ -116,4 +116,4 @@ MonoBehaviour:
   _rotateSpeed: 400
   _range: 10
   _customDestroyTime: 0.1
-  _piercingAble: 0
+  _piercingAble: 1

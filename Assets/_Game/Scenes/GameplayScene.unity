@@ -1710,7 +1710,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644780037}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -20.98, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1719,6 +1719,7 @@ Transform:
   - {fileID: 1756676043}
   - {fileID: 1360854191}
   - {fileID: 1086856367}
+  - {fileID: 675622247}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1738,16 +1739,24 @@ MonoBehaviour:
   _weaponHolder: {fileID: 1716809909}
   _rigidbody: {fileID: 644780040}
   _hitCollider: {fileID: 644780039}
+  _radarController: {fileID: 675622245}
   _weapon: {fileID: -6520620156040197038, guid: 85ca917d0f872724fa8a62af89d7f8ab, type: 3}
   _infoCanvas: {fileID: 1086856364}
   _pantSkin: {fileID: 1360854192}
-  _radarController: {fileID: 0}
+  _body: {fileID: 0}
   _rotateSpeed: 0.3
   _moveSpeed: 7
   _maxLocalScale: 2
   _localScaleIncreaseValue: 15
+  _attackRange: 0
+  _attackSpeed: 2
+  _navigationIndicatorSpeed: 0.1
   _navigationIndicatorRange: 400
   _botState: 0
+  _botPos: {x: 0, y: 0}
+  _playerPos: {x: 0, y: 0}
+  _directionToPlayer: {x: 0, y: 0}
+  _indicatorPos: {x: 0, y: 0}
 --- !u!1 &647280530
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,6 +1942,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 661456620}
   m_CullTransparentMesh: 1
+--- !u!1 &675622244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675622247}
+  - component: {fileID: 675622246}
+  - component: {fileID: 675622245}
+  m_Layer: 9
+  m_Name: Radar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &675622245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675622244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cebe46a272ec384cb3a8c332cf665e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sphereCollider: {fileID: 675622246}
+--- !u!135 &675622246
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675622244}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &675622247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675622244}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 644780042}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677658940
 GameObject:
   m_ObjectHideFlags: 0
@@ -3043,7 +3111,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885601487}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4526,6 +4594,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169071036}
   m_CullTransparentMesh: 1
+--- !u!1 &1182580974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1182580977}
+  - component: {fileID: 1182580976}
+  - component: {fileID: 1182580975}
+  m_Layer: 9
+  m_Name: Radar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1182580975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182580974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cebe46a272ec384cb3a8c332cf665e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sphereCollider: {fileID: 1182580976}
+--- !u!135 &1182580976
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182580974}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1182580977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182580974}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4629491421447191829}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194221434
 GameObject:
   m_ObjectHideFlags: 0
@@ -11557,16 +11684,24 @@ MonoBehaviour:
   _weaponHolder: {fileID: 4629491420374834602}
   _rigidbody: {fileID: 4629491421447191831}
   _hitCollider: {fileID: 4629491421447191832}
+  _radarController: {fileID: 1182580975}
   _weapon: {fileID: -6520620156040197038, guid: 85ca917d0f872724fa8a62af89d7f8ab, type: 3}
   _infoCanvas: {fileID: 4629491419880714675}
   _pantSkin: {fileID: 4629491419623559599}
-  _radarController: {fileID: 0}
+  _body: {fileID: 0}
   _rotateSpeed: 0.3
   _moveSpeed: 7
   _maxLocalScale: 2
   _localScaleIncreaseValue: 15
+  _attackRange: 0
+  _attackSpeed: 2
+  _navigationIndicatorSpeed: 0.1
   _navigationIndicatorRange: 400
   _botState: 0
+  _botPos: {x: 0, y: 0}
+  _playerPos: {x: 0, y: 0}
+  _directionToPlayer: {x: 0, y: 0}
+  _indicatorPos: {x: 0, y: 0}
 --- !u!4 &4629491421447191829
 Transform:
   m_ObjectHideFlags: 0
@@ -11583,6 +11718,7 @@ Transform:
   - {fileID: 4629491420553138900}
   - {fileID: 4629491419623559600}
   - {fileID: 4629491419880714672}
+  - {fileID: 1182580977}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12790,14 +12926,17 @@ MonoBehaviour:
   _weaponHolder: {fileID: 801052128}
   _rigidbody: {fileID: 8296172668588715378}
   _hitCollider: {fileID: 8296172668588715377}
+  _radarController: {fileID: 885601488}
   _weapon: {fileID: -6520620156040197038, guid: 85ca917d0f872724fa8a62af89d7f8ab, type: 3}
   _infoCanvas: {fileID: 1480251730}
   _pantSkin: {fileID: 8694194341230880752}
-  _radarController: {fileID: 885601488}
+  _body: {fileID: 0}
   _rotateSpeed: 0.3
   _moveSpeed: 7
   _maxLocalScale: 2
   _localScaleIncreaseValue: 15
+  _attackRange: 0
+  _attackSpeed: 2
 --- !u!1 &8404232991083997208
 GameObject:
   m_ObjectHideFlags: 0

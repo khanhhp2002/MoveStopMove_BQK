@@ -18,7 +18,7 @@ public class WeaponBase : MonoBehaviour
     private Vector3 _originPoint;
     private float _distance;
     private float _remainingDistance;
-    private Action _onGetKill;
+    private Action<CharacterBase> _onGetKill;
     private CharacterBase _caster;
 
     public CharacterBase Caster => _caster;
@@ -41,11 +41,14 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        if (!_hasDestination) return;
+        if (!_hasDestination || GameplayManager.Instance.GameState == GameState.Paused) return;
 
-        transform.Rotate(Vector3.back, _rotateSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.back, _rotateSpeed * Time.fixedDeltaTime);
 
-        transform.position = Vector3.Lerp(_originPoint, _destination, 1 - (_remainingDistance / _distance));
+        transform.position = Vector3.Lerp(
+            _originPoint,
+            _destination,
+            1 - (_remainingDistance / _distance));
 
         _remainingDistance -= _moveSpeed * Time.fixedDeltaTime;
 
@@ -61,7 +64,7 @@ public class WeaponBase : MonoBehaviour
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="direction"></param>
-    public void SetDestination(Vector3 origin, Vector3 direction, Action onHit, CharacterBase caster)
+    public void SetDestination(Vector3 origin, Vector3 direction, Action<CharacterBase> onHit, CharacterBase caster)
     {
         _destination = origin + direction * _range;
         _destination.y = transform.position.y;
@@ -75,9 +78,9 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// Called when the weapon hit character.
     /// </summary>
-    public void OnHit()
+    public void OnHit(CharacterBase identity)
     {
-        _onGetKill?.Invoke();
+        _onGetKill?.Invoke(identity);
 
         if (_piercingAble) return;
 

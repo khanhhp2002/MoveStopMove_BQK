@@ -1,3 +1,6 @@
+/// <summary>
+/// Game state enum.
+/// </summary>
 public enum GameState : byte
 {
     None = 0,

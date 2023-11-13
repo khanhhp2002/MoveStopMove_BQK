@@ -3,18 +3,21 @@ using UnityEngine;
 
 public class Bot : CharacterBase, IPoolable<Bot>
 {
-    [SerializeField] private float _navigationIndicatorRange;
     [SerializeField, Range(0.1f, 0.5f)] private float _navigationIndicatorSpeed;
+    [SerializeField] private float _navigationIndicatorRange;
     [SerializeField] private BotState _botState;
-    [SerializeField] private Vector2 _botPos;
-    [SerializeField] private Vector2 _playerPos;
-    [SerializeField] private Vector2 _directionToPlayer;
-    [SerializeField] private Vector2 _indicatorPos;
+
+    private Vector2 _botPos;
+    private Vector2 _playerPos;
+    private Vector2 _directionToPlayer;
+    private Vector2 _indicatorPos;
     private NavigationIndicator _navigationIndicator;
 
     private Action<Bot> _returnPoolAction;
 
     private IState _currentState;
+
+    public CharacterBase Target => _target;
 
     protected void OnEnable()
     {
@@ -64,7 +67,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
     /// </summary>
     private void NavigationIndicatorControl()
     {
+        if (GameplayManager.Instance.Player is null) return;
+
         _botPos = Camera.main.WorldToScreenPoint(transform.position);
+
         if (Vector3.Dot(this.transform.position - Camera.main.transform.position, Camera.main.transform.forward) < 0) // Behind the camera?
         {
             _botPos.x = Screen.width - _botPos.x;
@@ -84,7 +90,11 @@ public class Bot : CharacterBase, IPoolable<Bot>
             }
             else
             {
-                _navigationIndicator.transform.position = Vector2.Lerp(_navigationIndicator.transform.position, _indicatorPos, _navigationIndicatorSpeed);
+                _navigationIndicator.transform.position = Vector2.Lerp(
+                    _navigationIndicator.transform.position,
+                    _indicatorPos,
+                    _navigationIndicatorSpeed);
+
                 _navigationIndicator.LookAt(_directionToPlayer);
             }
         }
@@ -150,7 +160,6 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 break;
             case BotState.Attack:
                 _isIdle = true;
-                _isAttack = true;
                 break;
             case BotState.Dead:
                 // I don't know what to do here because the "_isDead" variable is already set to true by OnTriggerEnter method. φ(*￣0￣)
@@ -174,6 +183,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
     /// </summary>
     public void SetMoveDirection()
     {
-        _direction = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)).normalized;
+        _direction = new Vector3(
+            UnityEngine.Random.Range(-1f, 1f),
+            0f,
+            UnityEngine.Random.Range(-1f, 1f))
+            .normalized;
     }
 }

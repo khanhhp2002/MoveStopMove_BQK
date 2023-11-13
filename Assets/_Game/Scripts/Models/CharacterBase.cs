@@ -8,16 +8,19 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected Transform _weaponHolder;
     [SerializeField] protected Rigidbody _rigidbody;
     [SerializeField] protected Collider _hitCollider;
+    [SerializeField] protected RadarController _radarController;
     [SerializeField] protected WeaponBase _weapon;
     [SerializeField] protected Canvas _infoCanvas;
     [SerializeField] protected SkinnedMeshRenderer _pantSkin;
-    [SerializeField] protected RadarController _radarController;
+    [SerializeField] protected Transform _body;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _maxLocalScale;
     [SerializeField] protected float _localScaleIncreaseValue;
+    [SerializeField] protected float _attackRange;
+    [SerializeField] protected float _attackSpeed;
 
     protected const string IDLE_ANIMATION = "IsIdle";
     protected const string WIN_ANIMATION = "IsWin";
@@ -32,9 +35,9 @@ public class CharacterBase : MonoBehaviour
     protected bool _isAttack = false;
     protected bool _isDance = false;
     protected bool _isUlti = false;
-    protected bool _inAttackProcess = false;
 
     protected int _killCount = 0;
+    protected float _attackTimer = 0f;
     protected Vector3 _direction = Vector3.zero;
     protected CharacterBase _target;
     protected List<CharacterBase> _targetsList = new List<CharacterBase>();
@@ -44,9 +47,11 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
+        Debug.Log("Start");
+        Physics.IgnoreLayerCollision((int)LayerType.Weapon, (int)LayerType.Radar, true);
         _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
-        _radarController?.OnEnemyEnterCallBack(OnFoundTarget);
-        _radarController?.OnEnemyExitCallBack(OnLostTarget);
+        _radarController.OnEnemyEnterCallBack(OnFoundTarget);
+        _radarController.OnEnemyExitCallBack(OnLostTarget);
     }
 
     /// <summary>
@@ -74,8 +79,16 @@ public class CharacterBase : MonoBehaviour
     {
         if (_isAttack || _isIdle || _isWin || _isDead) return;
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _rotateSpeed);
-        transform.position = Vector3.Lerp(transform.position, transform.position + _direction, _moveSpeed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(_direction),
+            _rotateSpeed);
+
+
+        transform.position = Vector3.Lerp(
+            transform.position,
+            transform.position + _direction,
+            _moveSpeed * Time.fixedDeltaTime);
     }
 
     /// <summary>
@@ -83,10 +96,29 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void Attack()
     {
-        if (!_isAttack || _inAttackProcess || _isDead || _isWin || _isUlti) return;
-        _inAttackProcess = true;
-        Invoke(nameof(ThrowWeapon), .15f);
-        Invoke(nameof(EndAttackProcess), .65f);
+        // Cooldown
+        if (_attackTimer > 0f)
+        {
+            _attackTimer -= Time.fixedDeltaTime;
+        }
+
+        // Requirements conditions
+        if (!_target || !_isIdle || _isDead || _isWin || _isUlti) return;
+
+        // Look at the target
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(_target.transform.position - transform.position),
+            _rotateSpeed);
+
+        // Can attack
+        if (!_isAttack && _attackTimer <= 0)
+        {
+            _isAttack = true;
+            _attackTimer += _attackSpeed;
+            Invoke(nameof(ThrowWeapon), .15f);
+            Invoke(nameof(EndAttackProcess), .65f);
+        }
     }
 
     /// <summary>
@@ -104,7 +136,6 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void EndAttackProcess()
     {
-        _inAttackProcess = false;
         _isAttack = false;
     }
 
@@ -132,8 +163,9 @@ public class CharacterBase : MonoBehaviour
     /// <summary>
     /// Called when the weapon that the character throws hits another character.
     /// </summary>
-    protected void OnGetKill()
+    protected void OnGetKill(CharacterBase target)
     {
+        if (_target == target) _target = null;
         _killCount++;
         transform.localScale = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _killCount)) * Vector3.one;
     }
@@ -144,19 +176,26 @@ public class CharacterBase : MonoBehaviour
     /// <param name="other"></param>
     protected virtual void OnTriggerEnter(Collider other)
     {
+        if (_isDead) return;
         if (other.gameObject.layer == (byte)LayerType.Weapon)
         {
             WeaponBase weapon = other.GetComponent<WeaponBase>();
             if (weapon.Caster != this)
             {
-                weapon.OnHit();
+                weapon.OnHit(this);
                 _isDead = true;
+                Destroy(gameObject, 1f);
             }
         }
     }
 
+    /// <summary>
+    /// OnFoundTarget is called when the radar detects an enemy.
+    /// </summary>
+    /// <param name="target"></param>
     protected void OnFoundTarget(CharacterBase target)
     {
+        if (target == this) return;
         if (_target is null)
         {
             _target = target;
@@ -167,15 +206,19 @@ public class CharacterBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// OnLostTarget is called when the radar loses an enemy.
+    /// </summary>
+    /// <param name="target"></param>
     protected void OnLostTarget(CharacterBase target)
     {
         if (_target == target)
         {
             _target = null;
-            if (_targetsList.Count >= 1)
+            if (_targetsList.Count > 0)
             {
-                _target = _targetsList?[0];
-                _targetsList?.RemoveAt(0);
+                _target = _targetsList[0];
+                _targetsList.RemoveAt(0);
             }
         }
         else

@@ -43,10 +43,6 @@ public class Player : CharacterBase
     /// </summary>
     private void PlayerInput()
     {
-        if (!_inAttackProcess)
-        {
-            _isAttack = Input.GetMouseButtonDown(0);
-        }
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
         _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
