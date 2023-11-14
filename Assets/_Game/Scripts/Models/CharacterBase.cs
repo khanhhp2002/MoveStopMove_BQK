@@ -128,9 +128,10 @@ public class CharacterBase : MonoBehaviour
         if (!_isAttack && _attackTimer <= 0)
         {
             _isAttack = true;
-            _attackTimer += _attackSpeed;
-            Invoke(nameof(ThrowWeapon), .15f);
-            Invoke(nameof(EndAttackProcess), .65f);
+            if (_weaponData.WeaponType == WeaponType.Boomerang) _isUlti = true;
+            _attackTimer += _weaponData.AttackSpeed;
+            Invoke(nameof(ThrowWeapon), _weaponData.ThrowAnimationDelay);
+            Invoke(nameof(EndAttackProcess), _weaponData.ThrowAnimationTotalLength);
         }
     }
 
@@ -139,7 +140,6 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
-        //this.transform.forward
         _weaponData.Throw(_weaponHolder.position, (_target.transform.position - this.transform.position).normalized, _attackRange, this, OnGetKill, _hitCollider);
     }
 
@@ -148,6 +148,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void EndAttackProcess()
     {
+        _isUlti = false;
         _isAttack = false;
     }
 

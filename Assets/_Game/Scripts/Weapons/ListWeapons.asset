@@ -16,6 +16,9 @@ MonoBehaviour:
   - Name: Axe_0
     WeaponType: 1
     WeaponPrefab: {fileID: -6520620156040197038, guid: 85ca917d0f872724fa8a62af89d7f8ab, type: 3}
+    WeaponModel: {fileID: 100000, guid: 1c040a6e7d23e904b87e93fb9c66a037, type: 3}
+    HandWeaponOffset: {x: 0, y: 0, z: 0}
+    HandWeaponScale: 1
     MoveType: 1
     MoveSpeed: 10
     RotateSpeed: 450
@@ -25,3 +28,33 @@ MonoBehaviour:
     ThrowAnimationTotalLength: 0.7
     IsPiercingable: 0
     IsReturningable: 0
+  - Name: Axe_1
+    WeaponType: 1
+    WeaponPrefab: {fileID: 2624061970395249626, guid: a709eb4bec9f82340a43e3ae2be59281, type: 3}
+    WeaponModel: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
+    HandWeaponOffset: {x: 0, y: 0, z: 0}
+    HandWeaponScale: 1
+    MoveType: 1
+    MoveSpeed: 10
+    RotateSpeed: 450
+    AttackBonusRange: 2
+    AttackSpeed: 2
+    ThrowAnimationDelay: 0.15
+    ThrowAnimationTotalLength: 0.7
+    IsPiercingable: 0
+    IsReturningable: 0
+  - Name: Boomerang
+    WeaponType: 4
+    WeaponPrefab: {fileID: -8853160300729746431, guid: 48a4c31e0ea8a5c41baa670c93ed7fdc, type: 3}
+    WeaponModel: {fileID: 100000, guid: cb6e597070ed41f4eb5cb9583c725959, type: 3}
+    HandWeaponOffset: {x: -0.00449, y: 0.00074, z: 0.00032}
+    HandWeaponScale: 0.2
+    MoveType: 1
+    MoveSpeed: 10
+    RotateSpeed: 540
+    AttackBonusRange: 5
+    AttackSpeed: 2
+    ThrowAnimationDelay: 0.15
+    ThrowAnimationTotalLength: 0.7
+    IsPiercingable: 0
+    IsReturningable: 1
