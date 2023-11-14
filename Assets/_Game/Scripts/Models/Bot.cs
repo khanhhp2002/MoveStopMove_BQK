@@ -36,7 +36,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 break;
             case GameState.Playing:
 
-                _currentState?.OnExecute(this);
+                //_currentState?.OnExecute(this);
                 base.FixedUpdate();
                 NavigationIndicatorControl();
 

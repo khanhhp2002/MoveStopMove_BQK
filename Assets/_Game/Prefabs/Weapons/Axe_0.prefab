@@ -95,7 +95,7 @@ BoxCollider:
   m_GameObject: {fileID: 190110615246911619}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.014497258, y: 0.024871469, z: 0.0025729514}
   m_Center: {x: -0.0017584035, y: -0.00032185632, z: 4.573852e-18}
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190110615246911619}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61d0bc7582d3ee746808723069d9296d, type: 3}
   m_Name: 
@@ -116,4 +116,4 @@ MonoBehaviour:
   _rotateSpeed: 400
   _range: 10
   _customDestroyTime: 0.1
-  _piercingAble: 1
+  _piercingable: 0

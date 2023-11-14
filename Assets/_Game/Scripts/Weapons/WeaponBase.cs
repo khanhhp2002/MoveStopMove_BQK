@@ -11,7 +11,9 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] private float _rotateSpeed;
     [SerializeField] private float _range;
     [SerializeField] private float _customDestroyTime;
-    [SerializeField] private bool _piercingAble;
+    [SerializeField] private bool _piercingable;
+
+    private WeaponData _weaponData;
 
     private bool _hasDestination = false;
     private Vector3 _destination;
@@ -82,9 +84,14 @@ public class WeaponBase : MonoBehaviour
     {
         _onGetKill?.Invoke(identity);
 
-        if (_piercingAble) return;
+        if (_piercingable) return;
 
         _collider.enabled = false;
         Destroy(gameObject, _customDestroyTime);
+    }
+
+    public void ReturnToPool()
+    {
+        Destroy(gameObject);
     }
 }

@@ -1651,7 +1651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &644780039
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1753,10 +1753,6 @@ MonoBehaviour:
   _navigationIndicatorSpeed: 0.1
   _navigationIndicatorRange: 400
   _botState: 0
-  _botPos: {x: 0, y: 0}
-  _playerPos: {x: 0, y: 0}
-  _directionToPlayer: {x: 0, y: 0}
-  _indicatorPos: {x: 0, y: 0}
 --- !u!1 &647280530
 GameObject:
   m_ObjectHideFlags: 0
@@ -11698,10 +11694,6 @@ MonoBehaviour:
   _navigationIndicatorSpeed: 0.1
   _navigationIndicatorRange: 400
   _botState: 0
-  _botPos: {x: 0, y: 0}
-  _playerPos: {x: 0, y: 0}
-  _directionToPlayer: {x: 0, y: 0}
-  _indicatorPos: {x: 0, y: 0}
 --- !u!4 &4629491421447191829
 Transform:
   m_ObjectHideFlags: 0
@@ -11792,7 +11784,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4629491421459462179
 Transform:
   m_ObjectHideFlags: 0
@@ -12937,6 +12929,20 @@ MonoBehaviour:
   _localScaleIncreaseValue: 15
   _attackRange: 0
   _attackSpeed: 2
+  _weaponSO: {fileID: 11400000, guid: d98f802bfdb3cac4a9001112fc17e461, type: 2}
+  _weaponData:
+    Name: 
+    WeaponType: 0
+    WeaponPrefab: {fileID: 0}
+    MoveType: 0
+    MoveSpeed: 1
+    RotateSpeed: 0
+    AttackRange: 0
+    AttackSpeed: 0
+    ThrowAnimationDelay: 0
+    ThrowAnimationTotalLength: 0
+    IsPiercingable: 0
+    IsReturningable: 0
 --- !u!1 &8404232991083997208
 GameObject:
   m_ObjectHideFlags: 0

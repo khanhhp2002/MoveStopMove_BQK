@@ -4,12 +4,15 @@ public class Player : CharacterBase
 {
     private float _horizontal;
     private float _vertical;
+    [SerializeField] private WeaponSO _weaponSO;
+    [SerializeField] private WeaponData _weaponData;
 
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     protected override void Start()
     {
+        _weaponData = _weaponSO.weaponDataList[0];
         base.Start();
     }
 
@@ -47,6 +50,11 @@ public class Player : CharacterBase
         _vertical = Input.GetAxis("Vertical");
         _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
         _isIdle = _direction == Vector3.zero;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _weaponData.Throw(_weaponHolder.position, _weaponHolder.position, this.transform.forward, 0f);
+        }
     }
 
     /// <summary>
