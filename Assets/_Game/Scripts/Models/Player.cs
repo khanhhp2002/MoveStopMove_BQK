@@ -53,7 +53,7 @@ public class Player : CharacterBase
 
         if (Input.GetMouseButtonDown(0))
         {
-            _weaponData.Throw(_weaponHolder.position, _weaponHolder.position, this.transform.forward, 0f);
+            _weaponData.Throw(_weaponHolder.position, this.transform.forward, 8f, this, OnGetKill);
         }
     }
 
@@ -63,6 +63,7 @@ public class Player : CharacterBase
     /// <param name="other"></param>
     protected override void OnTriggerEnter(Collider other)
     {
+        Debug.Log("OnTriggerEnter");
         base.OnTriggerEnter(other);
     }
 }

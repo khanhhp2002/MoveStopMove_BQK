@@ -126,9 +126,9 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
-        var weapon = Instantiate(_weapon);
-        weapon.transform.position = _weaponHolder.position;
-        weapon.SetDestination(transform.position, transform.forward, OnGetKill, this);
+        /*var weapon = Instantiate(_weapon);
+        weapon.transform.position = _weaponHolder.position;*/
+        //weapon.SetDestination(transform.position, transform.forward, OnGetKill, this);
     }
 
     /// <summary>
@@ -180,7 +180,7 @@ public class CharacterBase : MonoBehaviour
         if (other.gameObject.layer == (byte)LayerType.Weapon)
         {
             WeaponBase weapon = other.GetComponent<WeaponBase>();
-            if (weapon.Caster != this)
+            if (weapon.Attacker != this)
             {
                 weapon.OnHit(this);
                 _isDead = true;

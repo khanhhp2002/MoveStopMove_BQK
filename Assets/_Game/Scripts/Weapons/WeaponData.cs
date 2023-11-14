@@ -11,7 +11,7 @@ public class WeaponData
     public Ease MoveType;
     [Range(1f, 10f)] public float MoveSpeed;
     [Range(0f, 540f)] public float RotateSpeed;
-    public float AttackRange;
+    public float AttackBonusRange;
     public float AttackSpeed;
     public float ThrowAnimationDelay;
     public float ThrowAnimationTotalLength;
@@ -25,25 +25,23 @@ public class WeaponData
     /// <param name="startPosition"></param>
     /// <param name="direction"></param>
     /// <param name="characterRange"></param>
-    public void Throw(Vector3 spawnPosition, Vector3 startPosition, Vector3 direction, float characterRange)
+    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, CharacterBase _attacker, Action<CharacterBase> callback)
     {
-        Vector3 destination = startPosition + direction * (characterRange + AttackRange);
+        Vector3 destination = spawnPosition + direction * (characterRange + AttackBonusRange);
 
-        float duration = Vector3.Distance(startPosition, destination) / MoveSpeed;
+        float duration = Vector3.Distance(spawnPosition, destination) / MoveSpeed;
 
         WeaponBase weapon = GameObject.Instantiate(WeaponPrefab);
 
         weapon.transform.position = spawnPosition;
 
+        // Move weapon
         weapon.transform.DOMove(destination, duration)
             .SetEase(MoveType)
-            .SetLoops(IsReturningable ? 2 : 0, LoopType.Yoyo)
-            .OnComplete(() =>
-            {
-                DOTween.Kill(weapon.transform);
-                GameObject.Destroy(weapon.gameObject);
-            });
+            .SetLoops(IsReturningable ? 2 : 0, LoopType.Yoyo) // LoopType.Yoyo is fixed value
+            .OnComplete(() => DestroyWeapon(weapon));
 
+        // Rotate weapon
         if (RotateSpeed > 0)
         {
             Vector3 rotateDelta = new Vector3(weapon.transform.eulerAngles.x, weapon.transform.eulerAngles.y + 180f, weapon.transform.eulerAngles.z);
@@ -54,5 +52,33 @@ public class WeaponData
                 .SetLoops(-1, LoopType.Incremental) // LoopType.Incremental is fixed value
                 .SetEase(Ease.Linear); // Ease.Linear is fixed value
         }
+
+        // Initialize weapon
+        weapon.Init(_attacker, callback, OnHit);
+
+        weapon.Collider.enabled = true;
+    }
+
+    /// <summary>
+    /// OnHit call when the weapon hits the target.
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="weapon"></param>
+    public void OnHit(WeaponBase weapon)
+    {
+        if (!IsPiercingable)
+        {
+            DestroyWeapon(weapon);
+        }
+    }
+
+    /// <summary>
+    /// Destroy weapon.
+    /// </summary>
+    /// <param name="weapon"></param>
+    private void DestroyWeapon(WeaponBase weapon)
+    {
+        DOTween.Kill(weapon.transform);
+        GameObject.Destroy(weapon.gameObject);
     }
 }

@@ -19,7 +19,7 @@ MonoBehaviour:
     MoveType: 1
     MoveSpeed: 10
     RotateSpeed: 450
-    AttackRange: 10
+    AttackRange: 2
     AttackSpeed: 2
     ThrowAnimationDelay: 0.15
     ThrowAnimationTotalLength: 0.7
