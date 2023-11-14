@@ -4,15 +4,12 @@ public class Player : CharacterBase
 {
     private float _horizontal;
     private float _vertical;
-    [SerializeField] private WeaponSO _weaponSO;
-    [SerializeField] private WeaponData _weaponData;
 
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     protected override void Start()
     {
-        _weaponData = _weaponSO.weaponDataList[0];
         base.Start();
     }
 
@@ -53,7 +50,7 @@ public class Player : CharacterBase
 
         if (Input.GetMouseButtonDown(0))
         {
-            _weaponData.Throw(_weaponHolder.position, this.transform.forward, 8f, this, OnGetKill);
+            _weaponData.Throw(_weaponHolder.position, this.transform.forward, _attackRange, this, OnGetKill, _hitCollider);
         }
     }
 

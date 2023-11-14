@@ -12,7 +12,6 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected WeaponBase _weapon;
     [SerializeField] protected Canvas _infoCanvas;
     [SerializeField] protected SkinnedMeshRenderer _pantSkin;
-    [SerializeField] protected Transform _body;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float _rotateSpeed;
@@ -22,6 +21,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected float _attackRange;
     [SerializeField] protected float _attackSpeed;
 
+    // Animation name constants.
     protected const string IDLE_ANIMATION = "IsIdle";
     protected const string WIN_ANIMATION = "IsWin";
     protected const string ATTACK_ANIMATION = "IsAttack";
@@ -29,6 +29,7 @@ public class CharacterBase : MonoBehaviour
     protected const string DANCE_ANIMATION = "IsDance";
     protected const string ULTI_ANIMATION = "IsUlti";
 
+    // Animation parameters.
     protected bool _isIdle = true;
     protected bool _isDead = false;
     protected bool _isWin = false;
@@ -36,20 +37,32 @@ public class CharacterBase : MonoBehaviour
     protected bool _isDance = false;
     protected bool _isUlti = false;
 
+    // Current weapon data.
+    protected WeaponData _weaponData;
+
+    // Targets in range.
+    protected CharacterBase _target;
+    protected List<CharacterBase> _targetsList = new List<CharacterBase>();
+
     protected int _killCount = 0;
     protected float _attackTimer = 0f;
     protected Vector3 _direction = Vector3.zero;
-    protected CharacterBase _target;
-    protected List<CharacterBase> _targetsList = new List<CharacterBase>();
 
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     protected virtual void Start()
     {
-        Debug.Log("Start");
+        _weaponData = WeaponManager.Instance.GetRandomWeaponData();
+        var weapon = Instantiate(_weaponData.WeaponModel, _weaponHolder);
+        weapon.transform.localScale = _weaponData.HandWeaponScale * Vector3.one;
+        weapon.transform.localPosition = _weaponData.HandWeaponOffset;
+        weapon.transform.localRotation = Quaternion.identity;
+
         Physics.IgnoreLayerCollision((int)LayerType.Weapon, (int)LayerType.Radar, true);
+
         _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
+
         _radarController.OnEnemyEnterCallBack(OnFoundTarget);
         _radarController.OnEnemyExitCallBack(OnLostTarget);
     }
@@ -126,9 +139,8 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
-        /*var weapon = Instantiate(_weapon);
-        weapon.transform.position = _weaponHolder.position;*/
-        //weapon.SetDestination(transform.position, transform.forward, OnGetKill, this);
+        //this.transform.forward
+        _weaponData.Throw(_weaponHolder.position, (_target.transform.position - this.transform.position).normalized, _attackRange, this, OnGetKill, _hitCollider);
     }
 
     /// <summary>
@@ -166,6 +178,8 @@ public class CharacterBase : MonoBehaviour
     protected void OnGetKill(CharacterBase target)
     {
         if (_target == target) _target = null;
+        else _targetsList.Remove(target);
+
         _killCount++;
         transform.localScale = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _killCount)) * Vector3.one;
     }
@@ -184,7 +198,7 @@ public class CharacterBase : MonoBehaviour
             {
                 weapon.OnHit(this);
                 _isDead = true;
-                Destroy(gameObject, 1f);
+                Destroy(gameObject, 2f);
             }
         }
     }

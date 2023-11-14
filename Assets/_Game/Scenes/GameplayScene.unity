@@ -1651,7 +1651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &644780039
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1748,8 +1748,21 @@ MonoBehaviour:
   _moveSpeed: 7
   _maxLocalScale: 2
   _localScaleIncreaseValue: 15
-  _attackRange: 0
+  _attackRange: 8
   _attackSpeed: 2
+  _weaponData:
+    Name: 
+    WeaponType: 0
+    WeaponPrefab: {fileID: 0}
+    MoveType: 0
+    MoveSpeed: 0
+    RotateSpeed: 0
+    AttackBonusRange: 0
+    AttackSpeed: 0
+    ThrowAnimationDelay: 0
+    ThrowAnimationTotalLength: 0
+    IsPiercingable: 0
+    IsReturningable: 0
   _navigationIndicatorSpeed: 0.1
   _navigationIndicatorRange: 400
   _botState: 0
@@ -3158,6 +3171,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 8f29ef9cb65c1f74fa51eee320c5be2d, type: 2}
   _player: {fileID: 8296172668588715379}
   _virualCameraController: {fileID: 738360899}
+  WeaponSO: {fileID: 11400000, guid: d98f802bfdb3cac4a9001112fc17e461, type: 2}
   _gameState: 0
 --- !u!4 &899513651
 Transform:
@@ -11689,8 +11703,21 @@ MonoBehaviour:
   _moveSpeed: 7
   _maxLocalScale: 2
   _localScaleIncreaseValue: 15
-  _attackRange: 0
+  _attackRange: 8
   _attackSpeed: 2
+  _weaponData:
+    Name: 
+    WeaponType: 0
+    WeaponPrefab: {fileID: 0}
+    MoveType: 0
+    MoveSpeed: 0
+    RotateSpeed: 0
+    AttackBonusRange: 0
+    AttackSpeed: 0
+    ThrowAnimationDelay: 0
+    ThrowAnimationTotalLength: 0
+    IsPiercingable: 0
+    IsReturningable: 0
   _navigationIndicatorSpeed: 0.1
   _navigationIndicatorRange: 400
   _botState: 0
@@ -11784,7 +11811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4629491421459462179
 Transform:
   m_ObjectHideFlags: 0
@@ -12927,9 +12954,8 @@ MonoBehaviour:
   _moveSpeed: 7
   _maxLocalScale: 2
   _localScaleIncreaseValue: 15
-  _attackRange: 0
+  _attackRange: 8
   _attackSpeed: 2
-  _weaponSO: {fileID: 11400000, guid: d98f802bfdb3cac4a9001112fc17e461, type: 2}
   _weaponData:
     Name: 
     WeaponType: 0
@@ -12937,7 +12963,7 @@ MonoBehaviour:
     MoveType: 0
     MoveSpeed: 1
     RotateSpeed: 0
-    AttackRange: 0
+    AttackBonusRange: 0
     AttackSpeed: 0
     ThrowAnimationDelay: 0
     ThrowAnimationTotalLength: 0

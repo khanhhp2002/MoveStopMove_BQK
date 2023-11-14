@@ -16,8 +16,9 @@ public class WeaponBase : MonoBehaviour
     /// <param name="attacker"></param>
     /// <param name="callbackAttacker"></param>
     /// <param name="callbackWeapon"></param>
-    public void Init(CharacterBase attacker, Action<CharacterBase> callbackAttacker, Action<WeaponBase> callbackWeapon)
+    public void Init(CharacterBase attacker, Action<CharacterBase> callbackAttacker, Action<WeaponBase> callbackWeapon, Collider attackerCollider)
     {
+        Physics.IgnoreCollision(_collider, attackerCollider, true);
         _attacker = attacker;
         _onGetHit1 = callbackAttacker;
         _onGetHit2 = callbackWeapon;

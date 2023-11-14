@@ -19,9 +19,9 @@ MonoBehaviour:
     MoveType: 1
     MoveSpeed: 10
     RotateSpeed: 450
-    AttackRange: 2
+    AttackBonusRange: 2
     AttackSpeed: 2
     ThrowAnimationDelay: 0.15
     ThrowAnimationTotalLength: 0.7
     IsPiercingable: 0
-    IsReturningable: 1
+    IsReturningable: 0

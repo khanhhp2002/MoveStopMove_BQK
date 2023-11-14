@@ -8,9 +8,12 @@ public class WeaponData
     public string Name;
     public WeaponType WeaponType;
     public WeaponBase WeaponPrefab;
+    public GameObject WeaponModel;
+    public Vector3 HandWeaponOffset;
+    public float HandWeaponScale;
     public Ease MoveType;
     [Range(1f, 10f)] public float MoveSpeed;
-    [Range(0f, 540f)] public float RotateSpeed;
+    [Range(0, 540)] public int RotateSpeed;
     public float AttackBonusRange;
     public float AttackSpeed;
     public float ThrowAnimationDelay;
@@ -25,7 +28,7 @@ public class WeaponData
     /// <param name="startPosition"></param>
     /// <param name="direction"></param>
     /// <param name="characterRange"></param>
-    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, CharacterBase _attacker, Action<CharacterBase> callback)
+    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, CharacterBase _attacker, Action<CharacterBase> callback, Collider attackerCollider)
     {
         Vector3 destination = spawnPosition + direction * (characterRange + AttackBonusRange);
 
@@ -44,7 +47,7 @@ public class WeaponData
         // Rotate weapon
         if (RotateSpeed > 0)
         {
-            Vector3 rotateDelta = new Vector3(weapon.transform.eulerAngles.x, weapon.transform.eulerAngles.y + 180f, weapon.transform.eulerAngles.z);
+            Vector3 rotateDelta = new Vector3(weapon.transform.eulerAngles.x, weapon.transform.eulerAngles.y - 180f, weapon.transform.eulerAngles.z);
 
             float rotateDeltaDuration = 1f / (RotateSpeed / 180f);
 
@@ -54,7 +57,7 @@ public class WeaponData
         }
 
         // Initialize weapon
-        weapon.Init(_attacker, callback, OnHit);
+        weapon.Init(_attacker, callback, OnHit, attackerCollider);
 
         weapon.Collider.enabled = true;
     }
