@@ -19,9 +19,12 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
     public CharacterBase Target => _target;
 
-    protected void OnEnable()
+    protected override void OnEnable()
     {
+        _weaponData = WeaponManager.Instance.GetRandomWeaponData();
+        _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
         _currentState = new IdleState();
+        base.OnEnable();
     }
 
     /// <summary>

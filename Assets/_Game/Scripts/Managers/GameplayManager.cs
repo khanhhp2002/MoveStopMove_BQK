@@ -6,6 +6,7 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] private CharacterBase _player;
     [SerializeField] private VirtualCameraController _virualCameraController;
     [SerializeField] private GameState _gameState = GameState.None;
+    [SerializeField] public UserData _userData;
 
     /// <summary>
     /// Start is called before the first frame update.
@@ -13,6 +14,15 @@ public class GameplayManager : Singleton<GameplayManager>
     private void Start()
     {
         SetGameState(GameState.Preparing);
+        if (SaveManager.Instance.HasData<UserData>())
+        {
+            _userData = SaveManager.Instance.LoadData<UserData>();
+        }
+        else
+        {
+            _userData = new UserData();
+            SaveManager.Instance.SaveData(_userData);
+        }
     }
 
     /// <summary>

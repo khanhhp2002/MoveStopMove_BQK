@@ -48,20 +48,22 @@ public class CharacterBase : MonoBehaviour
     protected float _attackTimer = 0f;
     protected Vector3 _direction = Vector3.zero;
 
+    protected virtual void OnEnable()
+    {
+
+    }
+
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     protected virtual void Start()
     {
-        _weaponData = WeaponManager.Instance.GetRandomWeaponData();
         var weapon = Instantiate(_weaponData.WeaponModel, _weaponHolder);
         weapon.transform.localScale = _weaponData.HandWeaponScale * Vector3.one;
         weapon.transform.localPosition = _weaponData.HandWeaponOffset;
         weapon.transform.localRotation = Quaternion.identity;
 
         Physics.IgnoreLayerCollision((int)LayerType.Weapon, (int)LayerType.Radar, true);
-
-        _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
 
         _radarController.OnEnemyEnterCallBack(OnFoundTarget);
         _radarController.OnEnemyExitCallBack(OnLostTarget);
@@ -140,7 +142,9 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
-        _weaponData.Throw(_weaponHolder.position, (_target.transform.position - this.transform.position).normalized, _attackRange, this, OnGetKill, _hitCollider);
+        Vector3 direction = (_target.transform.position - this._weaponHolder.position).normalized;
+        direction.y = 0f;
+        _weaponData.Throw(_weaponHolder.position, direction, _attackRange, this, OnGetKill, _hitCollider);
     }
 
     /// <summary>
@@ -178,6 +182,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected void OnGetKill(CharacterBase target)
     {
+        if (_isDead) return;
         if (_target == target) _target = null;
         else _targetsList.Remove(target);
 

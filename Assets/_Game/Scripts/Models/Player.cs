@@ -10,6 +10,8 @@ public class Player : CharacterBase
     /// </summary>
     protected override void Start()
     {
+        _weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance._userData.EquippedWeapon);
+        _pantSkin.material = GameplayManager.Instance.GetPantByIndex(GameplayManager.Instance._userData.EquippedPant);
         base.Start();
     }
 
