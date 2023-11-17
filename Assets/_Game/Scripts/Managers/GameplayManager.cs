@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameplayManager : Singleton<GameplayManager>
@@ -8,12 +9,13 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] private GameState _gameState = GameState.None;
     [SerializeField] public UserData _userData;
 
+    public Action<int> OnGoldAmountChange;
+
     /// <summary>
-    /// Start is called before the first frame update.
+    /// Awake is called when the script instance is being loaded.
     /// </summary>
-    private void Start()
+    private void Awake()
     {
-        SetGameState(GameState.Preparing);
         if (SaveManager.Instance.HasData<UserData>())
         {
             _userData = SaveManager.Instance.LoadData<UserData>();
@@ -23,6 +25,13 @@ public class GameplayManager : Singleton<GameplayManager>
             _userData = new UserData();
             SaveManager.Instance.SaveData(_userData);
         }
+    }
+    /// <summary>
+    /// Start is called before the first frame update.
+    /// </summary>
+    private void Start()
+    {
+        SetGameState(GameState.Preparing);
     }
 
     /// <summary>
@@ -59,7 +68,7 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         if (index < 0 || index >= _pants.Length)
         {
-            return _pants[Random.Range(0, _pants.Length)];
+            return _pants[UnityEngine.Random.Range(0, _pants.Length)];
         }
         else
         {
@@ -98,7 +107,19 @@ public class GameplayManager : Singleton<GameplayManager>
                 //Hide Playing UI
                 //Show End UI
                 break;
+            case GameState.WeaponShopEnter:
+                UIManager.Instance.OnWeaponShopEnter();
+                break;
+            case GameState.WeaponShopExit:
+                UIManager.Instance.OnWeaponShopExit();
+                break;
         }
         _gameState = gameState;
+    }
+
+    public void ChangeGoldAmount(int amount)
+    {
+        _userData.GoldAmount += amount;
+        OnGoldAmountChange?.Invoke(_userData.GoldAmount);
     }
 }

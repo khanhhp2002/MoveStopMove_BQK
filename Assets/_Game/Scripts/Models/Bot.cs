@@ -22,6 +22,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     protected override void OnEnable()
     {
         _weaponData = WeaponManager.Instance.GetRandomWeaponData();
+        EquipWeapon(_weaponData);
         _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
         _currentState = new IdleState();
         base.OnEnable();
@@ -39,7 +40,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 break;
             case GameState.Playing:
 
-                //_currentState?.OnExecute(this);
+                _currentState?.OnExecute(this);
                 base.FixedUpdate();
                 NavigationIndicatorControl();
 

@@ -58,10 +58,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
-        var weapon = Instantiate(_weaponData.WeaponModel, _weaponHolder);
-        weapon.transform.localScale = _weaponData.HandWeaponScale * Vector3.one;
-        weapon.transform.localPosition = _weaponData.HandWeaponOffset;
-        weapon.transform.localRotation = Quaternion.identity;
+
 
         Physics.IgnoreLayerCollision((int)LayerType.Weapon, (int)LayerType.Radar, true);
 
@@ -85,6 +82,19 @@ public class CharacterBase : MonoBehaviour
     protected virtual void Update()
     {
         CanvasController();
+    }
+
+    public void EquipWeapon(WeaponData weaponData)
+    {
+        if (_weaponHolder.childCount > 0)
+        {
+            Destroy(_weaponHolder.GetChild(0).gameObject);
+        }
+        _weaponData = weaponData;
+        var weapon = Instantiate(_weaponData.WeaponModel, _weaponHolder);
+        weapon.transform.localScale = _weaponData.HandWeaponScale * Vector3.one;
+        weapon.transform.localPosition = _weaponData.HandWeaponOffset;
+        weapon.transform.localRotation = Quaternion.identity;
     }
 
     /// <summary>
@@ -131,7 +141,7 @@ public class CharacterBase : MonoBehaviour
         {
             _isAttack = true;
             if (_weaponData.WeaponType == WeaponType.Boomerang) _isUlti = true;
-            _attackTimer += _weaponData.AttackSpeed;
+            _attackTimer += _weaponData.BonusAttackSpeed;
             Invoke(nameof(ThrowWeapon), _weaponData.ThrowAnimationDelay);
             Invoke(nameof(EndAttackProcess), _weaponData.ThrowAnimationTotalLength);
         }

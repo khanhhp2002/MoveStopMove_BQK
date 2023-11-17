@@ -4,13 +4,13 @@ public class Player : CharacterBase
 {
     private float _horizontal;
     private float _vertical;
-
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     protected override void Start()
     {
         _weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance._userData.EquippedWeapon);
+        EquipWeapon(_weaponData);
         _pantSkin.material = GameplayManager.Instance.GetPantByIndex(GameplayManager.Instance._userData.EquippedPant);
         base.Start();
     }

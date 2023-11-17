@@ -5,21 +5,37 @@ using UnityEngine;
 [Serializable]
 public class WeaponData
 {
+    [Header("Weapon Info"), Space(5f)]
     public string Name;
     public WeaponType WeaponType;
+
+    [Header("Weapon 3D"), Space(5f)]
     public WeaponBase WeaponPrefab;
     public GameObject WeaponModel;
+
+    [Header("Hand-Weapon Settings"), Space(5f)]
     public Vector3 HandWeaponOffset;
     public float HandWeaponScale;
+
+    [Header("Throw-Weapon Settings"), Space(5f)]
     public Ease MoveType;
     [Range(1f, 10f)] public float MoveSpeed;
     [Range(0, 540)] public int RotateSpeed;
-    public float AttackBonusRange;
-    public float AttackSpeed;
+    public float BonusAttackRange;
+    public float BonusAttackSpeed;
     public float ThrowAnimationDelay;
     public float ThrowAnimationTotalLength;
+
+    [Header("Throw-weapon abilities"), Space(5f)]
     public bool IsPiercingable;
     public bool IsReturningable;
+
+    [Header("Purchase-weapon settings"), Space(5f)]
+    public float ScreenWeaponOffsetX;
+    [Range(-180f, 180f)] public float ScreenWeaponZAngle;
+    public float ScreenWeaponScale;
+    [Min(1)] public int PurchasePrice;
+    public string PurchaseRequirement;
 
     /// <summary>
     /// Throw weapon logic.
@@ -30,7 +46,7 @@ public class WeaponData
     /// <param name="characterRange"></param>
     public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, CharacterBase _attacker, Action<CharacterBase> callback, Collider attackerCollider)
     {
-        Vector3 destination = spawnPosition + direction * (characterRange + AttackBonusRange);
+        Vector3 destination = spawnPosition + direction * (characterRange + BonusAttackRange);
 
         float duration = Vector3.Distance(spawnPosition, destination) / MoveSpeed;
 

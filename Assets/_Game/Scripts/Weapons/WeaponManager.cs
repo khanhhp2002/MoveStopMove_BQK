@@ -30,4 +30,9 @@ public class WeaponManager : Singleton<WeaponManager>
     {
         return GetWeaponDataByIndex();
     }
+
+    public int GetWeaponDataCount()
+    {
+        return _weaponSO.weaponDataList.Count;
+    }
 }
