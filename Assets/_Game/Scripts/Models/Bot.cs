@@ -42,14 +42,36 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
                 _currentState?.OnExecute(this);
                 base.FixedUpdate();
-                NavigationIndicatorControl();
-
                 break;
             case GameState.Paused:
 
                 break;
             case GameState.GameOver:
                 ReturnToPool();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Update is called once per frame.
+    /// </summary>
+    protected override void Update()
+    {
+        switch (GameplayManager.Instance.GameState)
+        {
+            case GameState.Preparing:
+                break;
+            case GameState.Playing:
+                base.Update();
+                NavigationIndicatorControl();
+                break;
+            case GameState.Paused:
+
+                break;
+            case GameState.GameOver:
+
                 break;
             default:
                 break;

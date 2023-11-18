@@ -120,6 +120,6 @@ public class GameplayManager : Singleton<GameplayManager>
     public void ChangeGoldAmount(int amount)
     {
         _userData.GoldAmount += amount;
-        OnGoldAmountChange?.Invoke(_userData.GoldAmount);
+        OnGoldAmountChange?.Invoke(amount);
     }
 }

@@ -123,13 +123,13 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
     /// </summary>
     private void PurchaseItem()
     {
-        Debug.Log("In purchase phase");
         if (GameplayManager.Instance._userData.GoldAmount >= WeaponManager.Instance.GetWeaponDataByIndex(_currentWeaponIndex).PurchasePrice)
         {
-            Debug.Log("purchased");
             GameplayManager.Instance.ChangeGoldAmount(-WeaponManager.Instance.GetWeaponDataByIndex(_currentWeaponIndex).PurchasePrice);
             GameplayManager.Instance._userData.UnlockedWeapons.Add(_currentWeaponIndex);
             GameplayManager.Instance.Player.EquipWeapon(_currentWeaponData);
+            GameplayManager.Instance._userData.EquippedWeapon = _currentWeaponIndex;
+            SaveManager.Instance.SaveData(GameplayManager.Instance._userData);
             ShowWeapon();
         }
     }

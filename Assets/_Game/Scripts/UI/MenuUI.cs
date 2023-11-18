@@ -14,7 +14,7 @@ public class MenuUI : Singleton<MenuUI>
     private void Start()
     {
         GameplayManager.Instance.OnGoldAmountChange += OnGoldAmountChange;
-        _goldAmount.text = GameplayManager.Instance._userData.GoldAmount.ToString();
+        NumberCounter.Instance.CountAnimation(_goldAmount, 0, GameplayManager.Instance._userData.GoldAmount);
         _playButton.onClick.AddListener(StartGame);
         _weaponShopOpen.onClick.AddListener(OpenWeaponShop);
     }
@@ -30,6 +30,8 @@ public class MenuUI : Singleton<MenuUI>
 
     public void OnGoldAmountChange(int amount)
     {
-        _goldAmount.text = amount.ToString();
+        int oldValue = int.Parse(_goldAmount.text);
+        //_goldAmount.text = amount.ToString();
+        NumberCounter.Instance.CountAnimation(_goldAmount, oldValue, oldValue + amount);
     }
 }

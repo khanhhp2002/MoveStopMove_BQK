@@ -69,7 +69,7 @@ MonoBehaviour:
     IsPiercingable: 0
     IsReturningable: 1
     ScreenWeaponOffsetX: -0.05
-    ScreenWeaponZAngle: 22.5
+    ScreenWeaponZAngle: 30
     ScreenWeaponScale: 5
     PurchasePrice: 50
     PurchaseRequirement: Unlock previous weapon

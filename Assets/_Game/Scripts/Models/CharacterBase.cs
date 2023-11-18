@@ -50,7 +50,7 @@ public class CharacterBase : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-
+        _infoCanvas.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -184,6 +184,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void CanvasController()
     {
+        _infoCanvas.gameObject.SetActive(true);
         _infoCanvas.transform.LookAt(Camera.main.transform);
     }
 

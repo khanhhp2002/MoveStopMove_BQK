@@ -45,14 +45,12 @@ public class UIManager : Singleton<UIManager>
         _weaponShopUI.gameObject.SetActive(true);
         _menuUI.DOFade(0, _fadeDuration);
         _weaponShopUI.DOFade(1, _fadeDuration);
-        _menuUI.gameObject.SetActive(false);
     }
 
     public void OnWeaponShopExit()
     {
         _menuUI.interactable = true;
         _weaponShopUI.interactable = false;
-        _menuUI.gameObject.SetActive(true);
         _menuUI.DOFade(1, _fadeDuration);
         _weaponShopUI.DOFade(0, _fadeDuration);
         _weaponShopUI.gameObject.SetActive(false);
