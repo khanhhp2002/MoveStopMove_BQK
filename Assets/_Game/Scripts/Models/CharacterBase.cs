@@ -152,6 +152,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
+        if (_target is null) return;
         Vector3 direction = (_target.transform.position - this._weaponHolder.position).normalized;
         direction.y = 0f;
         _weaponData.Throw(_weaponHolder.position, direction, _attackRange, this, OnGetKill, _hitCollider);
@@ -215,7 +216,7 @@ public class CharacterBase : MonoBehaviour
             {
                 weapon.OnHit(this);
                 _isDead = true;
-                Destroy(gameObject, 2f);
+                //Destroy(gameObject, 2f);
             }
         }
     }

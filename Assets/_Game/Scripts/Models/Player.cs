@@ -4,6 +4,9 @@ public class Player : CharacterBase
 {
     private float _horizontal;
     private float _vertical;
+    [SerializeField] private Transform _targetLock;
+    [SerializeField] private float _targetLockSpeed;
+    [SerializeField] private float _groundOffset;
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
@@ -51,6 +54,7 @@ public class Player : CharacterBase
                 break;
             case GameState.Playing:
                 base.Update();
+                LockTarget();
                 break;
             case GameState.Paused:
 
@@ -76,6 +80,22 @@ public class Player : CharacterBase
         if (Input.GetMouseButtonDown(0))
         {
             _weaponData.Throw(_weaponHolder.position, this.transform.forward, _attackRange, this, OnGetKill, _hitCollider);
+        }
+    }
+
+    private void LockTarget()
+    {
+        if (_target is null)
+        {
+            _targetLock.gameObject.SetActive(false);
+            _targetLock.position = Vector3.Lerp(_targetLock.position, this.transform.position, _targetLockSpeed);
+            _targetLock.position += Vector3.up * _groundOffset;
+        }
+        else
+        {
+            _targetLock.gameObject.SetActive(true);
+            _targetLock.position = Vector3.Lerp(_targetLock.position, _target.transform.position, _targetLockSpeed);
+            _targetLock.position += Vector3.up * _groundOffset;
         }
     }
 

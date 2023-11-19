@@ -9,7 +9,7 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] private GameState _gameState = GameState.None;
     [SerializeField] public UserData _userData;
 
-    public Action<int> OnGoldAmountChange;
+    public Action OnGoldAmountChange;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -120,6 +120,6 @@ public class GameplayManager : Singleton<GameplayManager>
     public void ChangeGoldAmount(int amount)
     {
         _userData.GoldAmount += amount;
-        OnGoldAmountChange?.Invoke(amount);
+        OnGoldAmountChange?.Invoke();
     }
 }

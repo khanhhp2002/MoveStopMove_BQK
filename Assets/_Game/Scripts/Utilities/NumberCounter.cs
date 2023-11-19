@@ -26,8 +26,9 @@ public class NumberCounter : Singleton<NumberCounter>
     /// <param name="newValue"></param>
     /// <param name="suffix"></param>
     /// <returns></returns>
-    private IEnumerator CountText(TMP_Text displayText, int oldValue, int newValue, string suffix)
+    private IEnumerator CountText(TMP_Text displayText, int newValue)
     {
+        int oldValue = int.Parse(displayText.text);
         if (_useGameFpsInstead)
             _countFps = 1 / Time.fixedDeltaTime;
         WaitForSeconds wait = new WaitForSeconds(1 / _countFps);
@@ -50,7 +51,7 @@ public class NumberCounter : Singleton<NumberCounter>
                 {
                     previousValue = newValue;
                 }
-                displayText.text = Mathf.FloorToInt(previousValue).ToString() + (suffix is null ? "" : suffix);
+                displayText.text = Mathf.FloorToInt(previousValue).ToString();
                 yield return wait;
             }
         }
@@ -63,7 +64,7 @@ public class NumberCounter : Singleton<NumberCounter>
                 {
                     previousValue = newValue;
                 }
-                displayText.text = Mathf.CeilToInt(previousValue).ToString() + (suffix is null ? "" : suffix);
+                displayText.text = Mathf.CeilToInt(previousValue).ToString();
                 yield return wait;
             }
         }
@@ -76,12 +77,12 @@ public class NumberCounter : Singleton<NumberCounter>
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="suffix"></param>
-    public void CountAnimation(TMP_Text input, int from, int to, string suffix = null)
+    public void CountAnimation(TMP_Text input, int to)
     {
         if (_countingCorountine != null)
         {
             StopCoroutine(_countingCorountine);
         }
-        StartCoroutine(CountText(input, from, to, suffix));
+        StartCoroutine(CountText(input, to));
     }
 }

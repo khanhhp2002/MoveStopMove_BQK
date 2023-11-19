@@ -179,6 +179,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
             case BotState.Idle:
                 _isIdle = true;
                 _isAttack = false;
+                _isDead = false;
                 break;
             case BotState.Move:
                 _isIdle = false;
@@ -191,6 +192,9 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 // I don't know what to do here because the "_isDead" variable is already set to true by OnTriggerEnter method. φ(*￣0￣)
                 _navigationIndicator?.ReturnToPool();
                 _navigationIndicator = null;
+                _target = null;
+                _targetsList.Clear();
+                this.ReturnToPool();
                 break;
             default:
                 _isIdle = true;

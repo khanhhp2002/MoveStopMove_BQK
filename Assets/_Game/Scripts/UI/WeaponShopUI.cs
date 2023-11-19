@@ -129,7 +129,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
             GameplayManager.Instance._userData.UnlockedWeapons.Add(_currentWeaponIndex);
             GameplayManager.Instance.Player.EquipWeapon(_currentWeaponData);
             GameplayManager.Instance._userData.EquippedWeapon = _currentWeaponIndex;
-            SaveManager.Instance.SaveData(GameplayManager.Instance._userData);
+            //SaveManager.Instance.SaveData(GameplayManager.Instance._userData);
             ShowWeapon();
         }
     }
