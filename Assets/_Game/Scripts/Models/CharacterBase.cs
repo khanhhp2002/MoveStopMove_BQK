@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,6 +48,26 @@ public class CharacterBase : MonoBehaviour
     protected int _killCount = 0;
     protected float _attackTimer = 0f;
     protected Vector3 _direction = Vector3.zero;
+
+    protected Action<CharacterBase> OnDeadCallBack;
+
+    /// <summary>
+    /// Subscribes to the OnDeadCallBack event.
+    /// </summary>
+    /// <param name="callBack"></param>
+    public void SubcribeOnDeadCallBack(Action<CharacterBase> callBack)
+    {
+        OnDeadCallBack += callBack;
+    }
+
+    /// <summary>
+    /// Unsubscribes from the OnDeadCallBack event.
+    /// </summary>
+    /// <param name="callBack"></param>
+    public void UnsubcribeOnDeadCallBack(Action<CharacterBase> callBack)
+    {
+        OnDeadCallBack -= callBack;
+    }
 
     protected virtual void OnEnable()
     {
@@ -195,8 +216,8 @@ public class CharacterBase : MonoBehaviour
     protected void OnGetKill(CharacterBase target)
     {
         if (_isDead) return;
-        if (_target == target) _target = null;
-        else _targetsList.Remove(target);
+        //if (_target == target) _target = null;
+        //else _targetsList.Remove(target);
 
         _killCount++;
         transform.localScale = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _killCount)) * Vector3.one;
@@ -216,7 +237,7 @@ public class CharacterBase : MonoBehaviour
             {
                 weapon.OnHit(this);
                 _isDead = true;
-                //Destroy(gameObject, 2f);
+                OnDead();
             }
         }
     }
@@ -228,6 +249,9 @@ public class CharacterBase : MonoBehaviour
     protected void OnFoundTarget(CharacterBase target)
     {
         if (target == this) return;
+
+        target.SubcribeOnDeadCallBack(OnLostTarget);
+
         if (_target is null)
         {
             _target = target;
@@ -244,6 +268,8 @@ public class CharacterBase : MonoBehaviour
     /// <param name="target"></param>
     protected void OnLostTarget(CharacterBase target)
     {
+        target.UnsubcribeOnDeadCallBack(OnLostTarget);
+
         if (_target == target)
         {
             _target = null;
@@ -257,5 +283,10 @@ public class CharacterBase : MonoBehaviour
         {
             _targetsList.Remove(target);
         }
+    }
+
+    protected void OnDead()
+    {
+        OnDeadCallBack?.Invoke(this);
     }
 }
