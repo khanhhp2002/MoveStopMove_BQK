@@ -44,9 +44,9 @@ public class WeaponData
     /// <param name="startPosition"></param>
     /// <param name="direction"></param>
     /// <param name="characterRange"></param>
-    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, CharacterBase _attacker, Action<CharacterBase> callback, Collider attackerCollider)
+    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, float scaleValue, CharacterBase _attacker, Action<CharacterBase> callback, Collider attackerCollider)
     {
-        Vector3 destination = spawnPosition + direction * (characterRange + BonusAttackRange);
+        Vector3 destination = spawnPosition + direction * (characterRange * scaleValue + BonusAttackRange);
 
         float duration = Vector3.Distance(spawnPosition, destination) / MoveSpeed;
 
@@ -54,6 +54,7 @@ public class WeaponData
 
         weapon.transform.position = spawnPosition;
 
+        weapon.transform.localScale *= scaleValue;
         // Move weapon
         weapon.transform.DOMove(destination, duration)
             .SetEase(MoveType)

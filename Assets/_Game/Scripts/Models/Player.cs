@@ -79,7 +79,7 @@ public class Player : CharacterBase
 
         if (Input.GetMouseButtonDown(0))
         {
-            _weaponData.Throw(_weaponHolder.position, this.transform.forward, _attackRange, this, OnGetKill, _hitCollider);
+            _weaponData.Throw(_weaponHolder.position, transform.forward, _attackRange, _scaleValue, this, OnGetKill, _hitCollider);
         }
     }
 

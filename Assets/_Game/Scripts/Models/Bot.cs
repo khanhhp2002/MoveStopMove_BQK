@@ -112,7 +112,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
             if (_navigationIndicator is null)
             {
                 _navigationIndicator = NavigationIndicatorManager.Instance.Spawn(_indicatorPos);
-                _navigationIndicator.SetPoint(_killCount);
+                _navigationIndicator.SetPoint(_point);
             }
             else
             {
@@ -137,7 +137,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     private void SetPoint()
     {
         if (_navigationIndicator is not null)
-            _navigationIndicator.SetPoint(_killCount);
+            _navigationIndicator.SetPoint(_point);
     }
 
     /// <summary>
@@ -183,7 +183,6 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 break;
             case BotState.Move:
                 _isIdle = false;
-                _isAttack = false;
                 break;
             case BotState.Attack:
                 _isIdle = true;

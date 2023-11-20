@@ -45,7 +45,9 @@ public class CharacterBase : MonoBehaviour
     protected CharacterBase _target;
     protected List<CharacterBase> _targetsList = new List<CharacterBase>();
 
-    protected int _killCount = 0;
+    protected int _point = 1;
+    public int Point => _point;
+    protected float _scaleValue = 1;
     protected float _attackTimer = 0f;
     protected Vector3 _direction = Vector3.zero;
 
@@ -173,10 +175,14 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
-        if (_target is null) return;
-        Vector3 direction = (_target.transform.position - this._weaponHolder.position).normalized;
+        Vector3 direction;
+        if (_target is null)
+            direction = transform.forward;
+        else
+            direction = (_target.transform.position - this._weaponHolder.position).normalized;
+
         direction.y = 0f;
-        _weaponData.Throw(_weaponHolder.position, direction, _attackRange, this, OnGetKill, _hitCollider);
+        _weaponData.Throw(_weaponHolder.position, direction, _attackRange, _scaleValue, this, OnGetKill, _hitCollider);
     }
 
     /// <summary>
@@ -219,8 +225,9 @@ public class CharacterBase : MonoBehaviour
         //if (_target == target) _target = null;
         //else _targetsList.Remove(target);
 
-        _killCount++;
-        transform.localScale = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _killCount)) * Vector3.one;
+        _point += target.Point;
+        _scaleValue = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _point));
+        transform.localScale = _scaleValue * Vector3.one;
     }
 
     /// <summary>
@@ -237,6 +244,7 @@ public class CharacterBase : MonoBehaviour
             {
                 weapon.OnHit(this);
                 _isDead = true;
+                Debug.Log("OnDead");
                 OnDead();
             }
         }
