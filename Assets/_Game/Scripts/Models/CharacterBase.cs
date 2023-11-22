@@ -71,6 +71,8 @@ public class CharacterBase : MonoBehaviour
         OnDeadCallBack -= callBack;
     }
 
+    public bool IsDead => _isDead;
+
     protected virtual void OnEnable()
     {
         _infoCanvas.gameObject.SetActive(false);
@@ -219,7 +221,7 @@ public class CharacterBase : MonoBehaviour
     /// <summary>
     /// Called when the weapon that the character throws hits another character.
     /// </summary>
-    protected void OnGetKill(CharacterBase target)
+    protected virtual void OnGetKill(CharacterBase target)
     {
         if (_isDead) return;
         //if (_target == target) _target = null;
@@ -256,7 +258,7 @@ public class CharacterBase : MonoBehaviour
     /// <param name="target"></param>
     protected void OnFoundTarget(CharacterBase target)
     {
-        if (target == this) return;
+        if (target == this || target.IsDead) return;
 
         target.SubcribeOnDeadCallBack(OnLostTarget);
 

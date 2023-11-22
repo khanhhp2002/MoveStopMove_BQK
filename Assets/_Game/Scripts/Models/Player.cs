@@ -108,4 +108,15 @@ public class Player : CharacterBase
         Debug.Log("OnTriggerEnter");
         base.OnTriggerEnter(other);
     }
+
+    /// <summary>
+    /// OnGetKill is called when the weapon that the character throws hits another character.
+    /// </summary>
+    /// <param name="target"></param>
+    protected override void OnGetKill(CharacterBase target)
+    {
+        base.OnGetKill(target);
+        if (_isDead) return;
+        CameraManager.Instance.ZoomOutGamePlayCamera(_scaleValue);
+    }
 }

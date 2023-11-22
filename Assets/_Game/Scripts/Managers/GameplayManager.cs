@@ -10,6 +10,10 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] public UserData _userData;
 
     public Action OnGoldAmountChange;
+    public Action OnGameStatePrepare;
+    public Action OnGameStatePlaying;
+    public Action OnGameStatePause;
+    public Action OnGameStateGameOver;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -86,14 +90,14 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             case GameState.Preparing:
                 UIManager.Instance.OnGameStatePrepare();
-                CameraManager.Instance.OnGameStatePrepare();
+                OnGameStatePrepare?.Invoke();
                 //Reset bots count
                 //Reset player
                 //Spawn bots
                 break;
             case GameState.Playing:
                 UIManager.Instance.OnGameStatePlaying();
-                CameraManager.Instance.OnGameStatePlaying();
+                OnGameStatePlaying?.Invoke();
                 //Start bots
                 //Start player
                 break;
