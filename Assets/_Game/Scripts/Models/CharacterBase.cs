@@ -37,7 +37,10 @@ public class CharacterBase : MonoBehaviour
     protected bool _isAttack = false;
     protected bool _isDance = false;
     protected bool _isUlti = false;
+    protected bool _isAttacked = false;
 
+    protected bool CantMove => _isIdle || _isWin || _isDead;
+    protected bool CantAttack => !_target || !_isIdle || _isDead || _isWin || _isUlti;
     // Current weapon data.
     protected WeaponData _weaponData;
 
@@ -127,7 +130,15 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void Movement()
     {
-        if (_isAttack || _isIdle || _isWin || _isDead) return;
+        //_isAttack || 
+        if (CantMove) return;
+
+        // cancel attack
+        if (_isAttack)
+        {
+            _isAttack = false;
+            if (!_isAttacked) _attackTimer = 0f;
+        }
 
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
@@ -151,9 +162,13 @@ public class CharacterBase : MonoBehaviour
         {
             _attackTimer -= Time.fixedDeltaTime;
         }
+        else
+        {
+            _isAttacked = false;
+        }
 
         // Requirements conditions
-        if (!_target || !_isIdle || _isDead || _isWin || _isUlti) return;
+        if (CantAttack) return;
 
         // Look at the target
         transform.rotation = Quaternion.Slerp(
@@ -177,6 +192,13 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
+        // cancel attack
+        if (!_isAttack)
+        {
+            _isUlti = false;
+            _isAttack = false;
+            return;
+        }
         Vector3 direction;
         if (_target is null)
             direction = transform.forward;
@@ -185,6 +207,8 @@ public class CharacterBase : MonoBehaviour
 
         direction.y = 0f;
         _weaponData.Throw(_weaponHolder.position, direction, _attackRange, _scaleValue, this, OnGetKill, _hitCollider);
+
+        _isAttacked = true;
     }
 
     /// <summary>
@@ -224,8 +248,6 @@ public class CharacterBase : MonoBehaviour
     protected virtual void OnGetKill(CharacterBase target)
     {
         if (_isDead) return;
-        //if (_target == target) _target = null;
-        //else _targetsList.Remove(target);
 
         _point += target.Point;
         _scaleValue = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _point));
@@ -246,7 +268,6 @@ public class CharacterBase : MonoBehaviour
             {
                 weapon.OnHit(this);
                 _isDead = true;
-                Debug.Log("OnDead");
                 OnDead();
             }
         }
