@@ -136,6 +136,7 @@ public class CharacterBase : MonoBehaviour
         // cancel attack
         if (isAttack)
         {
+            isUlti = false;
             isAttack = false;
             if (!isAttacked) attackTimer = 0f;
         }
@@ -164,6 +165,12 @@ public class CharacterBase : MonoBehaviour
         {
             attackTimer -= Time.fixedDeltaTime;
         }
+        else
+        {
+            isUlti = false;
+            isAttack = false;
+            isAttacked = false;
+        }
 
         // Requirements conditions
         if (cantAttack) return;
@@ -180,18 +187,19 @@ public class CharacterBase : MonoBehaviour
             isAttack = true;
             if (weaponData.WeaponType == WeaponType.Boomerang) isUlti = true;
             attackTimer += weaponData.BonusAttackSpeed;
-            Invoke(nameof(ThrowWeapon), weaponData.ThrowAnimationDelay);
-            Invoke(nameof(EndAttackProcess), weaponData.ThrowAnimationTotalLength);
+            //Invoke(nameof(ThrowWeapon), weaponData.ThrowAnimationDelay);
+            //Invoke(nameof(EndAttackProcess), weaponData.ThrowAnimationTotalLength);
         }
 
         SetAnimationParameters();
     }
 
     /// <summary>
-    /// Spawns the weapon and throws it.
+    /// ThrowWeapon is called when the event in attack/ulti is triggered.
     /// </summary>
     private void ThrowWeapon()
     {
+        Debug.Log("ThrowWeapon");
         // cancel attack
         if (!isAttack)
         {
@@ -217,6 +225,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void EndAttackProcess()
     {
+        Debug.Log("ThrowWeapon");
         isUlti = false;
         isAttack = false;
         isAttacked = false;
