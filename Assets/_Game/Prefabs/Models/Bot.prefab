@@ -518,21 +518,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6748a840d7d1e3f46bc976ad8808c8df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 2796742906819949848}
-  _weaponHolder: {fileID: 2796742907894322596}
-  _rigidbody: {fileID: 2796742906819949849}
-  _hitCollider: {fileID: 2796742906819949846}
-  _radarController: {fileID: 2796742907056556148}
-  _weapon: {fileID: -6520620156040197038, guid: 85ca917d0f872724fa8a62af89d7f8ab, type: 3}
-  _infoCanvas: {fileID: 2796742907468331453}
-  _pantSkin: {fileID: 2796742907714525601}
-  _rotateSpeed: 0.3
-  _moveSpeed: 7
-  _maxLocalScale: 2
-  _localScaleIncreaseValue: 15
-  _attackRange: 8
-  _attackSpeed: 2
-  _navigationIndicatorSpeed: 0.1
+  animator: {fileID: 2796742906819949848}
+  weaponHolder: {fileID: 2796742907894322596}
+  m_rigidbody: {fileID: 2796742906819949849}
+  hitCollider: {fileID: 2796742906819949846}
+  radarController: {fileID: 2796742907056556148}
+  weapon: {fileID: 0}
+  infoCanvas: {fileID: 2796742907468331453}
+  pantSkin: {fileID: 2796742907714525601}
+  rotateSpeed: 400
+  moveSpeed: 7
+  maxLocalScale: 2
+  localScaleIncreaseValue: 15
+  attackRange: 8
+  attackSpeed: 2
+  _navigationIndicatorSpeed: 0.5
   _navigationIndicatorRange: 400
   _botState: 0
 --- !u!1 &2796742906831204394

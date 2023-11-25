@@ -17,13 +17,13 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
     private IState _currentState;
 
-    public CharacterBase Target => _target;
+    public CharacterBase Target => target;
 
     protected override void OnEnable()
     {
-        _weaponData = WeaponManager.Instance.GetRandomWeaponData();
-        EquipWeapon(_weaponData);
-        _pantSkin.material = GameplayManager.Instance.GetPantByIndex();
+        weaponData = WeaponManager.Instance.GetRandomWeaponData();
+        EquipWeapon(weaponData);
+        pantSkin.material = GameplayManager.Instance.GetPantByIndex();
         _currentState = new IdleState();
         base.OnEnable();
     }
@@ -85,7 +85,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        if (_isDead) SetState(new DeadState());
+        if (isDead) SetState(new DeadState());
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
             if (_navigationIndicator is null)
             {
                 _navigationIndicator = NavigationIndicatorManager.Instance.Spawn(_indicatorPos);
-                _navigationIndicator.SetPoint(_point);
+                _navigationIndicator.SetPoint(point);
             }
             else
             {
@@ -137,7 +137,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     private void SetPoint()
     {
         if (_navigationIndicator is not null)
-            _navigationIndicator.SetPoint(_point);
+            _navigationIndicator.SetPoint(point);
     }
 
     /// <summary>
@@ -177,34 +177,35 @@ public class Bot : CharacterBase, IPoolable<Bot>
         switch (botState)
         {
             case BotState.Idle:
-                _isIdle = true;
-                _isAttack = false;
-                _isDead = false;
+                isIdle = true;
+                isAttack = false;
+                isDead = false;
                 break;
             case BotState.Move:
-                _isIdle = false;
+                isIdle = false;
                 break;
             case BotState.Attack:
-                _isIdle = true;
+                isIdle = true;
                 break;
             case BotState.Dead:
                 // I don't know what to do here because the "_isDead" variable is already set to true by OnTriggerEnter method. φ(*￣0￣)
                 _navigationIndicator?.ReturnToPool();
                 _navigationIndicator = null;
-                _target = null;
-                _targetsList.Clear();
+                target = null;
+                targetsList.Clear();
                 this.ReturnToPool();
                 break;
             default:
-                _isIdle = true;
-                _isAttack = false;
-                _isUlti = false;
-                _isDance = false;
-                _isDead = false;
-                _isWin = false;
+                isIdle = true;
+                isAttack = false;
+                isUlti = false;
+                isDance = false;
+                isDead = false;
+                isWin = false;
                 break;
         }
         _botState = botState;
+        SetAnimationParameters();
     }
 
     /// <summary>
@@ -212,7 +213,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     /// </summary>
     public void SetMoveDirection()
     {
-        _direction = new Vector3(
+        direction = new Vector3(
             UnityEngine.Random.Range(-1f, 1f),
             0f,
             UnityEngine.Random.Range(-1f, 1f))

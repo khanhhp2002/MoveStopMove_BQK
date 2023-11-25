@@ -7,8 +7,8 @@ public class VirtualCameraController : MonoBehaviour
     [SerializeField] protected CinemachineVirtualCamera cinemachineVirtualCamera;
 
     [Header("Virtual Camera Stats"), Space(5f)]
-    [SerializeField] protected bool _invert;
-    [SerializeField] protected float _cameraRotateSpeed;
+    [SerializeField] protected bool invert;
+    [SerializeField] protected float cameraRotateSpeed;
 
     private CinemachineOrbitalTransposer cinemachineOrbitalTransposer;
     private bool _isDoubleCheck = false;
@@ -34,8 +34,8 @@ public class VirtualCameraController : MonoBehaviour
             return;
         }
 
-        cinemachineOrbitalTransposer.m_XAxis.m_InputAxisValue = _cameraRotateSpeed;
-        cinemachineOrbitalTransposer.m_XAxis.m_InvertInput = _invert;
+        cinemachineOrbitalTransposer.m_XAxis.m_InputAxisValue = cameraRotateSpeed;
+        cinemachineOrbitalTransposer.m_XAxis.m_InvertInput = invert;
 
         if (!_isDoubleCheck)
         {
@@ -49,7 +49,7 @@ public class VirtualCameraController : MonoBehaviour
     /// </summary>
     private void DoubleCheck()
     {
-        if (cinemachineOrbitalTransposer.m_XAxis.m_InputAxisValue != _cameraRotateSpeed)
+        if (cinemachineOrbitalTransposer.m_XAxis.m_InputAxisValue != cameraRotateSpeed)
         {
             Init();
         }
@@ -71,7 +71,7 @@ public class VirtualCameraController : MonoBehaviour
     /// <param name="value"></param>
     public void ChangeCameraRotateSpeed(float value)
     {
-        _cameraRotateSpeed = value;
+        cameraRotateSpeed = value;
         OnEnable();
     }
 }

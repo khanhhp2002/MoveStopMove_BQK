@@ -12,9 +12,9 @@ public class Player : CharacterBase
     /// </summary>
     protected override void Start()
     {
-        _weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance._userData.EquippedWeapon);
-        EquipWeapon(_weaponData);
-        _pantSkin.material = GameplayManager.Instance.GetPantByIndex(GameplayManager.Instance._userData.EquippedPant);
+        weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance.UserData.EquippedWeapon);
+        EquipWeapon(weaponData);
+        pantSkin.material = GameplayManager.Instance.GetPantByIndex(GameplayManager.Instance.UserData.EquippedPant);
         base.Start();
     }
 
@@ -26,14 +26,14 @@ public class Player : CharacterBase
         switch (GameplayManager.Instance.GameState)
         {
             case GameState.Preparing:
-                _isIdle = true;
+                isIdle = true;
                 break;
             case GameState.Playing:
                 PlayerInput();
                 base.FixedUpdate();
                 break;
             case GameState.Paused:
-                _animator.speed = 0f;
+                animator.speed = 0f;
                 break;
             case GameState.GameOver:
 
@@ -74,18 +74,29 @@ public class Player : CharacterBase
     {
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
-        _direction = new Vector3(_horizontal, 0f, _vertical).normalized;
-        _isIdle = _direction == Vector3.zero;
+        direction = new Vector3(_horizontal, 0f, _vertical).normalized;
+        bool isMoving = direction != Vector3.zero;
+
+        if (!isMoving && !isIdle)
+        {
+            isIdle = true;
+            SetAnimationParameters();
+        }
+        else
+        {
+            isIdle = !isMoving;
+        }
+
 
         if (Input.GetMouseButtonDown(0))
         {
-            _weaponData.Throw(_weaponHolder.position, transform.forward, _attackRange, _scaleValue, this, OnGetKill, _hitCollider);
+            weaponData.Throw(weaponHolder.position, transform.forward, attackRange, scaleValue, this, OnGetKill, hitCollider);
         }
     }
 
     private void LockTarget()
     {
-        if (_target is null)
+        if (target is null)
         {
             _targetLock.gameObject.SetActive(false);
             _targetLock.position = Vector3.Lerp(_targetLock.position, this.transform.position, _targetLockSpeed);
@@ -94,7 +105,7 @@ public class Player : CharacterBase
         else
         {
             _targetLock.gameObject.SetActive(true);
-            _targetLock.position = Vector3.Lerp(_targetLock.position, _target.transform.position, _targetLockSpeed);
+            _targetLock.position = Vector3.Lerp(_targetLock.position, target.transform.position, _targetLockSpeed);
             _targetLock.position += Vector3.up * _groundOffset;
         }
     }
@@ -116,7 +127,7 @@ public class Player : CharacterBase
     protected override void OnGetKill(CharacterBase target)
     {
         base.OnGetKill(target);
-        if (_isDead) return;
-        CameraManager.Instance.ZoomOutGamePlayCamera(_scaleValue);
+        if (isDead) return;
+        CameraManager.Instance.ZoomOutGamePlayCamera(scaleValue);
     }
 }

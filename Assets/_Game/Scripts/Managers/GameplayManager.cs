@@ -7,7 +7,7 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] private CharacterBase _player;
     [SerializeField] private VirtualCameraController _virualCameraController;
     [SerializeField] private GameState _gameState = GameState.None;
-    [SerializeField] public UserData _userData;
+    [SerializeField] public UserData UserData;
 
     public Action OnGoldAmountChange;
     public Action OnGameStatePrepare;
@@ -22,12 +22,12 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         if (SaveManager.Instance.HasData<UserData>())
         {
-            _userData = SaveManager.Instance.LoadData<UserData>();
+            UserData = SaveManager.Instance.LoadData<UserData>();
         }
         else
         {
-            _userData = new UserData();
-            SaveManager.Instance.SaveData(_userData);
+            UserData = new UserData();
+            SaveManager.Instance.SaveData(UserData);
         }
     }
     /// <summary>
@@ -123,7 +123,7 @@ public class GameplayManager : Singleton<GameplayManager>
 
     public void ChangeGoldAmount(int amount)
     {
-        _userData.GoldAmount += amount;
+        UserData.GoldAmount += amount;
         OnGoldAmountChange?.Invoke();
     }
 }

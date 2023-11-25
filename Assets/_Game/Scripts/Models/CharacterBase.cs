@@ -5,22 +5,22 @@ using UnityEngine;
 public class CharacterBase : MonoBehaviour
 {
     [Header("Character Components"), Space(5f)]
-    [SerializeField] protected Animator _animator;
-    [SerializeField] protected Transform _weaponHolder;
-    [SerializeField] protected Rigidbody _rigidbody;
-    [SerializeField] protected Collider _hitCollider;
-    [SerializeField] protected RadarController _radarController;
-    [SerializeField] protected WeaponBase _weapon;
-    [SerializeField] protected Canvas _infoCanvas;
-    [SerializeField] protected SkinnedMeshRenderer _pantSkin;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected Transform weaponHolder;
+    [SerializeField] protected Rigidbody m_rigidbody;
+    [SerializeField] protected Collider hitCollider;
+    [SerializeField] protected RadarController radarController;
+    //[SerializeField] protected WeaponBase weapon;
+    [SerializeField] protected Canvas infoCanvas;
+    [SerializeField] protected SkinnedMeshRenderer pantSkin;
 
     [Header("Character Stats"), Space(5f)]
-    [SerializeField] protected float _rotateSpeed;
-    [SerializeField] protected float _moveSpeed;
-    [SerializeField] protected float _maxLocalScale;
-    [SerializeField] protected float _localScaleIncreaseValue;
-    [SerializeField] protected float _attackRange;
-    [SerializeField] protected float _attackSpeed;
+    [SerializeField] protected float rotateSpeed;
+    [SerializeField] protected float moveSpeed;
+    [SerializeField] protected float maxLocalScale;
+    [SerializeField] protected float localScaleIncreaseValue;
+    [SerializeField] protected float attackRange;
+    [SerializeField] protected float attackSpeed;
 
     // Animation name constants.
     protected const string IDLE_ANIMATION = "IsIdle";
@@ -31,28 +31,28 @@ public class CharacterBase : MonoBehaviour
     protected const string ULTI_ANIMATION = "IsUlti";
 
     // Animation parameters.
-    protected bool _isIdle = true;
-    protected bool _isDead = false;
-    protected bool _isWin = false;
-    protected bool _isAttack = false;
-    protected bool _isDance = false;
-    protected bool _isUlti = false;
-    protected bool _isAttacked = false;
+    protected bool isIdle = true;
+    protected bool isDead = false;
+    protected bool isWin = false;
+    protected bool isAttack = false;
+    protected bool isDance = false;
+    protected bool isUlti = false;
+    protected bool isAttacked = false;
 
-    protected bool CantMove => _isIdle || _isWin || _isDead;
-    protected bool CantAttack => !_target || !_isIdle || _isDead || _isWin || _isUlti;
+    protected bool cantMove => isIdle || isWin || isDead;
+    protected bool cantAttack => !target || !isIdle || isDead || isWin || isUlti;
     // Current weapon data.
-    protected WeaponData _weaponData;
+    protected WeaponData weaponData;
 
     // Targets in range.
-    protected CharacterBase _target;
-    protected List<CharacterBase> _targetsList = new List<CharacterBase>();
+    protected CharacterBase target;
+    protected List<CharacterBase> targetsList = new List<CharacterBase>();
 
-    protected int _point = 1;
-    public int Point => _point;
-    protected float _scaleValue = 1;
-    protected float _attackTimer = 0f;
-    protected Vector3 _direction = Vector3.zero;
+    protected int point = 1;
+    public int Point => point;
+    protected float scaleValue = 1;
+    protected float attackTimer = 0f;
+    protected Vector3 direction = Vector3.zero;
 
     protected Action<CharacterBase> OnDeadCallBack;
 
@@ -74,11 +74,11 @@ public class CharacterBase : MonoBehaviour
         OnDeadCallBack -= callBack;
     }
 
-    public bool IsDead => _isDead;
+    public bool IsDead => isDead;
 
     protected virtual void OnEnable()
     {
-        _infoCanvas.gameObject.SetActive(false);
+        infoCanvas.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -90,8 +90,8 @@ public class CharacterBase : MonoBehaviour
 
         Physics.IgnoreLayerCollision((int)LayerType.Weapon, (int)LayerType.Radar, true);
 
-        _radarController.OnEnemyEnterCallBack(OnFoundTarget);
-        _radarController.OnEnemyExitCallBack(OnLostTarget);
+        radarController.OnEnemyEnterCallBack(OnFoundTarget);
+        radarController.OnEnemyExitCallBack(OnLostTarget);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class CharacterBase : MonoBehaviour
     {
         Movement();
         Attack();
-        SetAnimationParameters();
+        //SetAnimationParameters();
     }
 
     /// <summary>
@@ -114,14 +114,14 @@ public class CharacterBase : MonoBehaviour
 
     public void EquipWeapon(WeaponData weaponData)
     {
-        if (_weaponHolder.childCount > 0)
+        if (weaponHolder.childCount > 0)
         {
-            Destroy(_weaponHolder.GetChild(0).gameObject);
+            Destroy(weaponHolder.GetChild(0).gameObject);
         }
-        _weaponData = weaponData;
-        var weapon = Instantiate(_weaponData.WeaponModel, _weaponHolder);
-        weapon.transform.localScale = _weaponData.HandWeaponScale * Vector3.one;
-        weapon.transform.localPosition = _weaponData.HandWeaponOffset;
+        this.weaponData = weaponData;
+        var weapon = Instantiate(this.weaponData.WeaponModel, weaponHolder);
+        weapon.transform.localScale = this.weaponData.HandWeaponScale * Vector3.one;
+        weapon.transform.localPosition = this.weaponData.HandWeaponOffset;
         weapon.transform.localRotation = Quaternion.identity;
     }
 
@@ -131,25 +131,27 @@ public class CharacterBase : MonoBehaviour
     private void Movement()
     {
         //_isAttack || 
-        if (CantMove) return;
+        if (cantMove) return;
 
         // cancel attack
-        if (_isAttack)
+        if (isAttack)
         {
-            _isAttack = false;
-            if (!_isAttacked) _attackTimer = 0f;
+            isAttack = false;
+            if (!isAttacked) attackTimer = 0f;
         }
 
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
-            Quaternion.LookRotation(_direction),
-            _rotateSpeed);
+            Quaternion.LookRotation(direction),
+            rotateSpeed);
 
 
         transform.position = Vector3.Lerp(
             transform.position,
-            transform.position + _direction,
-            _moveSpeed * Time.fixedDeltaTime);
+            transform.position + direction,
+            moveSpeed * Time.fixedDeltaTime);
+
+        SetAnimationParameters();
     }
 
     /// <summary>
@@ -158,33 +160,31 @@ public class CharacterBase : MonoBehaviour
     private void Attack()
     {
         // Cooldown
-        if (_attackTimer > 0f)
+        if (attackTimer > 0f)
         {
-            _attackTimer -= Time.fixedDeltaTime;
-        }
-        else
-        {
-            _isAttacked = false;
+            attackTimer -= Time.fixedDeltaTime;
         }
 
         // Requirements conditions
-        if (CantAttack) return;
+        if (cantAttack) return;
 
         // Look at the target
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
-            Quaternion.LookRotation(_target.transform.position - transform.position),
-            _rotateSpeed);
+            Quaternion.LookRotation(target.transform.position - transform.position),
+            rotateSpeed);
 
         // Can attack
-        if (!_isAttack && _attackTimer <= 0)
+        if (!isAttack && attackTimer <= 0)
         {
-            _isAttack = true;
-            if (_weaponData.WeaponType == WeaponType.Boomerang) _isUlti = true;
-            _attackTimer += _weaponData.BonusAttackSpeed;
-            Invoke(nameof(ThrowWeapon), _weaponData.ThrowAnimationDelay);
-            Invoke(nameof(EndAttackProcess), _weaponData.ThrowAnimationTotalLength);
+            isAttack = true;
+            if (weaponData.WeaponType == WeaponType.Boomerang) isUlti = true;
+            attackTimer += weaponData.BonusAttackSpeed;
+            Invoke(nameof(ThrowWeapon), weaponData.ThrowAnimationDelay);
+            Invoke(nameof(EndAttackProcess), weaponData.ThrowAnimationTotalLength);
         }
+
+        SetAnimationParameters();
     }
 
     /// <summary>
@@ -193,22 +193,23 @@ public class CharacterBase : MonoBehaviour
     private void ThrowWeapon()
     {
         // cancel attack
-        if (!_isAttack)
+        if (!isAttack)
         {
-            _isUlti = false;
-            _isAttack = false;
+            isUlti = false;
+            isAttack = false;
+            SetAnimationParameters();
             return;
         }
         Vector3 direction;
-        if (_target is null)
+        if (target is null)
             direction = transform.forward;
         else
-            direction = (_target.transform.position - this._weaponHolder.position).normalized;
+            direction = (target.transform.position - this.weaponHolder.position).normalized;
 
         direction.y = 0f;
-        _weaponData.Throw(_weaponHolder.position, direction, _attackRange, _scaleValue, this, OnGetKill, _hitCollider);
+        weaponData.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, OnGetKill, hitCollider);
 
-        _isAttacked = true;
+        isAttacked = true;
     }
 
     /// <summary>
@@ -216,21 +217,23 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void EndAttackProcess()
     {
-        _isUlti = false;
-        _isAttack = false;
+        isUlti = false;
+        isAttack = false;
+        isAttacked = false;
+        SetAnimationParameters();
     }
 
     /// <summary>
     /// Sets the animation parameters.
     /// </summary>
-    private void SetAnimationParameters()
+    protected void SetAnimationParameters()
     {
-        _animator.SetBool(DEAD_ANIMATION, _isDead);
-        _animator.SetBool(WIN_ANIMATION, _isWin);
-        _animator.SetBool(DANCE_ANIMATION, _isDance);
-        _animator.SetBool(ULTI_ANIMATION, _isUlti);
-        _animator.SetBool(ATTACK_ANIMATION, _isAttack);
-        _animator.SetBool(IDLE_ANIMATION, _isIdle);
+        animator.SetBool(DEAD_ANIMATION, isDead);
+        animator.SetBool(WIN_ANIMATION, isWin);
+        animator.SetBool(DANCE_ANIMATION, isDance);
+        animator.SetBool(ULTI_ANIMATION, isUlti);
+        animator.SetBool(ATTACK_ANIMATION, isAttack);
+        animator.SetBool(IDLE_ANIMATION, isIdle);
     }
 
     /// <summary>
@@ -238,8 +241,8 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void CanvasController()
     {
-        _infoCanvas.gameObject.SetActive(true);
-        _infoCanvas.transform.LookAt(Camera.main.transform);
+        infoCanvas.gameObject.SetActive(true);
+        infoCanvas.transform.LookAt(Camera.main.transform);
     }
 
     /// <summary>
@@ -247,11 +250,11 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void OnGetKill(CharacterBase target)
     {
-        if (_isDead) return;
+        if (isDead) return;
 
-        _point += target.Point;
-        _scaleValue = (_maxLocalScale - _localScaleIncreaseValue / (_localScaleIncreaseValue + _point));
-        transform.localScale = _scaleValue * Vector3.one;
+        point += target.Point;
+        scaleValue = (maxLocalScale - localScaleIncreaseValue / (localScaleIncreaseValue + point));
+        transform.localScale = scaleValue * Vector3.one;
     }
 
     /// <summary>
@@ -260,14 +263,14 @@ public class CharacterBase : MonoBehaviour
     /// <param name="other"></param>
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (_isDead) return;
+        if (isDead) return;
         if (other.gameObject.layer == (byte)LayerType.Weapon)
         {
             WeaponBase weapon = other.GetComponent<WeaponBase>();
             if (weapon.Attacker != this)
             {
                 weapon.OnHit(this);
-                _isDead = true;
+                isDead = true;
                 OnDead();
             }
         }
@@ -283,13 +286,13 @@ public class CharacterBase : MonoBehaviour
 
         target.SubcribeOnDeadCallBack(OnLostTarget);
 
-        if (_target is null)
+        if (this.target is null)
         {
-            _target = target;
+            this.target = target;
         }
         else
         {
-            _targetsList.Add(target);
+            targetsList.Add(target);
         }
     }
 
@@ -301,23 +304,24 @@ public class CharacterBase : MonoBehaviour
     {
         target.UnsubcribeOnDeadCallBack(OnLostTarget);
 
-        if (_target == target)
+        if (this.target == target)
         {
-            _target = null;
-            if (_targetsList.Count > 0)
+            this.target = null;
+            if (targetsList.Count > 0)
             {
-                _target = _targetsList[0];
-                _targetsList.RemoveAt(0);
+                this.target = targetsList[0];
+                targetsList.RemoveAt(0);
             }
         }
         else
         {
-            _targetsList.Remove(target);
+            targetsList.Remove(target);
         }
     }
 
     protected void OnDead()
     {
+        SetAnimationParameters();
         OnDeadCallBack?.Invoke(this);
     }
 }
