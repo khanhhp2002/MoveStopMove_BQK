@@ -90,7 +90,8 @@ public class Player : CharacterBase
 
         if (Input.GetMouseButtonDown(0))
         {
-            weaponData.Throw(weaponHolder.position, transform.forward, attackRange, scaleValue, this, OnGetKill, hitCollider);
+            WeaponBase weapon = GameObject.Instantiate(weaponData.WeaponPrefab);
+            weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, OnGetKill, weaponData);
         }
     }
 
@@ -108,16 +109,6 @@ public class Player : CharacterBase
             _targetLock.position = Vector3.Lerp(_targetLock.position, target.transform.position, _targetLockSpeed);
             _targetLock.position += Vector3.up * _groundOffset;
         }
-    }
-
-    /// <summary>
-    /// Detects when the player collides with another collider.
-    /// </summary>
-    /// <param name="other"></param>
-    protected override void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("OnTriggerEnter");
-        base.OnTriggerEnter(other);
     }
 
     /// <summary>

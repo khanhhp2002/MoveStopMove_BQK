@@ -49,6 +49,6 @@ public class CameraManager : Singleton<CameraManager>
     /// <param name="value"></param>
     public void ZoomOutGamePlayCamera(float value)
     {
-        _gameplayCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance = _cameraDefaultDistance * value;
+        _gameplayCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance = _cameraDefaultDistance * value * 1.2f;
     }
 }

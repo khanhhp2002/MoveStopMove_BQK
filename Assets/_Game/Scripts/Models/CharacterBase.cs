@@ -199,7 +199,6 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void ThrowWeapon()
     {
-        Debug.Log("ThrowWeapon");
         // cancel attack
         if (!isAttack)
         {
@@ -215,7 +214,9 @@ public class CharacterBase : MonoBehaviour
             direction = (target.transform.position - this.weaponHolder.position).normalized;
 
         direction.y = 0f;
-        weaponData.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, OnGetKill, hitCollider);
+
+        WeaponBase weapon = GameObject.Instantiate(weaponData.WeaponPrefab);
+        weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, OnGetKill, weaponData);
 
         isAttacked = true;
     }
@@ -225,7 +226,6 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     private void EndAttackProcess()
     {
-        Debug.Log("ThrowWeapon");
         isUlti = false;
         isAttack = false;
         isAttacked = false;
@@ -264,25 +264,6 @@ public class CharacterBase : MonoBehaviour
         point += target.Point;
         scaleValue = (maxLocalScale - localScaleIncreaseValue / (localScaleIncreaseValue + point));
         transform.localScale = scaleValue * Vector3.one;
-    }
-
-    /// <summary>
-    /// Detects when the player collides with another collider.
-    /// </summary>
-    /// <param name="other"></param>
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        if (isDead) return;
-        if (other.gameObject.layer == (byte)LayerType.Weapon)
-        {
-            WeaponBase weapon = other.GetComponent<WeaponBase>();
-            if (weapon.Attacker != this)
-            {
-                weapon.OnHit(this);
-                isDead = true;
-                OnDead();
-            }
-        }
     }
 
     /// <summary>
@@ -328,8 +309,9 @@ public class CharacterBase : MonoBehaviour
         }
     }
 
-    protected void OnDead()
+    public virtual void OnDead()
     {
+        isDead = true;
         SetAnimationParameters();
         OnDeadCallBack?.Invoke(this);
     }

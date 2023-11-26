@@ -105,16 +105,6 @@ public class Bot : CharacterBase, IPoolable<Bot>
     }
 
     /// <summary>
-    /// Detects when the player collides with another collider.
-    /// </summary>
-    /// <param name="other"></param>
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        if (isDead) SetState(new DeadState());
-    }
-
-    /// <summary>
     /// Controls the indicator that shows the bot's position when it is out of the screen.
     /// </summary>
     private void NavigationIndicatorControl()
@@ -218,7 +208,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 _navigationIndicator = null;
                 target = null;
                 targetsList.Clear();
-                this.ReturnToPool();
+                ReturnToPool();
                 break;
             default:
                 isIdle = true;
@@ -260,5 +250,14 @@ public class Bot : CharacterBase, IPoolable<Bot>
         {
             direction = new Vector3(reflectedDirection.x > 0 ? 1f : -1f, 0f, UnityEngine.Random.Range(-1f, 1f)).normalized;
         }
+    }
+
+    /// <summary>
+    /// OnDead is called when the bot hited by a weapon.
+    /// </summary>
+    public override void OnDead()
+    {
+        SetState(new DeadState());
+        base.OnDead();
     }
 }

@@ -8,6 +8,7 @@ public class MoveState : IState
     public void OnEnter(Bot bot)
     {
         bot.ForceControlBotAnimation(BotState.Move);
+        bot.SetMoveDirection();
         _executeTime = 0f;
         _executeDuration = Random.Range(2f, 5f);
     }
@@ -29,6 +30,6 @@ public class MoveState : IState
 
     public void OnExit(Bot bot)
     {
-        bot.SetMoveDirection();
+
     }
 }
