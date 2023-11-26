@@ -523,7 +523,6 @@ MonoBehaviour:
   m_rigidbody: {fileID: 2796742906819949849}
   hitCollider: {fileID: 2796742906819949846}
   radarController: {fileID: 2796742907056556148}
-  weapon: {fileID: 0}
   infoCanvas: {fileID: 2796742907468331453}
   pantSkin: {fileID: 2796742907714525601}
   rotateSpeed: 400
@@ -535,6 +534,7 @@ MonoBehaviour:
   _navigationIndicatorSpeed: 0.5
   _navigationIndicatorRange: 400
   _botState: 0
+  _botDogdeChance: 35
 --- !u!1 &2796742906831204394
 GameObject:
   m_ObjectHideFlags: 0

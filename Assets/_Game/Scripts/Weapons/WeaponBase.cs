@@ -10,6 +10,7 @@ public class WeaponBase : MonoBehaviour
     private Action<CharacterBase> _onGetHit;
     private CharacterBase _attacker;
     private bool _isPiercingable;
+    public Vector3 MoveDirection { get; private set; }
 
     /// <summary>
     /// Throw weapon.
@@ -54,6 +55,7 @@ public class WeaponBase : MonoBehaviour
         _isPiercingable = weaponData.IsPiercingable;
         _attacker = attacker;
         _onGetHit = callback;
+        MoveDirection = direction;
         _collider.enabled = true;
     }
 

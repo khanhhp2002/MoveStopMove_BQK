@@ -7,6 +7,7 @@ public class RadarController : MonoBehaviour
     private Action<CharacterBase> _onEnemyEnterCallBack;
     private Action<CharacterBase> _onEnemyExitCallBack;
     private Action<Vector3> _onWallDetectedCallBack;
+    private Action<WeaponBase> _onBulletDetectedCallBack;
 
     public SphereCollider SphereCollider => _sphereCollider;
 
@@ -38,6 +39,15 @@ public class RadarController : MonoBehaviour
     }
 
     /// <summary>
+    /// OnWeaponDetectedCallBack is called when radar detects a weapon.
+    /// </summary>
+    /// <param name="callBack"></param>
+    public void OnBulletDetectedCallBack(Action<WeaponBase> callBack)
+    {
+        _onBulletDetectedCallBack += callBack;
+    }
+
+    /// <summary>
     /// OnTriggerEnter is called when the Collider other enters the trigger.
     /// </summary>
     /// <param name="other"></param>
@@ -50,6 +60,10 @@ public class RadarController : MonoBehaviour
         else if (other.gameObject.layer == (byte)LayerType.Wall)
         {
             _onWallDetectedCallBack?.Invoke(other.ClosestPoint(transform.position));
+        }
+        else if (other.gameObject.layer == (byte)LayerType.Weapon)
+        {
+            _onBulletDetectedCallBack?.Invoke(other.GetComponent<WeaponBase>());
         }
     }
 

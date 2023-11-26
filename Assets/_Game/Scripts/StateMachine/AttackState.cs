@@ -13,12 +13,14 @@ public class AttackState : IState
 
     public void OnExecute(Bot bot)
     {
+        // lost target
         if (bot.Target is null)
         {
             bot.IsIgnoreAttack = true;
             bot.SetState(new IdleState());
         }
 
+        // ignore attack
         if (_executeTime >= _executeDuration)
         {
             bot.IsIgnoreAttack = true;

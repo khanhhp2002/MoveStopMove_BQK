@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class Bot : CharacterBase, IPoolable<Bot>
 {
+    [Header("Bot Components"), Space(5f)]
     [SerializeField, Range(0.1f, 0.5f)] private float _navigationIndicatorSpeed;
     [SerializeField] private float _navigationIndicatorRange;
+
+    [Header("Bot Stats"), Space(5f)]
     [SerializeField] private BotState _botState;
+    [SerializeField, Range(0f, 100f)] private byte _botDogdeChance;
 
     private Vector2 _botPos;
     private Vector2 _playerPos;
@@ -51,6 +55,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     protected override void Start()
     {
         radarController.OnWallDetectedCallBack(OnWallDetected);
+        radarController.OnBulletDetectedCallBack(OnBulletDetected);
         base.Start();
     }
 
@@ -249,6 +254,18 @@ public class Bot : CharacterBase, IPoolable<Bot>
         else if (reflectedDirection.z is 0)
         {
             direction = new Vector3(reflectedDirection.x > 0 ? 1f : -1f, 0f, UnityEngine.Random.Range(-1f, 1f)).normalized;
+        }
+    }
+
+    public void OnBulletDetected(WeaponBase weaponBase)
+    {
+        if (weaponBase.Attacker == this) return;
+        byte randomChance = (byte)UnityEngine.Random.Range(0, 100);
+        if (_botDogdeChance > randomChance)
+        {
+            Vector3 incomingBulletDirection = weaponBase.MoveDirection;
+            direction = (UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * Vector3.Cross(incomingBulletDirection, Vector3.up);
+            SetState(new DodgeState());
         }
     }
 
