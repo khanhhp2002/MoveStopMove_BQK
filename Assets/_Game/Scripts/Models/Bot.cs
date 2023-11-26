@@ -17,6 +17,26 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
     private IState _currentState;
 
+    private bool _isIgnoreAttack = false;
+
+    public bool IsIgnoreAttack
+    {
+        get => _isIgnoreAttack;
+        set
+        {
+            _isIgnoreAttack = value;
+            if (value)
+            {
+                Invoke(nameof(ResetIgnoreAttack), UnityEngine.Random.Range(2f, 4f));
+            }
+        }
+    }
+
+    private void ResetIgnoreAttack()
+    {
+        _isIgnoreAttack = false;
+    }
+
     public CharacterBase Target => target;
 
     protected override void OnEnable()
