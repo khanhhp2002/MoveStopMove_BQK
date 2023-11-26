@@ -28,6 +28,12 @@ public class Bot : CharacterBase, IPoolable<Bot>
         base.OnEnable();
     }
 
+    protected override void Start()
+    {
+        radarController.OnWallDetectedCallBack(OnWallDetected);
+        base.Start();
+    }
+
     /// <summary>
     /// FixedUpdate is called once per frame.
     /// </summary>
@@ -188,7 +194,6 @@ public class Bot : CharacterBase, IPoolable<Bot>
                 isIdle = true;
                 break;
             case BotState.Dead:
-                // I don't know what to do here because the "_isDead" variable is already set to true by OnTriggerEnter method. φ(*￣0￣)
                 _navigationIndicator?.ReturnToPool();
                 _navigationIndicator = null;
                 target = null;
@@ -218,5 +223,22 @@ public class Bot : CharacterBase, IPoolable<Bot>
             0f,
             UnityEngine.Random.Range(-1f, 1f))
             .normalized;
+    }
+
+    /// <summary>
+    /// Called when radar detects a wall.
+    /// </summary>
+    /// <param name="wallPosition"></param>
+    private void OnWallDetected(Vector3 wallPosition)
+    {
+        Vector3 reflectedDirection = transform.position - wallPosition;
+        if (reflectedDirection.x is 0)
+        {
+            direction = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, reflectedDirection.z > 0 ? 1f : -1f).normalized;
+        }
+        else if (reflectedDirection.z is 0)
+        {
+            direction = new Vector3(reflectedDirection.x > 0 ? 1f : -1f, 0f, UnityEngine.Random.Range(-1f, 1f)).normalized;
+        }
     }
 }

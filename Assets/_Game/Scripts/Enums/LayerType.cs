@@ -5,5 +5,6 @@ public enum LayerType : byte
 {
     Weapon = 6,
     Character = 7,
-    Radar = 8
+    Radar = 8,
+    Wall = 10
 }

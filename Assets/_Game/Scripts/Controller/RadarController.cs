@@ -6,6 +6,7 @@ public class RadarController : MonoBehaviour
     [SerializeField] private SphereCollider _sphereCollider;
     private Action<CharacterBase> _onEnemyEnterCallBack;
     private Action<CharacterBase> _onEnemyExitCallBack;
+    private Action<Vector3> _onWallDetectedCallBack;
 
     public SphereCollider SphereCollider => _sphereCollider;
 
@@ -28,6 +29,15 @@ public class RadarController : MonoBehaviour
     }
 
     /// <summary>
+    /// Called when radar detects a wall.
+    /// </summary>
+    /// <param name="callBack"></param>
+    public void OnWallDetectedCallBack(Action<Vector3> callBack)
+    {
+        _onWallDetectedCallBack += callBack;
+    }
+
+    /// <summary>
     /// OnTriggerEnter is called when the Collider other enters the trigger.
     /// </summary>
     /// <param name="other"></param>
@@ -36,6 +46,10 @@ public class RadarController : MonoBehaviour
         if (other.gameObject.layer == (byte)LayerType.Character)
         {
             _onEnemyEnterCallBack?.Invoke(other.GetComponent<CharacterBase>());
+        }
+        if (other.gameObject.layer == (byte)LayerType.Wall)
+        {
+            _onWallDetectedCallBack?.Invoke(other.ClosestPoint(transform.position));
         }
     }
 
@@ -50,5 +64,4 @@ public class RadarController : MonoBehaviour
             _onEnemyExitCallBack?.Invoke(other.GetComponent<CharacterBase>());
         }
     }
-
 }
