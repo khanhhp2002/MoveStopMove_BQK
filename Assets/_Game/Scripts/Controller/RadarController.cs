@@ -57,7 +57,7 @@ public class RadarController : MonoBehaviour
         {
             _onEnemyEnterCallBack?.Invoke(other.GetComponent<CharacterBase>());
         }
-        else if (other.gameObject.layer == (byte)LayerType.Wall)
+        else if (other.gameObject.layer == (byte)LayerType.Wall || other.gameObject.layer == (byte)LayerType.Obstacle)
         {
             _onWallDetectedCallBack?.Invoke(other.ClosestPoint(transform.position));
         }

@@ -424,10 +424,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2796742906819949851}
+  - component: {fileID: 2796742906819949850}
   - component: {fileID: 2796742906819949848}
   - component: {fileID: 2796742906819949849}
   - component: {fileID: 2796742906819949846}
-  - component: {fileID: 2796742906819949850}
   m_Layer: 7
   m_Name: Bot
   m_TagString: Untagged
@@ -455,6 +455,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2796742906819949850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2796742906819949844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6748a840d7d1e3f46bc976ad8808c8df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2796742906819949848}
+  weaponHolder: {fileID: 2796742907894322596}
+  m_rigidbody: {fileID: 2796742906819949849}
+  hitCollider: {fileID: 2796742906819949846}
+  radarController: {fileID: 2796742907056556148}
+  infoCanvas: {fileID: 2796742907468331453}
+  pantSkin: {fileID: 2796742907714525601}
+  rotateSpeed: 8
+  moveSpeed: 7
+  maxLocalScale: 2
+  localScaleIncreaseValue: 15
+  attackRange: 8
+  attackSpeed: 2
+  _navigationIndicatorSpeed: 0.5
+  _navigationIndicatorRange: 400
+  _botState: 0
+  _botDogdeChance: 35
 --- !u!95 &2796742906819949848
 Animator:
   serializedVersion: 5
@@ -506,35 +535,6 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0, y: 1.15, z: 0}
---- !u!114 &2796742906819949850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2796742906819949844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6748a840d7d1e3f46bc976ad8808c8df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2796742906819949848}
-  weaponHolder: {fileID: 2796742907894322596}
-  m_rigidbody: {fileID: 2796742906819949849}
-  hitCollider: {fileID: 2796742906819949846}
-  radarController: {fileID: 2796742907056556148}
-  infoCanvas: {fileID: 2796742907468331453}
-  pantSkin: {fileID: 2796742907714525601}
-  rotateSpeed: 8
-  moveSpeed: 7
-  maxLocalScale: 2
-  localScaleIncreaseValue: 15
-  attackRange: 8
-  attackSpeed: 2
-  _navigationIndicatorSpeed: 0.5
-  _navigationIndicatorRange: 400
-  _botState: 0
-  _botDogdeChance: 35
 --- !u!1 &2796742906831204394
 GameObject:
   m_ObjectHideFlags: 0

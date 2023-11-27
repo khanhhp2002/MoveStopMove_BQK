@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameplayManager : Singleton<GameplayManager>
 {
     [SerializeField] private Material[] _pants;
+    [SerializeField] public Material[] _obstacleMaterials;
     [SerializeField] private CharacterBase _player;
     [SerializeField] private VirtualCameraController _virualCameraController;
     [SerializeField] private GameState _gameState = GameState.None;
