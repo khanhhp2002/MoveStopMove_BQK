@@ -96,7 +96,7 @@ public class ThrowWeapon : BulletBase
         // When the weapon hits the character.
         if (other.gameObject.layer == (byte)LayerType.Character)
         {
-            CharacterBase character = other.GetComponent<CharacterBase>();
+            CharacterBase character = other.GetCharacter();
             if (_attacker != character && !character.IsDead)
             {
                 OnHit(character);

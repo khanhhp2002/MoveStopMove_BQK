@@ -9,6 +9,8 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
     [SerializeField] private Button _nextItem;
     [SerializeField] private Button _previousItem;
     [SerializeField] private Button _purchaseItem;
+    [SerializeField] private Button _purchaseItemWithAds;
+    [SerializeField] private Button _useWeapon;
 
     [Header("Weapon-Display Settings"), Space(5f)]
     [SerializeField] private float spawnDistanceX = 1f;
@@ -42,6 +44,8 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         _nextItem.onClick.AddListener(NextItem);
         _previousItem.onClick.AddListener(PreviousItem);
         _purchaseItem.onClick.AddListener(PurchaseItem);
+        _purchaseItemWithAds.onClick.AddListener(purchaseItemWithAds);
+        _useWeapon.onClick.AddListener(UseWeapon);
     }
 
     /// <summary>
@@ -85,11 +89,15 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
     /// </summary>
     private void ShowWeapon()
     {
+        // Destroy current display weapon
         if (_currentWeapon != null)
         {
             Destroy(_currentWeapon);
         }
 
+        CheckWeaponStatus();
+
+        // Spawn new weapon
         _currentWeaponData = WeaponManager.Instance.GetWeaponDataByIndex(_currentWeaponIndex);
         Vector3 spawnPosition = Camera.main.transform.position + Camera.main.transform.forward * spawnDistanceX;
         _currentWeapon = Instantiate(_currentWeaponData.WeaponModel, spawnPosition, Quaternion.Euler(new Vector3(_spawnQuaternion.eulerAngles.x, _spawnQuaternion.eulerAngles.y, _currentWeaponData.ScreenWeaponZAngle)));
@@ -97,6 +105,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         _currentWeapon.transform.position += _currentWeapon.transform.right * _currentWeaponData.ScreenWeaponOffsetX;
         _currentWeapon.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
+        // Set weapon info
         _weaponName.text = _currentWeaponData.Name;
 
         _weaponUnlockCondition.text = $"( {_currentWeaponData.PurchaseRequirement} )";
@@ -127,10 +136,50 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         {
             GameplayManager.Instance.ChangeGoldAmount(-WeaponManager.Instance.GetWeaponDataByIndex(_currentWeaponIndex).PurchasePrice);
             GameplayManager.Instance.UserData.UnlockedWeapons.Add(_currentWeaponIndex);
-            GameplayManager.Instance.Player.EquipWeapon(_currentWeaponData);
-            GameplayManager.Instance.UserData.EquippedWeapon = _currentWeaponIndex;
-            //SaveManager.Instance.SaveData(GameplayManager.Instance._userData);
-            ShowWeapon();
+            UseWeapon();
+            CheckWeaponStatus();
+        }
+    }
+
+    private void purchaseItemWithAds()
+    {
+        GameplayManager.Instance.UserData.UnlockedWeapons.Add(_currentWeaponIndex);
+        UseWeapon();
+        CheckWeaponStatus();
+    }
+
+    /// <summary>
+    /// Use weapon.
+    /// </summary>
+    private void UseWeapon()
+    {
+        GameplayManager.Instance.Player.EquipWeapon(_currentWeaponData);
+        GameplayManager.Instance.UserData.EquippedWeapon = _currentWeaponIndex;
+        SaveManager.Instance.SaveData(GameplayManager.Instance.UserData);
+    }
+
+    private void CheckWeaponStatus()
+    {
+        // Check if weapon is unlocked
+        if (GameplayManager.Instance.UserData.UnlockedWeapons.Contains(_currentWeaponIndex))
+        {
+            _purchaseItem.gameObject.SetActive(false);
+            _purchaseItemWithAds.gameObject.SetActive(false);
+            _useWeapon.gameObject.SetActive(true);
+            if (_currentWeaponIndex == GameplayManager.Instance.UserData.EquippedWeapon)
+            {
+                _useWeapon.interactable = false;
+            }
+            else
+            {
+                _useWeapon.interactable = true;
+            }
+        }
+        else
+        {
+            _useWeapon.gameObject.SetActive(false);
+            _purchaseItem.gameObject.SetActive(true);
+            _purchaseItemWithAds.gameObject.SetActive(true);
         }
     }
 

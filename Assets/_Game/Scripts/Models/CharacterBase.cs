@@ -86,10 +86,6 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
-
-
-        //Physics.IgnoreLayerCollision((int)LayerType.Weapon, (int)LayerType.Radar, true);
-
         radarController.OnEnemyEnterCallBack(OnFoundTarget);
         radarController.OnEnemyExitCallBack(OnLostTarget);
     }

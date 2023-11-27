@@ -55,7 +55,7 @@ public class RadarController : MonoBehaviour
     {
         if (other.gameObject.layer == (byte)LayerType.Character)
         {
-            _onEnemyEnterCallBack?.Invoke(other.GetComponent<CharacterBase>());
+            _onEnemyEnterCallBack?.Invoke(other.GetCharacter());
         }
         else if (other.gameObject.layer == (byte)LayerType.Wall || other.gameObject.layer == (byte)LayerType.Obstacle)
         {
@@ -75,7 +75,7 @@ public class RadarController : MonoBehaviour
     {
         if (other.gameObject.layer == (byte)LayerType.Character)
         {
-            _onEnemyExitCallBack?.Invoke(other.GetComponent<CharacterBase>());
+            _onEnemyExitCallBack?.Invoke(other.GetCharacter());
         }
     }
 }
