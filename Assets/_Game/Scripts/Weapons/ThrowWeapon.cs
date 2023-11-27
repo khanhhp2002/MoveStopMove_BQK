@@ -97,11 +97,15 @@ public class ThrowWeapon : BulletBase
         if (other.gameObject.layer == (byte)LayerType.Character)
         {
             CharacterBase character = other.GetComponent<CharacterBase>();
-            if (_attacker != character)
+            if (_attacker != character && !character.IsDead)
             {
                 OnHit(character);
                 character.OnDead();
             }
+        }
+        else if (other.gameObject.layer == (byte)LayerType.Wall || other.gameObject.layer == (byte)LayerType.Obstacle)
+        {
+            DestroyWeapon();
         }
     }
 }

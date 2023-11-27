@@ -258,11 +258,12 @@ public class Bot : CharacterBase, IPoolable<Bot>
     public void OnBulletDetected(ThrowWeapon weaponBase)
     {
         if (weaponBase.Attacker == this) return;
-        byte randomChance = (byte)UnityEngine.Random.Range(0, 100);
+        byte randomChance = (byte)UnityEngine.Random.Range(0, 101);
         if (_botDogdeChance > randomChance)
         {
             Vector3 incomingBulletDirection = weaponBase.MoveDirection;
-            direction = (UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * Vector3.Cross(incomingBulletDirection, Vector3.up);
+            Quaternion rotationQuaternion = Quaternion.AngleAxis((byte)(UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * UnityEngine.Random.Range(60f, 120f), Vector3.up);
+            direction = (rotationQuaternion * incomingBulletDirection).normalized;
             SetState(new DodgeState());
         }
     }
