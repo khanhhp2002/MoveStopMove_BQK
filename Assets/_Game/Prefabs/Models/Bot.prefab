@@ -525,7 +525,7 @@ MonoBehaviour:
   radarController: {fileID: 2796742907056556148}
   infoCanvas: {fileID: 2796742907468331453}
   pantSkin: {fileID: 2796742907714525601}
-  rotateSpeed: 400
+  rotateSpeed: 8
   moveSpeed: 7
   maxLocalScale: 2
   localScaleIncreaseValue: 15

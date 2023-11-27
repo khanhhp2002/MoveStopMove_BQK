@@ -247,17 +247,15 @@ public class Bot : CharacterBase, IPoolable<Bot>
     private void OnWallDetected(Vector3 wallPosition)
     {
         Vector3 reflectedDirection = transform.position - wallPosition;
-        if (reflectedDirection.x is 0)
-        {
-            direction = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, reflectedDirection.z > 0 ? 1f : -1f).normalized;
-        }
-        else if (reflectedDirection.z is 0)
-        {
-            direction = new Vector3(reflectedDirection.x > 0 ? 1f : -1f, 0f, UnityEngine.Random.Range(-1f, 1f)).normalized;
-        }
+
+        direction = reflectedDirection.normalized;
+        Quaternion rotationQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-80f, 81f), Vector3.up);
+
+        // Rotate the input vector
+        direction = (rotationQuaternion * reflectedDirection).normalized;
     }
 
-    public void OnBulletDetected(WeaponBase weaponBase)
+    public void OnBulletDetected(ThrowWeapon weaponBase)
     {
         if (weaponBase.Attacker == this) return;
         byte randomChance = (byte)UnityEngine.Random.Range(0, 100);

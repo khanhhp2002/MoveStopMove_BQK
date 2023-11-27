@@ -2,7 +2,7 @@ using DG.Tweening;
 using System;
 using UnityEngine;
 
-public class WeaponBase : MonoBehaviour
+public class ThrowWeapon : BulletBase
 {
     [Header("Weapon Components"), Space(5f)]
     [SerializeField] private Collider _collider;
@@ -22,7 +22,7 @@ public class WeaponBase : MonoBehaviour
     /// <param name="attacker"></param>
     /// <param name="callback"></param>
     /// <param name="weaponData"></param>
-    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, float scaleValue, CharacterBase attacker, Action<CharacterBase> callback, WeaponData weaponData)
+    public override void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, float scaleValue, CharacterBase attacker, WeaponData weaponData, Action<CharacterBase> callBack)
     {
         // Setup data
         Vector3 destination = spawnPosition + direction * (characterRange * scaleValue + weaponData.BonusAttackRange);
@@ -54,7 +54,7 @@ public class WeaponBase : MonoBehaviour
         // Initialize weapon
         _isPiercingable = weaponData.IsPiercingable;
         _attacker = attacker;
-        _onGetHit = callback;
+        _onGetHit = callBack;
         MoveDirection = direction;
         _collider.enabled = true;
     }
@@ -77,7 +77,7 @@ public class WeaponBase : MonoBehaviour
     /// <summary>
     /// Called when this weapon hit character.
     /// </summary>
-    public void OnHit(CharacterBase target)
+    private void OnHit(CharacterBase target)
     {
         if (!_isPiercingable)
         {
@@ -104,5 +104,4 @@ public class WeaponBase : MonoBehaviour
             }
         }
     }
-
 }

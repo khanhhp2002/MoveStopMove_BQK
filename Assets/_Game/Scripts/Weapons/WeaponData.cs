@@ -10,7 +10,7 @@ public class WeaponData
     public WeaponType WeaponType;
 
     [Header("Weapon 3D"), Space(5f)]
-    public WeaponBase WeaponPrefab;
+    public ThrowWeapon ThrowWeaponPrefab;
     public GameObject WeaponModel;
 
     [Header("Hand-Weapon Settings"), Space(5f)]

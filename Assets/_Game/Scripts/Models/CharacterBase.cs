@@ -144,7 +144,7 @@ public class CharacterBase : MonoBehaviour
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             Quaternion.LookRotation(direction),
-            rotateSpeed);
+            rotateSpeed * Time.fixedDeltaTime);
 
 
         transform.position = Vector3.Lerp(
@@ -187,8 +187,6 @@ public class CharacterBase : MonoBehaviour
             isAttack = true;
             if (weaponData.WeaponType == WeaponType.Boomerang) isUlti = true;
             attackTimer += weaponData.BonusAttackSpeed;
-            //Invoke(nameof(ThrowWeapon), weaponData.ThrowAnimationDelay);
-            //Invoke(nameof(EndAttackProcess), weaponData.ThrowAnimationTotalLength);
         }
 
         SetAnimationParameters();
@@ -215,8 +213,8 @@ public class CharacterBase : MonoBehaviour
 
         direction.y = 0f;
 
-        WeaponBase weapon = GameObject.Instantiate(weaponData.WeaponPrefab);
-        weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, OnGetKill, weaponData);
+        ThrowWeapon weapon = GameObject.Instantiate(weaponData.ThrowWeaponPrefab);
+        weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
 
         isAttacked = true;
     }
