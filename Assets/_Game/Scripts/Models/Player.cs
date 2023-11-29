@@ -90,8 +90,8 @@ public class Player : CharacterBase
 
         if (Input.GetMouseButtonDown(0))
         {
-            ThrowWeapon weapon = GameObject.Instantiate(weaponData.ThrowWeaponPrefab);
-            weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
+            WeaponManager.Instance.GetWeapon(weaponData.WeaponType, weaponData.ThrowWeaponPrefab)
+            .Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
         }
     }
 

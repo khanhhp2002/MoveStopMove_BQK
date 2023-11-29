@@ -211,7 +211,9 @@ public class CharacterBase : MonoBehaviour
 
         //ThrowWeapon weapon = GameObject.Instantiate(weaponData.ThrowWeaponPrefab);
         //weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
-        WeaponManager.Instance.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill, weaponData.WeaponType, weaponData.ThrowWeaponPrefab);
+
+        WeaponManager.Instance.GetWeapon(weaponData.WeaponType, weaponData.ThrowWeaponPrefab)
+            .Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
 
         isAttacked = true;
     }

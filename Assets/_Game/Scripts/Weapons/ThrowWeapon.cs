@@ -11,6 +11,12 @@ public class ThrowWeapon : BulletBase
     private CharacterBase _attacker;
     private bool _isPiercingable;
     public Vector3 MoveDirection { get; private set; }
+    private Vector3 _defaultScale;
+
+    private void Awake()
+    {
+        _defaultScale = transform.localScale;
+    }
 
     /// <summary>
     /// Throw weapon.
@@ -31,7 +37,7 @@ public class ThrowWeapon : BulletBase
 
         transform.position = spawnPosition;
 
-        transform.localScale *= scaleValue;
+        transform.localScale = _defaultScale * scaleValue;
 
         // Move weapon
         transform.DOMove(destination, duration)

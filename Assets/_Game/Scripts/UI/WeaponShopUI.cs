@@ -77,10 +77,14 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
     /// </summary>
     private void PreviousItem()
     {
-        _currentWeaponIndex--;
-        if (_currentWeaponIndex < 0)
+        if (_currentWeaponIndex is 0)
         {
             _currentWeaponIndex = (byte)(WeaponManager.Instance.GetWeaponDataCount() - 1);
+            Debug.Log(_currentWeaponIndex);
+        }
+        else
+        {
+            _currentWeaponIndex--;
         }
         ShowWeapon();
     }

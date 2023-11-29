@@ -43,14 +43,13 @@ public class WeaponManager : Singleton<WeaponManager>
         return (byte)_weaponSO.weaponDataList.Count;
     }
 
-    public void Throw(Vector3 spawnPosition, Vector3 direction, float characterRange, float scaleValue, CharacterBase attacker, WeaponData weaponData, Action<CharacterBase> callBack, WeaponType weaponType, BulletBase weaponPrefab)
+    public BulletBase GetWeapon(WeaponType weaponType, BulletBase weaponPrefab)
     {
         if (!_weaponPools.ContainsKey(weaponType))
         {
             _weaponPools.Add(weaponType, new ObjectPool<BulletBase>(weaponPrefab.gameObject, 5));
         }
 
-        BulletBase weapon = _weaponPools[weaponType].Pull();
-        weapon.Throw(spawnPosition, direction, characterRange, scaleValue, attacker, weaponData, callBack);
+        return _weaponPools[weaponType].Pull();
     }
 }
