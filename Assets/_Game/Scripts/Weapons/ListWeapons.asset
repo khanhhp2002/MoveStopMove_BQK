@@ -32,7 +32,7 @@ MonoBehaviour:
     PurchasePrice: 10
     PurchaseRequirement: None
   - Name: Axe_1
-    WeaponType: 1
+    WeaponType: 2
     ThrowWeaponPrefab: {fileID: 2624061970395249626, guid: a709eb4bec9f82340a43e3ae2be59281, type: 3}
     WeaponModel: {fileID: 100000, guid: 6083ff9012eefa348b00b8c543f1a742, type: 3}
     HandWeaponOffset: {x: 0, y: 0, z: 0}

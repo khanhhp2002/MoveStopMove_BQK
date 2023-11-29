@@ -1,8 +1,9 @@
 public enum WeaponType : byte
 {
     None = 0,
-    Axe = 1,
-    Bow = 2,
-    Hammer = 3,
-    Boomerang = 4
+    Axe_0 = 1,
+    Axe_1 = 2,
+    Bow = 3,
+    Hammer = 4,
+    Boomerang = 5
 }

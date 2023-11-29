@@ -23,7 +23,9 @@ public class NavigationIndicatorManager : Singleton<NavigationIndicatorManager>
     /// <returns></returns>
     public NavigationIndicator Spawn(Vector2 navigationIndicatorPosition)
     {
-        return _navigationIndicatorPool.Pull(navigationIndicatorPosition);
+        var spawnNavigationIndicator = _navigationIndicatorPool.Pull(navigationIndicatorPosition);
+        spawnNavigationIndicator.transform.SetParent(transform);
+        return spawnNavigationIndicator;
     }
 
 }

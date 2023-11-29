@@ -3653,7 +3653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _botPrefab: {fileID: 2796742906819949850, guid: e90e498c40c65de4d88242c40d9e6886, type: 3}
-  _maxBots: 10
+  _maxBots: 20
   _spawnRadius: 75
   _delaySpawnTime: 2
 --- !u!1 &905633300

@@ -66,7 +66,9 @@ public class ThrowWeapon : BulletBase
     private void DestroyWeapon()
     {
         DOTween.Kill(transform);
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        _collider.enabled = false;
+        ReturnToPool();
     }
 
     /// <summary>

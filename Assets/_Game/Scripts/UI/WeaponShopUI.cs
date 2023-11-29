@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
     [SerializeField] private TMP_Text _weaponBonusStats;
     [SerializeField] private TMP_Text _weaponPrice;
 
-    private int _currentWeaponIndex = 0;
+    private byte _currentWeaponIndex = 0;
     private GameObject _currentWeapon;
     private WeaponData _currentWeaponData;
     private Quaternion _spawnQuaternion;
@@ -79,7 +80,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         _currentWeaponIndex--;
         if (_currentWeaponIndex < 0)
         {
-            _currentWeaponIndex = WeaponManager.Instance.GetWeaponDataCount() - 1;
+            _currentWeaponIndex = (byte)(WeaponManager.Instance.GetWeaponDataCount() - 1);
         }
         ShowWeapon();
     }
@@ -156,12 +157,12 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         GameplayManager.Instance.Player.EquipWeapon(_currentWeaponData);
         GameplayManager.Instance.UserData.EquippedWeapon = _currentWeaponIndex;
         SaveManager.Instance.SaveData(GameplayManager.Instance.UserData);
+        _useWeapon.interactable = false;
     }
 
     private void CheckWeaponStatus()
     {
-        // Check if weapon is unlocked
-        if (GameplayManager.Instance.UserData.UnlockedWeapons.Contains(_currentWeaponIndex))
+        if (GameplayManager.Instance.UserData.UnlockedWeapons.Contains(_currentWeaponIndex)) // Weapon is unlocked
         {
             _purchaseItem.gameObject.SetActive(false);
             _purchaseItemWithAds.gameObject.SetActive(false);
@@ -175,11 +176,21 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
                 _useWeapon.interactable = true;
             }
         }
-        else
+        else // Weapon is locked
         {
             _useWeapon.gameObject.SetActive(false);
             _purchaseItem.gameObject.SetActive(true);
             _purchaseItemWithAds.gameObject.SetActive(true);
+            if (_currentWeaponIndex > 0 && GameplayManager.Instance.UserData.UnlockedWeapons.Contains((byte)(_currentWeaponIndex - 1))) // Previous weapon is unlocked
+            {
+                _purchaseItem.interactable = true;
+                _purchaseItemWithAds.interactable = true;
+            }
+            else // Previous weapon is locked
+            {
+                _purchaseItem.interactable = false;
+                _purchaseItemWithAds.interactable = false;
+            }
         }
     }
 
