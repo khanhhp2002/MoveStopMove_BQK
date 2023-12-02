@@ -53,14 +53,14 @@ public class Player : CharacterBase
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
-    protected override void Update()
+    protected override void LateUpdate()
     {
         switch (GameplayManager.Instance.GameState)
         {
             case GameState.Preparing:
                 break;
             case GameState.Playing:
-                base.Update();
+                base.LateUpdate();
                 LockTarget();
                 break;
             case GameState.Paused:

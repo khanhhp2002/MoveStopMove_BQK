@@ -97,7 +97,7 @@ public class CharacterBase : MonoBehaviour
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
-    protected virtual void Update()
+    protected virtual void LateUpdate()
     {
         CanvasController();
     }
@@ -133,7 +133,7 @@ public class CharacterBase : MonoBehaviour
 
         m_transform.rotation = Quaternion.Slerp(
             m_transform.rotation,
-            Quaternion.LookRotation(direction),
+            Quaternion.LookRotation(direction == Vector3.zero ? m_transform.forward : direction),
             rotateSpeed * Time.fixedDeltaTime);
 
 

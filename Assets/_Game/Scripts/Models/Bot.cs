@@ -7,7 +7,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     [Header("Bot Components"), Space(5f)]
     [SerializeField, Range(0.1f, 0.5f)] private float _navigationIndicatorSpeed;
     [SerializeField] private float _navigationIndicatorRange;
-    [SerializeField] private float _screenMarginValue; // Left, Right, Top, Bottom
+    [SerializeField] private float _screenMarginValue;
 
     [Header("Bot Stats"), Space(5f)]
     [SerializeField] private BotState _botState;
@@ -22,6 +22,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     private bool _isIgnoreAttack = false;
     private NavigationIndicator _navigationIndicator;
     private Vector4 _screenMargin; // Left, Right, Top, Bottom
+    private bool _isOnScreen = true;
 
     // Event.
     private Action<Bot> _returnPoolAction;
@@ -94,15 +95,18 @@ public class Bot : CharacterBase, IPoolable<Bot>
     /// <summary>
     /// Update is called once per frame.
     /// </summary>
-    protected override void Update()
+    protected override void LateUpdate()
     {
         switch (GameplayManager.Instance.GameState)
         {
             case GameState.Preparing:
                 break;
             case GameState.Playing:
-                base.Update();
                 NavigationIndicatorControl();
+                if (_isOnScreen)
+                {
+                    base.LateUpdate();
+                }
                 break;
             case GameState.Paused:
 
@@ -132,6 +136,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
         if (_botPos.x < -10f || _botPos.x > Screen.width + 10f || _botPos.y < -10f || _botPos.y > Screen.height + 10f) // Out of screen
         {
+            _isOnScreen = false;
             _playerPos = Camera.main.WorldToScreenPoint(GameplayManager.Instance.Player.transform.position);
             _directionToPlayer = (_botPos - _playerPos).normalized;
             _indicatorPos = FindIndicatorPosition();
@@ -153,6 +158,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
         }
         else // In screen
         {
+            _isOnScreen = true;
             if (_navigationIndicator is not null)
             {
                 _navigationIndicator.ReturnToPool();
@@ -161,6 +167,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
         }
     }
 
+    /// <summary>
+    /// Finds the position of the indicator.
+    /// </summary>
+    /// <returns></returns>
     private Vector2 FindIndicatorPosition()
     {
         // y = m_slope * x + m_intercept
@@ -314,7 +324,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
         if (_botDogdeChance > randomChance)
         {
             Vector3 incomingBulletDirection = weaponBase.MoveDirection;
-            Quaternion rotationQuaternion = Quaternion.AngleAxis((byte)(UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * UnityEngine.Random.Range(60f, 120f), Vector3.up);
+            Quaternion rotationQuaternion = Quaternion.AngleAxis((UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * UnityEngine.Random.Range(60f, 120f), Vector3.up);
             direction = (rotationQuaternion * incomingBulletDirection).normalized;
             SetState(new DodgeState());
         }
