@@ -71,7 +71,7 @@ public class UserData
         _unlockedPants.Add(0);
         _unlockedHairs.Add(0);
         // Equipped items.
-        _equippedWeapon = 2;
+        _equippedWeapon = 0;
         _equippedPant = 0;
         _equippedHair = 0;
     }

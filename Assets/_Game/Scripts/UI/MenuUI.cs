@@ -4,10 +4,26 @@ using UnityEngine.UI;
 
 public class MenuUI : Singleton<MenuUI>
 {
+    [Header("Action Buttons"), Space(5f)]
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _weaponShopOpen;
+    [SerializeField] private Button _skinShopOpen;
+    [Header("Vibration Settings"), Space(5f)]
+    [SerializeField] private Button _vibrationButton;
+    [SerializeField] private Image _vibrationImage;
+    [SerializeField] private Sprite _vibrationOn;
+    [SerializeField] private Sprite _vibrationOff;
+    [Header("Vibration Settings"), Space(5f)]
+    [SerializeField] private Button _soundButton;
+    [SerializeField] private Image _soundImage;
+    [SerializeField] private Sprite _soundOn;
+    [SerializeField] private Sprite _soundOff;
+
+    [Header("Gold Settings"), Space(5f)]
     [SerializeField] private TMP_Text _goldAmount;
 
+    private bool _isVibrationOn = true;
+    private bool _isSoundOn = true;
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
@@ -17,19 +33,54 @@ public class MenuUI : Singleton<MenuUI>
         NumberCounter.Instance.CountAnimation(_goldAmount, GameplayManager.Instance.UserData.GoldAmount);
         _playButton.onClick.AddListener(StartGame);
         _weaponShopOpen.onClick.AddListener(OpenWeaponShop);
+        _skinShopOpen.onClick.AddListener(OpenSkinShop);
+        _vibrationButton.onClick.AddListener(VibrationSetting);
+        _soundButton.onClick.AddListener(SoundSetting);
     }
 
+    /// <summary>
+    /// Play the game.
+    /// </summary>
     private void StartGame()
     {
         GameplayManager.Instance.SetGameState(GameState.Playing);
     }
+    /// <summary>
+    /// Open weapon shop.
+    /// </summary>
     private void OpenWeaponShop()
     {
-        GameplayManager.Instance.SetGameState(GameState.WeaponShopEnter);
+        UIManager.Instance.OnWeaponShopEnter();
     }
 
-    public void OnGoldAmountChange()
+    /// <summary>
+    /// Open skin shop.
+    /// </summary>
+    private void OpenSkinShop()
+    {
+        UIManager.Instance.OnSkinShopEnter();
+    }
+
+    /// <summary>
+    /// Change gold amount in UI.
+    /// </summary>
+    private void OnGoldAmountChange()
     {
         NumberCounter.Instance.CountAnimation(_goldAmount, GameplayManager.Instance.UserData.GoldAmount);
+    }
+
+    /// <summary>
+    /// Change vibration setting.
+    /// </summary>
+    private void VibrationSetting()
+    {
+        _vibrationImage.sprite = _isVibrationOn ? _vibrationOff : _vibrationOn;
+        _isVibrationOn = !_isVibrationOn;
+    }
+
+    private void SoundSetting()
+    {
+        _soundImage.sprite = _isSoundOn ? _soundOff : _soundOn;
+        _isSoundOn = !_isSoundOn;
     }
 }

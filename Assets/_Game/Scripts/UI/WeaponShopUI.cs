@@ -1,4 +1,3 @@
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +44,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         _nextItem.onClick.AddListener(NextItem);
         _previousItem.onClick.AddListener(PreviousItem);
         _purchaseItem.onClick.AddListener(PurchaseItem);
-        _purchaseItemWithAds.onClick.AddListener(purchaseItemWithAds);
+        _purchaseItemWithAds.onClick.AddListener(PurchaseItemWithAds);
         _useWeapon.onClick.AddListener(UseWeapon);
     }
 
@@ -54,7 +53,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
     /// </summary>
     private void ExitShop()
     {
-        GameplayManager.Instance.SetGameState(GameState.WeaponShopExit);
+        UIManager.Instance.OnWeaponShopExit();
         Destroy(_currentWeapon);
         _currentWeapon = null;
     }
@@ -146,7 +145,7 @@ public class WeaponShopUI : Singleton<WeaponShopUI>
         }
     }
 
-    private void purchaseItemWithAds()
+    private void PurchaseItemWithAds()
     {
         GameplayManager.Instance.UserData.UnlockedWeapons.Add(_currentWeaponIndex);
         UseWeapon();

@@ -2,11 +2,18 @@ using UnityEngine;
 
 public class Player : CharacterBase
 {
-    private float _horizontal;
-    private float _vertical;
+    #region Fields
+    [Header("Target Aim Components"), Space(5f)]
     [SerializeField] private Transform _targetLock;
     [SerializeField] private float _targetLockSpeed;
     [SerializeField] private float _groundOffset;
+
+    // Cached variables.
+    private float _horizontal;
+    private float _vertical;
+    #endregion
+
+    #region Methods
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
@@ -95,12 +102,15 @@ public class Player : CharacterBase
         }
     }
 
+    /// <summary>
+    /// Locks the target.
+    /// </summary>
     private void LockTarget()
     {
         if (target is null)
         {
             _targetLock.gameObject.SetActive(false);
-            _targetLock.position = Vector3.Lerp(_targetLock.position, this.transform.position, _targetLockSpeed);
+            _targetLock.position = Vector3.Lerp(_targetLock.position, m_transform.position, _targetLockSpeed);
             _targetLock.position += Vector3.up * _groundOffset;
         }
         else
@@ -121,4 +131,5 @@ public class Player : CharacterBase
         if (isDead) return;
         CameraManager.Instance.ZoomOutGamePlayCamera(scaleValue);
     }
+    #endregion
 }

@@ -482,6 +482,7 @@ MonoBehaviour:
   attackSpeed: 2
   _navigationIndicatorSpeed: 0.5
   _navigationIndicatorRange: 400
+  _screenMarginValue: 100
   _botState: 0
   _botDogdeChance: 35
 --- !u!95 &2796742906819949848

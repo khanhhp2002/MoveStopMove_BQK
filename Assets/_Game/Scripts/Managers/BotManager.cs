@@ -32,6 +32,7 @@ public class BotManager : Singleton<BotManager>
     /// </summary>
     private void SpawnBot()
     {
+        if (GameplayManager.Instance.AliveCounter is 0) return;
         Vector3 randomPosition = new Vector3(Random.Range(-_spawnRadius, _spawnRadius), GameplayManager.Instance.Player.transform.position.y, Random.Range(-_spawnRadius, _spawnRadius));
         _botPool.Pull(randomPosition);
     }

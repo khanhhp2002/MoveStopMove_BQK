@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CharacterBase : MonoBehaviour
 {
+    #region Fields
     [Header("Character Components"), Space(5f)]
     [SerializeField] protected Animator animator;
     [SerializeField] protected Transform weaponHolder;
@@ -39,8 +41,6 @@ public class CharacterBase : MonoBehaviour
     protected bool isUlti = false;
     protected bool isAttacked = false;
 
-    protected bool cantMove => isIdle || isWin || isDead;
-    protected bool cantAttack => !target || !isIdle || isDead || isWin || isUlti;
     // Current weapon data.
     protected WeaponData weaponData;
 
@@ -48,34 +48,27 @@ public class CharacterBase : MonoBehaviour
     protected CharacterBase target;
     protected List<CharacterBase> targetsList = new List<CharacterBase>();
 
+    // Character default stats.
     protected int point = 1;
-    public int Point => point;
     protected float scaleValue = 1;
     protected float attackTimer = 0f;
-    protected Vector3 direction = Vector3.zero;
 
+    // Event.
     protected Action<CharacterBase> OnDeadCallBack;
 
-    /// <summary>
-    /// Subscribes to the OnDeadCallBack event.
-    /// </summary>
-    /// <param name="callBack"></param>
-    public void SubcribeOnDeadCallBack(Action<CharacterBase> callBack)
-    {
-        OnDeadCallBack += callBack;
-    }
+    // Cached variables.
+    protected Transform m_transform;
+    protected Vector3 direction = Vector3.zero;
+    #endregion
 
-    /// <summary>
-    /// Unsubscribes from the OnDeadCallBack event.
-    /// </summary>
-    /// <param name="callBack"></param>
-    public void UnsubcribeOnDeadCallBack(Action<CharacterBase> callBack)
-    {
-        OnDeadCallBack -= callBack;
-    }
-
+    #region properties
+    protected bool cantAttack => !target || !isIdle || isDead || isWin || isUlti;
+    protected bool cantMove => isIdle || isWin || isDead;
+    public int Point => point;
     public bool IsDead => isDead;
+    #endregion
 
+    #region Methods
     protected virtual void OnEnable()
     {
         infoCanvas.gameObject.SetActive(false);
@@ -86,6 +79,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
+        m_transform = this.transform;
         radarController.OnEnemyEnterCallBack(OnFoundTarget);
         radarController.OnEnemyExitCallBack(OnLostTarget);
     }
@@ -137,15 +131,15 @@ public class CharacterBase : MonoBehaviour
             if (!isAttacked) attackTimer = 0f;
         }
 
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
+        m_transform.rotation = Quaternion.Slerp(
+            m_transform.rotation,
             Quaternion.LookRotation(direction),
             rotateSpeed * Time.fixedDeltaTime);
 
 
-        transform.position = Vector3.Lerp(
-            transform.position,
-            transform.position + direction,
+        m_transform.position = Vector3.Lerp(
+            m_transform.position,
+            m_transform.position + direction,
             moveSpeed * Time.fixedDeltaTime);
 
         SetAnimationParameters();
@@ -172,9 +166,9 @@ public class CharacterBase : MonoBehaviour
         if (cantAttack) return;
 
         // Look at the target
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            Quaternion.LookRotation(target.transform.position - transform.position),
+        m_transform.rotation = Quaternion.Slerp(
+            m_transform.rotation,
+            Quaternion.LookRotation(target.transform.position - m_transform.position),
             rotateSpeed);
 
         // Can attack
@@ -203,7 +197,7 @@ public class CharacterBase : MonoBehaviour
         }
         Vector3 direction;
         if (target is null)
-            direction = transform.forward;
+            direction = m_transform.forward;
         else
             direction = (target.transform.position - this.weaponHolder.position).normalized;
 
@@ -252,15 +246,34 @@ public class CharacterBase : MonoBehaviour
     }
 
     /// <summary>
+    /// Subscribes to the OnDeadCallBack event.
+    /// </summary>
+    /// <param name="callBack"></param>
+    public void SubcribeOnDeadCallBack(Action<CharacterBase> callBack)
+    {
+        OnDeadCallBack += callBack;
+    }
+
+    /// <summary>
+    /// Unsubscribes from the OnDeadCallBack event.
+    /// </summary>
+    /// <param name="callBack"></param>
+    public void UnsubcribeOnDeadCallBack(Action<CharacterBase> callBack)
+    {
+        OnDeadCallBack -= callBack;
+    }
+
+    /// <summary>
     /// Called when the weapon that the character throws hits another character.
     /// </summary>
     protected virtual void OnGetKill(CharacterBase target)
     {
         if (isDead) return;
-
+        GameplayManager.Instance.AliveCounter--;
         point += target.Point;
         scaleValue = (maxLocalScale - localScaleIncreaseValue / (localScaleIncreaseValue + point));
-        transform.localScale = scaleValue * Vector3.one;
+        m_transform.localScale = scaleValue * Vector3.one;
+        m_transform.DOScale(scaleValue, 0.5f);
     }
 
     /// <summary>
@@ -306,10 +319,14 @@ public class CharacterBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when the character dies.
+    /// </summary>
     public virtual void OnDead()
     {
         isDead = true;
         SetAnimationParameters();
         OnDeadCallBack?.Invoke(this);
     }
+    #endregion
 }

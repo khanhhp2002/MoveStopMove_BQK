@@ -3,26 +3,31 @@ using UnityEngine;
 
 public class Bot : CharacterBase, IPoolable<Bot>
 {
+    #region Fields
     [Header("Bot Components"), Space(5f)]
     [SerializeField, Range(0.1f, 0.5f)] private float _navigationIndicatorSpeed;
     [SerializeField] private float _navigationIndicatorRange;
+    [SerializeField] private float _screenMarginValue; // Left, Right, Top, Bottom
 
     [Header("Bot Stats"), Space(5f)]
     [SerializeField] private BotState _botState;
     [SerializeField, Range(0f, 100f)] private byte _botDogdeChance;
 
+    // Cached variables.
+    private IState _currentState;
     private Vector2 _botPos;
     private Vector2 _playerPos;
     private Vector2 _directionToPlayer;
     private Vector2 _indicatorPos;
-    private NavigationIndicator _navigationIndicator;
-
-    private Action<Bot> _returnPoolAction;
-
-    private IState _currentState;
-
     private bool _isIgnoreAttack = false;
+    private NavigationIndicator _navigationIndicator;
+    private Vector4 _screenMargin; // Left, Right, Top, Bottom
 
+    // Event.
+    private Action<Bot> _returnPoolAction;
+    #endregion
+
+    #region Properties
     public bool IsIgnoreAttack
     {
         get => _isIgnoreAttack;
@@ -35,14 +40,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
             }
         }
     }
-
-    private void ResetIgnoreAttack()
-    {
-        _isIgnoreAttack = false;
-    }
-
     public CharacterBase Target => target;
+    #endregion
 
+    #region Methods
     protected override void OnEnable()
     {
         weaponData = WeaponManager.Instance.GetRandomWeaponData();
@@ -54,6 +55,11 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
     protected override void Start()
     {
+        _screenMargin = new Vector4(
+                       _screenMarginValue,
+                        Screen.width - _screenMarginValue,
+                        Screen.height - _screenMarginValue,
+                        _screenMarginValue);
         radarController.OnWallDetectedCallBack(OnWallDetected);
         radarController.OnBulletDetectedCallBack(OnBulletDetected);
         base.Start();
@@ -116,9 +122,9 @@ public class Bot : CharacterBase, IPoolable<Bot>
     {
         if (GameplayManager.Instance.Player is null) return;
 
-        _botPos = Camera.main.WorldToScreenPoint(transform.position);
+        _botPos = Camera.main.WorldToScreenPoint(m_transform.position);
 
-        if (Vector3.Dot(this.transform.position - Camera.main.transform.position, Camera.main.transform.forward) < 0) // Behind the camera?
+        if (Vector3.Dot(m_transform.position - Camera.main.transform.position, Camera.main.transform.forward) < 0) // Behind the camera?
         {
             _botPos.x = Screen.width - _botPos.x;
             _botPos.y = Screen.height - _botPos.y;
@@ -128,7 +134,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
         {
             _playerPos = Camera.main.WorldToScreenPoint(GameplayManager.Instance.Player.transform.position);
             _directionToPlayer = (_botPos - _playerPos).normalized;
-            _indicatorPos = _directionToPlayer * _navigationIndicatorRange + _playerPos;
+            _indicatorPos = FindIndicatorPosition();
 
             if (_navigationIndicator is null)
             {
@@ -155,6 +161,48 @@ public class Bot : CharacterBase, IPoolable<Bot>
         }
     }
 
+    private Vector2 FindIndicatorPosition()
+    {
+        // y = m_slope * x + m_intercept
+        float m_slope = _directionToPlayer.y / _directionToPlayer.x;
+        float m_intercept = _botPos.y - m_slope * _botPos.x;
+
+        // calculate points
+        Vector2 leftPoint = new Vector2(_screenMargin.x, m_slope * _screenMargin.x + m_intercept);
+        Vector2 rightPoint = new Vector2(_screenMargin.y, m_slope * _screenMargin.y + m_intercept);
+        Vector2 topPoint = new Vector2((_screenMargin.z - m_intercept) / m_slope, _screenMargin.z);
+        Vector2 bottomPoint = new Vector2((_screenMargin.w - m_intercept) / m_slope, _screenMargin.w);
+
+        // find valid point
+        if (_botPos.x < _playerPos.x && leftPoint.x >= _screenMargin.x && leftPoint.x <= _screenMargin.y && leftPoint.y >= _screenMargin.w && leftPoint.y <= _screenMargin.z)
+        {
+            return leftPoint;
+        }
+        else if (_botPos.x > _playerPos.x && rightPoint.x >= _screenMargin.x && rightPoint.x <= _screenMargin.y && rightPoint.y >= _screenMargin.w && rightPoint.y <= _screenMargin.z)
+        {
+            return rightPoint;
+        }
+        else if (_botPos.y > _playerPos.y && topPoint.x >= _screenMargin.x && topPoint.x <= _screenMargin.y && topPoint.y >= _screenMargin.w && topPoint.y <= _screenMargin.z)
+        {
+            return topPoint;
+        }
+        else
+        {
+            return bottomPoint;
+        }
+    }
+
+    /// <summary>
+    /// Resets the ignore attack state.
+    /// </summary>
+    private void ResetIgnoreAttack()
+    {
+        _isIgnoreAttack = false;
+    }
+
+    /// <summary>
+    /// Sets the point of the navigation indicator.
+    /// </summary>
     private void SetPoint()
     {
         if (_navigationIndicator is not null)
@@ -246,7 +294,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     /// <param name="wallPosition"></param>
     private void OnWallDetected(Vector3 wallPosition)
     {
-        Vector3 reflectedDirection = transform.position - wallPosition;
+        Vector3 reflectedDirection = m_transform.position - wallPosition;
 
         direction = reflectedDirection.normalized;
         Quaternion rotationQuaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(-80f, 81f), Vector3.up);
@@ -255,6 +303,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
         direction = (rotationQuaternion * reflectedDirection).normalized;
     }
 
+    /// <summary>
+    /// Called when radar detects a bullet.
+    /// </summary>
+    /// <param name="weaponBase"></param>
     public void OnBulletDetected(ThrowWeapon weaponBase)
     {
         if (weaponBase.Attacker == this) return;
@@ -276,4 +328,5 @@ public class Bot : CharacterBase, IPoolable<Bot>
         SetState(new DeadState());
         base.OnDead();
     }
+    #endregion
 }

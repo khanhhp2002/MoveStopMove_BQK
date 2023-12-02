@@ -7,7 +7,5 @@ public enum GameState : byte
     Preparing = 1,
     Playing = 2,
     Paused = 3,
-    GameOver = 4,
-    WeaponShopEnter = 5,
-    WeaponShopExit = 6
+    GameOver = 4
 }
