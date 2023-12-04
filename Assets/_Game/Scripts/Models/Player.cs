@@ -131,5 +131,22 @@ public class Player : CharacterBase
         if (isDead) return;
         CameraManager.Instance.ZoomOutGamePlayCamera(scaleValue);
     }
+
+    /// <summary>
+    /// OnDead is called when the character dies.
+    /// </summary>
+    public override void OnDead()
+    {
+        base.OnDead();
+        UIManager.Instance.OpenReviveUI();
+    }
+
+    public void Revive()
+    {
+        isDead = false;
+        radarController.gameObject.SetActive(true);
+        SetAnimationParameters();
+        BotManager.Instance.ForceSpawnAll();
+    }
     #endregion
 }

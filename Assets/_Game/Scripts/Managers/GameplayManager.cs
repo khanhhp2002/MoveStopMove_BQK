@@ -44,6 +44,11 @@ public class GameplayManager : Singleton<GameplayManager>
             UserData = new UserData();
             SaveManager.Instance.SaveData(UserData);
         }
+        GameplayUI.Instance.gameObject.SetActive(false);
+        ReviveUI.Instance.gameObject.SetActive(false);
+        LoseUI.Instance.gameObject.SetActive(false);
+        WeaponShopUI.Instance.gameObject.SetActive(false);
+        SkinShopUI.Instance.gameObject.SetActive(false);
     }
     /// <summary>
     /// Start is called before the first frame update.
@@ -122,6 +127,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 //Stop player
                 break;
             case GameState.GameOver:
+                UIManager.Instance.OpenLoseUI();
                 //Hide Playing UI
                 //Show End UI
                 break;

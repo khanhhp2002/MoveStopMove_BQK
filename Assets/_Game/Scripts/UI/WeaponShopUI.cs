@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponShopUI : Singleton<WeaponShopUI>
+public class WeaponShopUI : UIBase<WeaponShopUI>
 {
     [Header("Button"), Space(5f)]
     [SerializeField] private Button _exitShop;

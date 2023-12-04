@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkinShopUI : MonoBehaviour
+public class SkinShopUI : UIBase<SkinShopUI>
 {
     [Header("Button"), Space(5f)]
     [SerializeField] private Button _exitShop;

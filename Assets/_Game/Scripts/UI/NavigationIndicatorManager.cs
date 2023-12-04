@@ -11,7 +11,7 @@ public class NavigationIndicatorManager : Singleton<NavigationIndicatorManager>
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
-    void Awake()
+    void Start()
     {
         _navigationIndicatorPool = new ObjectPool<NavigationIndicator>(_navigationIndicatorPrefab.gameObject, transform, _maxNavigationIndicators);
     }

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuUI : Singleton<MenuUI>
+public class MenuUI : UIBase<MenuUI>
 {
     [Header("Action Buttons"), Space(5f)]
     [SerializeField] private Button _playButton;

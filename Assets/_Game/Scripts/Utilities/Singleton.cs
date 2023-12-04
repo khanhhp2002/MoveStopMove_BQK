@@ -5,7 +5,7 @@
 /// Singleton base class for single objects in the project. 
 /// </summary>
 /// <typeparam name="T">Type of object which is single in the project.</typeparam>
-public class Singleton<T> : MonoBehaviour where T: MonoBehaviour
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     /// <summary>
     /// Encapsulated field for the instance of T.

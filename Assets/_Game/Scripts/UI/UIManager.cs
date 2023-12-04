@@ -2,21 +2,19 @@ using UnityEngine;
 using DG.Tweening;
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] private CanvasGroup _menuUI;
-    [SerializeField] private CanvasGroup _playingUI;
-    [SerializeField] private CanvasGroup _pauseUI;
-    [SerializeField] private CanvasGroup _endUI;
-    [SerializeField] private CanvasGroup _weaponShopUI;
-    [SerializeField] private CanvasGroup _skinShopUI;
     [SerializeField] private float _fadeDuration = 0.5f;
+
+    private CanvasGroup _currentActiveUI;
 
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     private void Start()
     {
+        _currentActiveUI = MenuUI.Instance.CanvasGroup;
         GameplayManager.Instance.OnGameStatePrepare += OnGameStatePrepare;
         GameplayManager.Instance.OnGameStatePlaying += OnGameStatePlaying;
+        //GameplayManager.Instance.OnGameStatePlaying += () => { OpenUI(GameplayUI.Instance.CanvasGroup, GameplayUI.Instance.PreventDisablePreviousUI); };
     }
 
     /// <summary>
@@ -24,12 +22,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OnGameStatePrepare()
     {
-        _menuUI.interactable = true;
-        _menuUI.gameObject.SetActive(true);
-        _playingUI.interactable = false;
-        _menuUI.DOFade(1, _fadeDuration);
-        _playingUI.DOFade(0, _fadeDuration);
-        _playingUI.gameObject.SetActive(false);
+        OpenUI(MenuUI.Instance.CanvasGroup, MenuUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -37,12 +30,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OnGameStatePlaying()
     {
-        _menuUI.interactable = false;
-        _playingUI.interactable = true;
-        _playingUI.gameObject.SetActive(true);
-        _menuUI.DOFade(0, _fadeDuration);
-        _playingUI.DOFade(1, _fadeDuration);
-        _menuUI.gameObject.SetActive(false);
+        OpenUI(GameplayUI.Instance.CanvasGroup, GameplayUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -50,11 +38,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OnWeaponShopEnter()
     {
-        _menuUI.interactable = false;
-        _weaponShopUI.interactable = true;
-        _weaponShopUI.gameObject.SetActive(true);
-        _menuUI.DOFade(0, _fadeDuration);
-        _weaponShopUI.DOFade(1, _fadeDuration);
+        OpenUI(WeaponShopUI.Instance.CanvasGroup, WeaponShopUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -62,11 +46,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OnWeaponShopExit()
     {
-        _menuUI.interactable = true;
-        _weaponShopUI.interactable = false;
-        _menuUI.DOFade(1, _fadeDuration);
-        _weaponShopUI.DOFade(0, _fadeDuration);
-        _weaponShopUI.gameObject.SetActive(false);
+        OpenUI(MenuUI.Instance.CanvasGroup, MenuUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -74,11 +54,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OnSkinShopEnter()
     {
-        _menuUI.interactable = false;
-        _skinShopUI.interactable = true;
-        _skinShopUI.gameObject.SetActive(true);
-        _menuUI.DOFade(0, _fadeDuration);
-        _skinShopUI.DOFade(1, _fadeDuration);
+        OpenUI(SkinShopUI.Instance.CanvasGroup, SkinShopUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -86,10 +62,37 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OnSkinShopExit()
     {
-        _menuUI.interactable = true;
-        _skinShopUI.interactable = false;
-        _menuUI.DOFade(1, _fadeDuration);
-        _skinShopUI.DOFade(0, _fadeDuration);
-        _skinShopUI.gameObject.SetActive(false);
+        OpenUI(MenuUI.Instance.CanvasGroup, MenuUI.Instance.PreventDisablePreviousUI);
+    }
+
+    /// <summary>
+    /// Open Revive UI.
+    /// </summary>
+    public void OpenReviveUI()
+    {
+        OpenUI(ReviveUI.Instance.CanvasGroup, ReviveUI.Instance.PreventDisablePreviousUI);
+    }
+
+    /// <summary>
+    /// Open Lose UI.
+    /// </summary>
+    public void OpenLoseUI()
+    {
+        OpenUI(LoseUI.Instance.CanvasGroup, LoseUI.Instance.PreventDisablePreviousUI);
+    }
+
+    public void OpenUI(CanvasGroup canvasGroup, bool preventDisablePreviousUI)
+    {
+        if (_currentActiveUI == canvasGroup) return;
+        canvasGroup.gameObject.SetActive(true);
+        _currentActiveUI.interactable = false;
+        _currentActiveUI.DOFade(0, _fadeDuration);
+        canvasGroup.DOFade(1, _fadeDuration).OnComplete(() =>
+        {
+            if (!preventDisablePreviousUI)
+                _currentActiveUI.gameObject.SetActive(false);
+            _currentActiveUI = canvasGroup;
+            canvasGroup.interactable = true;
+        });
     }
 }

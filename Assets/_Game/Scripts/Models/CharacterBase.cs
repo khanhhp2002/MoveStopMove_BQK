@@ -12,7 +12,6 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected Rigidbody m_rigidbody;
     [SerializeField] protected Collider hitCollider;
     [SerializeField] protected RadarController radarController;
-    //[SerializeField] protected WeaponBase weapon;
     [SerializeField] protected Canvas infoCanvas;
     [SerializeField] protected SkinnedMeshRenderer pantSkin;
 
@@ -72,6 +71,7 @@ public class CharacterBase : MonoBehaviour
     protected virtual void OnEnable()
     {
         infoCanvas.gameObject.SetActive(false);
+        radarController.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -326,6 +326,9 @@ public class CharacterBase : MonoBehaviour
     {
         isDead = true;
         SetAnimationParameters();
+        radarController.gameObject.SetActive(false);
+        target = null;
+        targetsList.Clear();
         OnDeadCallBack?.Invoke(this);
     }
     #endregion

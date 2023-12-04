@@ -30,11 +30,12 @@ public class BotManager : Singleton<BotManager>
     /// <summary>
     /// Spawns a bot.
     /// </summary>
-    private void SpawnBot()
+    private bool SpawnBot()
     {
-        if (GameplayManager.Instance.AliveCounter - 1 <= _maxBots - _botPool.pooledCount || GameplayManager.Instance.Player.IsDead) return;
+        if (_botPool.pooledCount is 0 || GameplayManager.Instance.AliveCounter - 1 <= _maxBots - _botPool.pooledCount || GameplayManager.Instance.Player.IsDead || GameplayManager.Instance.GameState == GameState.GameOver) return false;
         Vector3 randomPosition = new Vector3(Random.Range(-_spawnRadius, _spawnRadius), 0f, Random.Range(-_spawnRadius, _spawnRadius));
         _botPool.Pull(randomPosition);
+        return true;
     }
 
     /// <summary>
@@ -45,6 +46,11 @@ public class BotManager : Singleton<BotManager>
     {
         bot.ForceControlBotAnimation(BotState.Idle);
         Invoke(nameof(SpawnBot), _delaySpawnTime);
+    }
+
+    public void ForceSpawnAll()
+    {
+        while (SpawnBot()) ;
     }
 
 }

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class GameplayUI : MonoBehaviour
+public class GameplayUI : UIBase<GameplayUI>
 {
     [SerializeField] TMP_Text _aliveCounterDisplay;
 
