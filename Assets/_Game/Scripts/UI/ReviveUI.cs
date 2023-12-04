@@ -32,17 +32,19 @@ public class ReviveUI : UIBase<ReviveUI>
 
     private void ReviveWithGold()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         this.gameObject.SetActive(false);
         ((Player)GameplayManager.Instance.Player).Revive();
-        UIManager.Instance.OnGameStatePlaying();
+        UIManager.Instance.OpenGameplayUI();
         // respawn player
     }
 
     private void ReviveWithAds()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         this.gameObject.SetActive(false);
         ((Player)GameplayManager.Instance.Player).Revive();
-        UIManager.Instance.OnGameStatePlaying();
+        UIManager.Instance.OpenGameplayUI();
         // respawn player
     }
 
@@ -58,6 +60,7 @@ public class ReviveUI : UIBase<ReviveUI>
         while (time >= 0)
         {
             _timeCounter.text = time.ToString();
+            SoundManager.Instance.PlaySFX(SFXType.CountDown);
             yield return new WaitForSeconds(1f);
             time--;
         }

@@ -43,6 +43,7 @@ public class MenuUI : UIBase<MenuUI>
     /// </summary>
     private void StartGame()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         GameplayManager.Instance.SetGameState(GameState.Playing);
     }
     /// <summary>
@@ -50,7 +51,8 @@ public class MenuUI : UIBase<MenuUI>
     /// </summary>
     private void OpenWeaponShop()
     {
-        UIManager.Instance.OnWeaponShopEnter();
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
+        UIManager.Instance.OpenWeaponShopUI();
     }
 
     /// <summary>
@@ -58,7 +60,8 @@ public class MenuUI : UIBase<MenuUI>
     /// </summary>
     private void OpenSkinShop()
     {
-        UIManager.Instance.OnSkinShopEnter();
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
+        UIManager.Instance.OpenSkinShopUI();
     }
 
     /// <summary>
@@ -74,12 +77,14 @@ public class MenuUI : UIBase<MenuUI>
     /// </summary>
     private void VibrationSetting()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _vibrationImage.sprite = _isVibrationOn ? _vibrationOff : _vibrationOn;
         _isVibrationOn = !_isVibrationOn;
     }
 
     private void SoundSetting()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _soundImage.sprite = _isSoundOn ? _soundOff : _soundOn;
         _isSoundOn = !_isSoundOn;
     }

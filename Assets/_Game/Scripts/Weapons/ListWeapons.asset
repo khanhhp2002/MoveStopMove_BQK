@@ -50,7 +50,7 @@ MonoBehaviour:
     PurchasePrice: 20
     PurchaseRequirement: None
   - Name: Boomerang
-    WeaponType: 4
+    WeaponType: 5
     ThrowWeaponPrefab: {fileID: -8853160300729746431, guid: 48a4c31e0ea8a5c41baa670c93ed7fdc, type: 3}
     WeaponModel: {fileID: 100000, guid: cb6e597070ed41f4eb5cb9583c725959, type: 3}
     HandWeaponOffset: {x: -0.00449, y: 0.00074, z: 0.00032}

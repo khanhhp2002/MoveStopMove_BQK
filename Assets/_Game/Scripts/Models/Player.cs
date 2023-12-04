@@ -11,6 +11,13 @@ public class Player : CharacterBase
     // Cached variables.
     private float _horizontal;
     private float _vertical;
+    private string _killerName;
+
+    public string KillerName
+    {
+        get => _killerName;
+        set => _killerName = value;
+    }
     #endregion
 
     #region Methods
@@ -22,6 +29,7 @@ public class Player : CharacterBase
         weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance.UserData.EquippedWeapon);
         EquipWeapon(weaponData);
         pantSkin.material = GameplayManager.Instance.GetPantByIndex(GameplayManager.Instance.UserData.EquippedPant);
+        characterName.text = GameplayManager.Instance.UserData.Name;
         base.Start();
     }
 
@@ -138,9 +146,13 @@ public class Player : CharacterBase
     public override void OnDead()
     {
         base.OnDead();
+        SoundManager.Instance.PlaySFX(SFXType.Death);
         UIManager.Instance.OpenReviveUI();
     }
 
+    /// <summary>
+    /// Revives the player.
+    /// </summary>
     public void Revive()
     {
         isDead = false;

@@ -19,6 +19,7 @@ public class SkinShopUI : UIBase<SkinShopUI>
     /// </summary>
     private void ExitShop()
     {
-        UIManager.Instance.OnSkinShopExit();
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
+        UIManager.Instance.OpenMenuUI();
     }
 }

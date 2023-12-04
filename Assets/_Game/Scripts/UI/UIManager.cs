@@ -12,15 +12,14 @@ public class UIManager : Singleton<UIManager>
     private void Start()
     {
         _currentActiveUI = MenuUI.Instance.CanvasGroup;
-        GameplayManager.Instance.OnGameStatePrepare += OnGameStatePrepare;
-        GameplayManager.Instance.OnGameStatePlaying += OnGameStatePlaying;
-        //GameplayManager.Instance.OnGameStatePlaying += () => { OpenUI(GameplayUI.Instance.CanvasGroup, GameplayUI.Instance.PreventDisablePreviousUI); };
+        GameplayManager.Instance.OnGameStatePrepare += OpenMenuUI;
+        GameplayManager.Instance.OnGameStatePlaying += OpenGameplayUI;
     }
 
     /// <summary>
     /// OnGameStatePrepare is called when the game state is preparing.
     /// </summary>
-    public void OnGameStatePrepare()
+    public void OpenMenuUI()
     {
         OpenUI(MenuUI.Instance.CanvasGroup, MenuUI.Instance.PreventDisablePreviousUI);
     }
@@ -28,7 +27,7 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// OnGameStatePlaying is called when the game state is playing.
     /// </summary>
-    public void OnGameStatePlaying()
+    public void OpenGameplayUI()
     {
         OpenUI(GameplayUI.Instance.CanvasGroup, GameplayUI.Instance.PreventDisablePreviousUI);
     }
@@ -36,33 +35,17 @@ public class UIManager : Singleton<UIManager>
     /// <summary>
     /// OnWeaponShop is called when the weapon shop is opened.
     /// </summary>
-    public void OnWeaponShopEnter()
+    public void OpenWeaponShopUI()
     {
         OpenUI(WeaponShopUI.Instance.CanvasGroup, WeaponShopUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
-    /// OnWeaponShopExit is called when the weapon shop is closed.
-    /// </summary>
-    public void OnWeaponShopExit()
-    {
-        OpenUI(MenuUI.Instance.CanvasGroup, MenuUI.Instance.PreventDisablePreviousUI);
-    }
-
-    /// <summary>
     /// OnSkinShopEnter is called when the skin shop is opened.
     /// </summary>
-    public void OnSkinShopEnter()
+    public void OpenSkinShopUI()
     {
         OpenUI(SkinShopUI.Instance.CanvasGroup, SkinShopUI.Instance.PreventDisablePreviousUI);
-    }
-
-    /// <summary>
-    /// OnSkinShopExit is called when the skin shop is closed.
-    /// </summary>
-    public void OnSkinShopExit()
-    {
-        OpenUI(MenuUI.Instance.CanvasGroup, MenuUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -81,6 +64,11 @@ public class UIManager : Singleton<UIManager>
         OpenUI(LoseUI.Instance.CanvasGroup, LoseUI.Instance.PreventDisablePreviousUI);
     }
 
+    /// <summary>
+    /// Open UI Base Function.
+    /// </summary>
+    /// <param name="canvasGroup"></param>
+    /// <param name="preventDisablePreviousUI"></param>
     public void OpenUI(CanvasGroup canvasGroup, bool preventDisablePreviousUI)
     {
         if (_currentActiveUI == canvasGroup) return;

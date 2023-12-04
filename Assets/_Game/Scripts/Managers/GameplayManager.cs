@@ -27,6 +27,10 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             _aliveCounter = value;
             OnCounterChange?.Invoke();
+            if (_aliveCounter is 1)
+            {
+                SetGameState(GameState.GameOver);
+            }
         }
     }
 
@@ -82,6 +86,8 @@ public class GameplayManager : Singleton<GameplayManager>
     /// Returns current game state.
     /// </summary>
     public GameState GameState => _gameState;
+
+
 
     /// <summary>
     /// Get a random pant's skin material.

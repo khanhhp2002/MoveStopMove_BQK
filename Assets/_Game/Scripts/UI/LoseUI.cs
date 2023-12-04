@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,10 @@ public class LoseUI : UIBase<LoseUI>
 
     private void OnEnable()
     {
+        SoundManager.Instance.PlaySFX(SFXType.Lose);
+        _earnedGold.text = GameplayManager.Instance.Player.KillCount.ToString();
+        _killerName.text = ((Player)GameplayManager.Instance.Player).KillerName;
+        _ranking.text = $"#{GameplayManager.Instance.AliveCounter}";
         /*_ranking.text = GameplayManager.Instance.UserData.Ranking.ToString();
         _killerName.text = GameplayManager.Instance.UserData.KillerName;
         _earnedGold.text = GameplayManager.Instance.UserData.EarnedGold.ToString();*/
@@ -32,18 +37,27 @@ public class LoseUI : UIBase<LoseUI>
 
     private void BonusReward()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         // show ad
     }
 
     private void ScreenCapture()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         // take screenshot
     }
 
     private void ReturnMenu()
     {
-        // reload scene
-        //GameplayManager.Instance.SetGameState(GameState.Preparing);
+        StartCoroutine(ReturnHomeScreenAsync());
+    }
+
+    IEnumerator ReturnHomeScreenAsync()
+    {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
+        GameplayManager.Instance.UserData.GoldAmount += GameplayManager.Instance.Player.KillCount;
+        SaveManager.Instance.SaveData(GameplayManager.Instance.UserData);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        yield return null;
     }
 }

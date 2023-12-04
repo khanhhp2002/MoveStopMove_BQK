@@ -53,7 +53,8 @@ public class WeaponShopUI : UIBase<WeaponShopUI>
     /// </summary>
     private void ExitShop()
     {
-        UIManager.Instance.OnWeaponShopExit();
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
+        UIManager.Instance.OpenMenuUI();
         Destroy(_currentWeapon);
         _currentWeapon = null;
     }
@@ -63,6 +64,7 @@ public class WeaponShopUI : UIBase<WeaponShopUI>
     /// </summary>
     private void NextItem()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _currentWeaponIndex++;
         if (_currentWeaponIndex >= WeaponManager.Instance.GetWeaponDataCount())
         {
@@ -76,6 +78,7 @@ public class WeaponShopUI : UIBase<WeaponShopUI>
     /// </summary>
     private void PreviousItem()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         if (_currentWeaponIndex is 0)
         {
             _currentWeaponIndex = (byte)(WeaponManager.Instance.GetWeaponDataCount() - 1);
@@ -136,6 +139,7 @@ public class WeaponShopUI : UIBase<WeaponShopUI>
     /// </summary>
     private void PurchaseItem()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         if (GameplayManager.Instance.UserData.GoldAmount >= WeaponManager.Instance.GetWeaponDataByIndex(_currentWeaponIndex).PurchasePrice)
         {
             GameplayManager.Instance.ChangeGoldAmount(-WeaponManager.Instance.GetWeaponDataByIndex(_currentWeaponIndex).PurchasePrice);
@@ -147,6 +151,7 @@ public class WeaponShopUI : UIBase<WeaponShopUI>
 
     private void PurchaseItemWithAds()
     {
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         GameplayManager.Instance.UserData.UnlockedWeapons.Add(_currentWeaponIndex);
         UseWeapon();
         CheckWeaponStatus();

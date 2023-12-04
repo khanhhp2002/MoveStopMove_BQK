@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class CharacterBase : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected RadarController radarController;
     [SerializeField] protected Canvas infoCanvas;
     [SerializeField] protected SkinnedMeshRenderer pantSkin;
+    [SerializeField] protected TMP_Text characterName;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float rotateSpeed;
@@ -49,6 +51,7 @@ public class CharacterBase : MonoBehaviour
 
     // Character default stats.
     protected int point = 1;
+    protected int killCount = 0;
     protected float scaleValue = 1;
     protected float attackTimer = 0f;
 
@@ -65,6 +68,12 @@ public class CharacterBase : MonoBehaviour
     protected bool cantMove => isIdle || isWin || isDead;
     public int Point => point;
     public bool IsDead => isDead;
+    public int KillCount => killCount;
+    public string CharacterName
+    {
+        get => characterName.text;
+        set => characterName.text = value;
+    }
     #endregion
 
     #region Methods
@@ -91,7 +100,6 @@ public class CharacterBase : MonoBehaviour
     {
         Movement();
         Attack();
-        //SetAnimationParameters();
     }
 
     /// <summary>
@@ -203,9 +211,6 @@ public class CharacterBase : MonoBehaviour
 
         direction.y = 0f;
 
-        //ThrowWeapon weapon = GameObject.Instantiate(weaponData.ThrowWeaponPrefab);
-        //weapon.Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
-
         WeaponManager.Instance.GetWeapon(weaponData.WeaponType, weaponData.ThrowWeaponPrefab)
             .Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
 
@@ -268,8 +273,12 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     protected virtual void OnGetKill(CharacterBase target)
     {
+        Player player = target as Player;
+        if (player != null)
+            player.KillerName = CharacterName;
         if (isDead) return;
         GameplayManager.Instance.AliveCounter--;
+        killCount++;
         point += target.Point;
         scaleValue = (maxLocalScale - localScaleIncreaseValue / (localScaleIncreaseValue + point));
         m_transform.localScale = scaleValue * Vector3.one;

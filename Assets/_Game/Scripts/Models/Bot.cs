@@ -6,7 +6,6 @@ public class Bot : CharacterBase, IPoolable<Bot>
     #region Fields
     [Header("Bot Components"), Space(5f)]
     [SerializeField, Range(0.1f, 0.5f)] private float _navigationIndicatorSpeed;
-    [SerializeField] private float _navigationIndicatorRange;
     [SerializeField] private float _screenMarginValue;
 
     [Header("Bot Stats"), Space(5f)]
@@ -51,6 +50,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
         EquipWeapon(weaponData);
         pantSkin.material = GameplayManager.Instance.GetPantByIndex();
         _currentState = new IdleState();
+        characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
         base.OnEnable();
     }
 
