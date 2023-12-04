@@ -7132,12 +7132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a49cfff01d08b04982167682f33fc90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menuUI: {fileID: 197390000}
-  _playingUI: {fileID: 1008549746}
-  _reviveUI: {fileID: 0}
-  _loseUI: {fileID: 0}
-  _weaponShopUI: {fileID: 1081369104}
-  _skinShopUI: {fileID: 389064397}
   _fadeDuration: 0.25
 --- !u!114 &899513654
 MonoBehaviour:
@@ -11028,7 +11022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04921e720b716a49891d33d80f9a1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvasGroup: {fileID: 0}
+  _canvasGroup: {fileID: 1378857710}
   _preventDisablePreviousUI: 0
   _bonusReward: {fileID: 1695445929}
   _screenCapture: {fileID: 1585298552}
