@@ -53,6 +53,7 @@ public class GameplayManager : Singleton<GameplayManager>
         LoseUI.Instance.gameObject.SetActive(false);
         WeaponShopUI.Instance.gameObject.SetActive(false);
         SkinShopUI.Instance.gameObject.SetActive(false);
+        SettingUI.Instance.gameObject.SetActive(false);
     }
     /// <summary>
     /// Start is called before the first frame update.

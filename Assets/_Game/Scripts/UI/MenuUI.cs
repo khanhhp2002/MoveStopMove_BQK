@@ -24,11 +24,13 @@ public class MenuUI : UIBase<MenuUI>
 
     private bool _isVibrationOn = true;
     private bool _isSoundOn = true;
+
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     private void Start()
     {
+        Init();
         GameplayManager.Instance.OnGoldAmountChange += OnGoldAmountChange;
         NumberCounter.Instance.CountAnimation(_goldAmount, GameplayManager.Instance.UserData.GoldAmount);
         _playButton.onClick.AddListener(StartGame);
@@ -36,6 +38,17 @@ public class MenuUI : UIBase<MenuUI>
         _skinShopOpen.onClick.AddListener(OpenSkinShop);
         _vibrationButton.onClick.AddListener(VibrationSetting);
         _soundButton.onClick.AddListener(SoundSetting);
+    }
+
+    /// <summary>
+    /// Init the setting.
+    /// </summary>
+    private void Init()
+    {
+        _isSoundOn = GameplayManager.Instance.UserData.IsSoundEnabled;
+        _isVibrationOn = GameplayManager.Instance.UserData.IsVibrationEnabled;
+        _soundImage.sprite = _isSoundOn ? _soundOn : _soundOff;
+        _vibrationImage.sprite = _isVibrationOn ? _vibrationOn : _vibrationOff;
     }
 
     /// <summary>
@@ -78,14 +91,14 @@ public class MenuUI : UIBase<MenuUI>
     private void VibrationSetting()
     {
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
-        _vibrationImage.sprite = _isVibrationOn ? _vibrationOff : _vibrationOn;
         _isVibrationOn = !_isVibrationOn;
+        _vibrationImage.sprite = _isVibrationOn ? _vibrationOn : _vibrationOff;
     }
 
     private void SoundSetting()
     {
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
-        _soundImage.sprite = _isSoundOn ? _soundOff : _soundOn;
         _isSoundOn = !_isSoundOn;
+        _soundImage.sprite = _isSoundOn ? _soundOn : _soundOff;
     }
 }

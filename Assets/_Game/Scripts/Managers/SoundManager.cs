@@ -12,6 +12,9 @@ public class SoundManager : Singleton<SoundManager>
     /// <param name="sfxType"></param>
     public void PlaySFX(SFXType sfxType)
     {
-        _audioSource.PlayOneShot(_audioClips[(byte)sfxType]);
+        if (GameplayManager.Instance.UserData.IsSoundEnabled)
+        {
+            _audioSource.PlayOneShot(_audioClips[(byte)sfxType]);
+        }
     }
 }

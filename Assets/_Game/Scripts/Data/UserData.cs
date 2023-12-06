@@ -58,6 +58,15 @@ public class UserData
     [SerializeField] private byte _equippedHair = 0;
     public byte EquippedHair { get => _equippedHair; set => _equippedHair = value; }
 
+    // User settings.
+    [SerializeField] private bool _isVibrationEnabled = true;
+    public bool IsVibrationEnabled { get => _isVibrationEnabled; set => _isVibrationEnabled = value; }
+
+    [SerializeField] private bool _isSoundEnabled = true;
+    public bool IsSoundEnabled { get => _isSoundEnabled; set => _isSoundEnabled = value; }
+
+    [SerializeField] private bool _isADSEnable = true;
+    public bool IsADSEnable { get => _isADSEnable; set => _isADSEnable = value; }
     public UserData()
     {
         // Player infomation.

@@ -146,6 +146,8 @@ public class Player : CharacterBase
     public override void OnDead()
     {
         base.OnDead();
+        if (GameplayManager.Instance.UserData.IsVibrationEnabled)
+            Handheld.Vibrate();
         SoundManager.Instance.PlaySFX(SFXType.Death);
         UIManager.Instance.OpenReviveUI();
     }
