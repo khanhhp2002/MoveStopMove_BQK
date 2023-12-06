@@ -90,15 +90,17 @@ public class MenuUI : UIBase<MenuUI>
     /// </summary>
     private void VibrationSetting()
     {
-        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _isVibrationOn = !_isVibrationOn;
+        GameplayManager.Instance.UserData.IsVibrationEnabled = _isVibrationOn;
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _vibrationImage.sprite = _isVibrationOn ? _vibrationOn : _vibrationOff;
     }
 
     private void SoundSetting()
     {
-        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _isSoundOn = !_isSoundOn;
+        GameplayManager.Instance.UserData.IsSoundEnabled = _isVibrationOn;
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _soundImage.sprite = _isSoundOn ? _soundOn : _soundOff;
     }
 }

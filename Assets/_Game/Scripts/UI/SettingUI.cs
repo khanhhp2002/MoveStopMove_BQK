@@ -52,8 +52,6 @@ public class SettingUI : UIBase<SettingUI>
     private void SaveSetting()
     {
         //Save
-        GameplayManager.Instance.UserData.IsSoundEnabled = _isSoundOn;
-        GameplayManager.Instance.UserData.IsVibrationEnabled = _isVibrationOn;
         SaveManager.Instance.SaveData(GameplayManager.Instance.UserData);
     }
 
@@ -87,8 +85,9 @@ public class SettingUI : UIBase<SettingUI>
     /// </summary>
     private void SoundSetting()
     {
-        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _isSoundOn = !_isSoundOn;
+        GameplayManager.Instance.UserData.IsSoundEnabled = _isSoundOn;
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _soundSetting.transform.DOLocalMoveX(_isSoundOn ? _xOffset : -_xOffset, _duration)
             .OnComplete(() => _soundSetting.GetComponent<Image>().sprite = _isSoundOn ? _toggleOn : _toggleOff);
     }
@@ -98,8 +97,9 @@ public class SettingUI : UIBase<SettingUI>
     /// </summary>
     private void VibrationSetting()
     {
-        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _isVibrationOn = !_isVibrationOn;
+        GameplayManager.Instance.UserData.IsVibrationEnabled = _isVibrationOn;
+        SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _vibrationSetting.transform.DOLocalMoveX(_isVibrationOn ? _xOffset : -_xOffset, _duration)
             .OnComplete(() => _vibrationSetting.GetComponent<Image>().sprite = _isVibrationOn ? _toggleOn : _toggleOff);
     }
