@@ -99,8 +99,13 @@ public class MenuUI : UIBase<MenuUI>
     private void SoundSetting()
     {
         _isSoundOn = !_isSoundOn;
-        GameplayManager.Instance.UserData.IsSoundEnabled = _isVibrationOn;
+        GameplayManager.Instance.UserData.IsSoundEnabled = _isSoundOn;
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         _soundImage.sprite = _isSoundOn ? _soundOn : _soundOff;
+    }
+
+    private void OnDisable()
+    {
+        //SaveManager.Instance.SaveData(GameplayManager.Instance.UserData);
     }
 }

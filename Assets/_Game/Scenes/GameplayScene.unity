@@ -2406,7 +2406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3666,7 +3666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 0.5882353}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3709,13 +3709,12 @@ MonoBehaviour:
   _pantsShopBtn: {fileID: 1796105047}
   _weaponShopBtn: {fileID: 71312243}
   _fullSetShopBtn: {fileID: 328602473}
-  _itemPrefab: {fileID: 302503598282826995, guid: f8176d8947ce94b43888551e3992f821, type: 3}
   _purchaseItem: {fileID: 1520952445}
   _purchaseItemWithAds: {fileID: 1506559364}
   _useWeapon: {fileID: 1168307193}
   _itemContainer: {fileID: 1738560914}
-  _selectedColor: {r: 0, g: 0, b: 0, a: 0}
-  _unselectedColor: {r: 0, g: 0, b: 0, a: 0}
+  _itemPrefab: {fileID: 5852104865647056401, guid: f8176d8947ce94b43888551e3992f821, type: 3}
+  scrollRect: {fileID: 1599478896}
 --- !u!1 &404420691
 GameObject:
   m_ObjectHideFlags: 0
@@ -8048,19 +8047,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c871a495cabd0114f82baee3043a2b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pants:
-  - {fileID: 2100000, guid: 055f63f8164ad414b8c9e8d82837fd4e, type: 2}
-  - {fileID: 2100000, guid: ef1a35aefa6b7d348a72d1d8dedf8c4c, type: 2}
-  - {fileID: 2100000, guid: fd09115f1d131ab4fb2cdce10a813ffb, type: 2}
-  - {fileID: 2100000, guid: 414172fb1815d2845ac5edc59e37e2b6, type: 2}
-  - {fileID: 2100000, guid: 8398274543b022d47b767335bba0d1a3, type: 2}
-  - {fileID: 2100000, guid: 67a184acc31765b4cbfc27dcc3a69561, type: 2}
-  - {fileID: 2100000, guid: 6174d37e3bc99eb4aa214d34d3dd5431, type: 2}
-  - {fileID: 2100000, guid: 7ee4f4fc9ed3c0d4eb7c9b6fd1e8f1fc, type: 2}
-  - {fileID: 2100000, guid: 8f29ef9cb65c1f74fa51eee320c5be2d, type: 2}
   _player: {fileID: 8296172668588715379}
   _virualCameraController: {fileID: 738360899}
   _gameState: 0
+  SkinSO: {fileID: 11400000, guid: 17ee04aee04f3314a8daf01bb1007ffa, type: 2}
   _obstacleMaterials:
   - {fileID: 2100000, guid: 2f21264e107210740b58dcd1789a8cb1, type: 2}
   - {fileID: 2100000, guid: c1f8a84f272a0bb4194c91c1fe1f1f94, type: 2}
@@ -8949,6 +8939,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967450444}
   m_CullTransparentMesh: 1
+--- !u!4 &968774125 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6307742475838000641, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
+  m_PrefabInstance: {fileID: 2074924999817132304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1003570197
 GameObject:
   m_ObjectHideFlags: 0
@@ -10574,7 +10569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.392}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -11526,6 +11521,11 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!137 &1253846217 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1985378756674247555, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
+  m_PrefabInstance: {fileID: 2074924999817132304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1259349684
 GameObject:
   m_ObjectHideFlags: 0
@@ -12479,7 +12479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -19532,9 +19532,17 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8064381629493515363, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
+      propertyPath: skinColor
+      value: 
+      objectReference: {fileID: 1253846217}
+    - target: {fileID: 8064381629493515363, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
       propertyPath: _targetLock
       value: 
       objectReference: {fileID: 1878297314}
+    - target: {fileID: 8064381629493515363, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
+      propertyPath: hairContainer
+      value: 
+      objectReference: {fileID: 968774125}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
 --- !u!4 &5006512735402205027 stripped

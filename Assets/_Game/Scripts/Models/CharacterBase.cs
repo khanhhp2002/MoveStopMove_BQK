@@ -10,11 +10,13 @@ public class CharacterBase : MonoBehaviour
     [Header("Character Components"), Space(5f)]
     [SerializeField] protected Animator animator;
     [SerializeField] protected Transform weaponHolder;
+    [SerializeField] protected Transform hairContainer;
+    [SerializeField] protected SkinnedMeshRenderer pantSkin;
+    [SerializeField] protected SkinnedMeshRenderer skinColor;
     [SerializeField] protected Rigidbody m_rigidbody;
     [SerializeField] protected Collider hitCollider;
     [SerializeField] protected RadarController radarController;
     [SerializeField] protected Canvas infoCanvas;
-    [SerializeField] protected SkinnedMeshRenderer pantSkin;
     [SerializeField] protected TMP_Text characterName;
 
     [Header("Character Stats"), Space(5f)]
@@ -91,6 +93,8 @@ public class CharacterBase : MonoBehaviour
         m_transform = this.transform;
         radarController.OnEnemyEnterCallBack(OnFoundTarget);
         radarController.OnEnemyExitCallBack(OnLostTarget);
+        Instantiate(GameplayManager.Instance.SkinSO.Hairs[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.Hairs.Count)], hairContainer);
+        skinColor.material = GameplayManager.Instance.SkinSO.SkinColors[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.SkinColors.Count)];
     }
 
     /// <summary>

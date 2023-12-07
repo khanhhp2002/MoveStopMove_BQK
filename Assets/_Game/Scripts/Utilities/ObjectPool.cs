@@ -114,6 +114,18 @@ public class ObjectPool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
     }
 
     /// <summary>
+    /// This method pulls an object from the pool and sets its parent.
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public T Pull(Transform parent)
+    {
+        T t = Pull();
+        t.transform.SetParent(parent);
+        return t;
+    }
+
+    /// <summary>
     /// This method pulls an object from the pool and sets its position and rotation.
     /// </summary>
     /// <param name="position"></param>

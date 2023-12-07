@@ -48,7 +48,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     {
         weaponData = WeaponManager.Instance.GetRandomWeaponData();
         EquipWeapon(weaponData);
-        pantSkin.material = GameplayManager.Instance.GetPantByIndex();
+        pantSkin.material = GameplayManager.Instance.SkinSO.EquipPant();
         _currentState = new IdleState();
         characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
         base.OnEnable();

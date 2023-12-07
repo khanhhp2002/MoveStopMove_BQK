@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class GameplayManager : Singleton<GameplayManager>
 {
-    [SerializeField] private Material[] _pants;
     [SerializeField] private CharacterBase _player;
     [SerializeField] private VirtualCameraController _virualCameraController;
     [SerializeField] private GameState _gameState = GameState.None;
+    public SkinSO SkinSO;
 
     public Material[] _obstacleMaterials;
     public UserData UserData;
@@ -87,25 +87,6 @@ public class GameplayManager : Singleton<GameplayManager>
     /// Returns current game state.
     /// </summary>
     public GameState GameState => _gameState;
-
-
-
-    /// <summary>
-    /// Get a random pant's skin material.
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public Material GetPantByIndex(int index = -1)
-    {
-        if (index < 0 || index >= _pants.Length)
-        {
-            return _pants[UnityEngine.Random.Range(0, _pants.Length)];
-        }
-        else
-        {
-            return _pants[index];
-        }
-    }
 
     /// <summary>
     /// Set game state.

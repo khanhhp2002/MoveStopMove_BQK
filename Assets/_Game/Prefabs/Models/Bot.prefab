@@ -469,11 +469,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 2796742906819949848}
   weaponHolder: {fileID: 2796742907894322596}
+  hairContainer: {fileID: 2796742907700574162}
+  pantSkin: {fileID: 2796742907714525601}
+  skinColor: {fileID: 2796742908139707101}
   m_rigidbody: {fileID: 2796742906819949849}
   hitCollider: {fileID: 2796742906819949846}
   radarController: {fileID: 2796742907056556148}
   infoCanvas: {fileID: 2796742907468331453}
-  pantSkin: {fileID: 2796742907714525601}
   characterName: {fileID: 2796742907211353122}
   rotateSpeed: 8
   moveSpeed: 7

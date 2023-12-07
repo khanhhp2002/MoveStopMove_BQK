@@ -28,7 +28,7 @@ public class Player : CharacterBase
     {
         weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance.UserData.EquippedWeapon);
         EquipWeapon(weaponData);
-        pantSkin.material = GameplayManager.Instance.GetPantByIndex(GameplayManager.Instance.UserData.EquippedPant);
+        pantSkin.material = GameplayManager.Instance.SkinSO.EquipPant(GameplayManager.Instance.UserData.EquippedPant);
         characterName.text = GameplayManager.Instance.UserData.Name;
         base.Start();
     }
