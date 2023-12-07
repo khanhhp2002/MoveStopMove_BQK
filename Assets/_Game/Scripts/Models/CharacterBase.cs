@@ -18,6 +18,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected RadarController radarController;
     [SerializeField] protected Canvas infoCanvas;
     [SerializeField] protected TMP_Text characterName;
+    [SerializeField] protected TMP_Text characterPoint;
 
     [Header("Character Stats"), Space(5f)]
     [SerializeField] protected float rotateSpeed;
@@ -63,6 +64,8 @@ public class CharacterBase : MonoBehaviour
     // Cached variables.
     protected Transform m_transform;
     protected Vector3 direction = Vector3.zero;
+    protected GameObject m_hair;
+    protected GameObject m_weapon;
     #endregion
 
     #region properties
@@ -83,6 +86,7 @@ public class CharacterBase : MonoBehaviour
     {
         infoCanvas.gameObject.SetActive(false);
         radarController.gameObject.SetActive(true);
+        characterPoint.text = point.ToString();
     }
 
     /// <summary>
@@ -93,7 +97,7 @@ public class CharacterBase : MonoBehaviour
         m_transform = this.transform;
         radarController.OnEnemyEnterCallBack(OnFoundTarget);
         radarController.OnEnemyExitCallBack(OnLostTarget);
-        Instantiate(GameplayManager.Instance.SkinSO.Hairs[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.Hairs.Count)], hairContainer);
+        m_hair = Instantiate(GameplayManager.Instance.SkinSO.Hairs[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.Hairs.Count)], hairContainer);
         skinColor.material = GameplayManager.Instance.SkinSO.SkinColors[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.SkinColors.Count)];
     }
 
@@ -116,15 +120,15 @@ public class CharacterBase : MonoBehaviour
 
     public void EquipWeapon(WeaponData weaponData)
     {
-        if (weaponHolder.childCount > 0)
+        if (m_weapon is not null)
         {
-            Destroy(weaponHolder.GetChild(0).gameObject);
+            Destroy(m_weapon.gameObject);
         }
         this.weaponData = weaponData;
-        var weapon = Instantiate(this.weaponData.WeaponModel, weaponHolder);
-        weapon.transform.localScale = this.weaponData.HandWeaponScale * Vector3.one;
-        weapon.transform.localPosition = this.weaponData.HandWeaponOffset;
-        weapon.transform.localRotation = Quaternion.identity;
+        m_weapon = Instantiate(this.weaponData.WeaponModel, weaponHolder);
+        m_weapon.transform.localScale = this.weaponData.HandWeaponScale * Vector3.one;
+        m_weapon.transform.localPosition = this.weaponData.HandWeaponOffset;
+        m_weapon.transform.localRotation = Quaternion.identity;
     }
 
     /// <summary>
@@ -284,6 +288,7 @@ public class CharacterBase : MonoBehaviour
         GameplayManager.Instance.AliveCounter--;
         killCount++;
         point += target.Point;
+        characterPoint.text = point.ToString();
         scaleValue = (maxLocalScale - localScaleIncreaseValue / (localScaleIncreaseValue + point));
         m_transform.localScale = scaleValue * Vector3.one;
         m_transform.DOScale(scaleValue, 0.5f);

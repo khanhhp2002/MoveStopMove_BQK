@@ -10,7 +10,8 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
     [Header("Bot Stats"), Space(5f)]
     [SerializeField] private BotState _botState;
-    [SerializeField, Range(0f, 100f)] private byte _botDogdeChance;
+    [SerializeField] private byte _minimumDogdeChance;
+    [SerializeField] private byte _maximumDogdeChance;
 
     // Cached variables.
     private IState _currentState;
@@ -22,6 +23,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     private NavigationIndicator _navigationIndicator;
     private Vector4 _screenMargin; // Left, Right, Top, Bottom
     private bool _isOnScreen = true;
+    private float _currentDogdeChance;
 
     // Event.
     private Action<Bot> _returnPoolAction;
@@ -320,11 +322,13 @@ public class Bot : CharacterBase, IPoolable<Bot>
     public void OnBulletDetected(ThrowWeapon weaponBase)
     {
         if (weaponBase.Attacker == this) return;
-        byte randomChance = (byte)UnityEngine.Random.Range(0, 101);
-        if (_botDogdeChance > randomChance)
+        _currentDogdeChance = 20 + 60 * (point / 120f);
+        _currentDogdeChance = Mathf.Clamp(_currentDogdeChance, _minimumDogdeChance, _maximumDogdeChance);
+        float _botDogdeChance = UnityEngine.Random.Range(0, 100);
+        if (_currentDogdeChance > _botDogdeChance)
         {
             Vector3 incomingBulletDirection = weaponBase.MoveDirection;
-            Quaternion rotationQuaternion = Quaternion.AngleAxis((UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * UnityEngine.Random.Range(60f, 120f), Vector3.up);
+            Quaternion rotationQuaternion = Quaternion.AngleAxis((UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * UnityEngine.Random.Range(75f, 105f), Vector3.up);
             direction = (rotationQuaternion * incomingBulletDirection).normalized;
             SetState(new DodgeState());
         }

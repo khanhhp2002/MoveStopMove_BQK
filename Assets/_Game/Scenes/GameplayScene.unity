@@ -528,7 +528,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -3084,7 +3084,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -3714,7 +3714,13 @@ MonoBehaviour:
   _useWeapon: {fileID: 1168307193}
   _itemContainer: {fileID: 1738560914}
   _itemPrefab: {fileID: 5852104865647056401, guid: f8176d8947ce94b43888551e3992f821, type: 3}
-  scrollRect: {fileID: 1599478896}
+  _scrollRect: {fileID: 1599478896}
+  _selectedColor:
+    serializedVersion: 2
+    rgba: 32896501
+  _unselectedColor:
+    serializedVersion: 2
+    rgba: 3360377675
 --- !u!1 &404420691
 GameObject:
   m_ObjectHideFlags: 0
@@ -8939,11 +8945,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 967450444}
   m_CullTransparentMesh: 1
---- !u!4 &968774125 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6307742475838000641, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
-  m_PrefabInstance: {fileID: 2074924999817132304}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1003570197
 GameObject:
   m_ObjectHideFlags: 0
@@ -11521,11 +11522,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!137 &1253846217 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 1985378756674247555, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
-  m_PrefabInstance: {fileID: 2074924999817132304}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1259349684
 GameObject:
   m_ObjectHideFlags: 0
@@ -15134,7 +15130,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -15925,7 +15921,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -19532,17 +19528,9 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8064381629493515363, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
-      propertyPath: skinColor
-      value: 
-      objectReference: {fileID: 1253846217}
-    - target: {fileID: 8064381629493515363, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
       propertyPath: _targetLock
       value: 
       objectReference: {fileID: 1878297314}
-    - target: {fileID: 8064381629493515363, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
-      propertyPath: hairContainer
-      value: 
-      objectReference: {fileID: 968774125}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a7946b386695d241b3b396a2445ab0e, type: 3}
 --- !u!4 &5006512735402205027 stripped

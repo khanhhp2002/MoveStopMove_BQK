@@ -105,8 +105,11 @@ public class Player : CharacterBase
 
         if (Input.GetMouseButtonDown(0))
         {
-            WeaponManager.Instance.GetWeapon(weaponData.WeaponType, weaponData.ThrowWeaponPrefab)
-            .Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
+            if (m_hair is not null)
+            {
+                Destroy(m_hair.gameObject);
+            }
+            m_hair = Instantiate(GameplayManager.Instance.SkinSO.Hairs[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.Hairs.Count)], hairContainer);
         }
     }
 
