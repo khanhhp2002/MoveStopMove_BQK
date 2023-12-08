@@ -50,9 +50,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
     {
         weaponData = WeaponManager.Instance.GetRandomWeaponData();
         EquipWeapon(weaponData);
-        pantSkin.material = GameplayManager.Instance.SkinSO.EquipPant();
+        pantSkin.material = RuntimeData.Instance.SkinStorage.EquipPant();
         _currentState = new IdleState();
         characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
+        m_hair = Instantiate(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model, hairContainer);
         base.OnEnable();
     }
 

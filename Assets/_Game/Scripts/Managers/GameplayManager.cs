@@ -6,7 +6,6 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] private CharacterBase _player;
     [SerializeField] private VirtualCameraController _virualCameraController;
     [SerializeField] private GameState _gameState = GameState.None;
-    public SkinSO SkinSO;
 
     public Material[] _obstacleMaterials;
     public UserData UserData;

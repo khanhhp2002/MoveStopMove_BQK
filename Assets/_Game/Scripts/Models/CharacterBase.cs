@@ -87,6 +87,7 @@ public class CharacterBase : MonoBehaviour
         infoCanvas.gameObject.SetActive(false);
         radarController.gameObject.SetActive(true);
         characterPoint.text = point.ToString();
+        skinColor.material = RuntimeData.Instance.SkinStorage.SkinColors[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.SkinColors.Count)];
     }
 
     /// <summary>
@@ -97,8 +98,6 @@ public class CharacterBase : MonoBehaviour
         m_transform = this.transform;
         radarController.OnEnemyEnterCallBack(OnFoundTarget);
         radarController.OnEnemyExitCallBack(OnLostTarget);
-        m_hair = Instantiate(GameplayManager.Instance.SkinSO.Hairs[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.Hairs.Count)], hairContainer);
-        skinColor.material = GameplayManager.Instance.SkinSO.SkinColors[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.SkinColors.Count)];
     }
 
     /// <summary>

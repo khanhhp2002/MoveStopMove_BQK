@@ -1,6 +1,7 @@
 public class RuntimeData : Singleton<RuntimeData>
 {
     public UserData UserData;
+    public SkinSO SkinStorage;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.

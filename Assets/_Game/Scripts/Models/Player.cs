@@ -28,7 +28,8 @@ public class Player : CharacterBase
     {
         weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance.UserData.EquippedWeapon);
         EquipWeapon(weaponData);
-        pantSkin.material = GameplayManager.Instance.SkinSO.EquipPant(GameplayManager.Instance.UserData.EquippedPant);
+        pantSkin.material = RuntimeData.Instance.SkinStorage.EquipPant(GameplayManager.Instance.UserData.EquippedPant);
+        m_hair = Instantiate(RuntimeData.Instance.SkinStorage.Hairs[GameplayManager.Instance.UserData.EquippedHair].Model, hairContainer);
         characterName.text = GameplayManager.Instance.UserData.Name;
         base.Start();
     }
@@ -109,7 +110,7 @@ public class Player : CharacterBase
             {
                 Destroy(m_hair.gameObject);
             }
-            m_hair = Instantiate(GameplayManager.Instance.SkinSO.Hairs[UnityEngine.Random.Range(0, GameplayManager.Instance.SkinSO.Hairs.Count)], hairContainer);
+            m_hair = Instantiate(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model, hairContainer);
         }
     }
 

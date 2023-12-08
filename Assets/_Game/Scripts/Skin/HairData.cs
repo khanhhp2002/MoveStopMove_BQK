@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class SkinData
+public class HairData
 {
     public GameObject Model;
-    public float Size;
+    public int Price;
+    public Sprite Sprite;
 }
