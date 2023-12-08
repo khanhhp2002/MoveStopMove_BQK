@@ -322,7 +322,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     public void OnBulletDetected(ThrowWeapon weaponBase)
     {
         if (weaponBase.Attacker == this) return;
-        _currentDogdeChance = 20 + 60 * (point / 120f);
+        _currentDogdeChance = 20 + 30 * (point / 60f);
         _currentDogdeChance = Mathf.Clamp(_currentDogdeChance, _minimumDogdeChance, _maximumDogdeChance);
         float _botDogdeChance = UnityEngine.Random.Range(0, 100);
         if (_currentDogdeChance > _botDogdeChance)

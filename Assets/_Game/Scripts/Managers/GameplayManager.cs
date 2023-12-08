@@ -26,6 +26,7 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             _aliveCounter = value;
             OnCounterChange?.Invoke();
+            (_player as Player).Ranking = _aliveCounter;
             if (_aliveCounter is 1)
             {
                 SetGameState(GameState.GameOver);
@@ -49,7 +50,7 @@ public class GameplayManager : Singleton<GameplayManager>
         }
         GameplayUI.Instance.gameObject.SetActive(false);
         ReviveUI.Instance.gameObject.SetActive(false);
-        LoseUI.Instance.gameObject.SetActive(false);
+        GameoverUI.Instance.gameObject.SetActive(false);
         WeaponShopUI.Instance.gameObject.SetActive(false);
         SkinShopUI.Instance.gameObject.SetActive(false);
         SettingUI.Instance.gameObject.SetActive(false);
@@ -97,7 +98,7 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             case GameState.Preparing:
                 OnGameStatePrepare?.Invoke();
-                _aliveCounter = 100;
+                _aliveCounter = 50;
                 //Reset bots count
                 //Reset player
                 //Spawn bots

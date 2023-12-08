@@ -3714,7 +3714,7 @@ CanvasGroup:
   m_GameObject: {fileID: 389064395}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 0
+  m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &389064398
@@ -10751,7 +10751,7 @@ CanvasGroup:
   m_GameObject: {fileID: 1081369098}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 0
+  m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &1097435451
@@ -12697,6 +12697,23 @@ MonoBehaviour:
   _ranking: {fileID: 1964730810}
   _killerName: {fileID: 142393623}
   _earnedGold: {fileID: 91319210}
+  _slider: {fileID: 1728704071}
+  _zone1: {fileID: 1658644815}
+  _zone2: {fileID: 769784640}
+  _zoneComplete: {fileID: 21300000, guid: a13c5327c8f1886418a22f1f35b67078, type: 3}
+  _zoneIncomplete: {fileID: 21300000, guid: 5b7cca73152167a48895140dc8ac08ff, type: 3}
+  _zone1Icon: {fileID: 273976460}
+  _zone2Icon: {fileID: 1102380226}
+  _completeColor:
+    serializedVersion: 2
+    rgba: 3858759680
+  _incompleteColor:
+    serializedVersion: 2
+    rgba: 3865338980
+  _zone1CompleteStatus: {fileID: 1425673559}
+  _zone2CompleteStatus: {fileID: 1268908317}
+  _lock: {fileID: 21300000, guid: 6a58540ac5a23c34b99a5aab07a7db02, type: 3}
+  _unlock: {fileID: 21300000, guid: c077cac8f09f3264a947793b5d46de64, type: 3}
 --- !u!222 &1378857709
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15519,7 +15536,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 44.2
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

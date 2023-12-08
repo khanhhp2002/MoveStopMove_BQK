@@ -8,7 +8,21 @@ public class Player : CharacterBase
     [SerializeField] private float _targetLockSpeed;
     [SerializeField] private float _groundOffset;
 
+    /// <summary>
+    /// Change IsDance state.
+    /// </summary>
+    public bool IsDance
+    {
+        get => isDance;
+        set
+        {
+            isDance = value;
+            SetAnimationParameters();
+        }
+    }
+
     // Cached variables.
+    private int _ranking;
     private float _horizontal;
     private float _vertical;
     private string _killerName;
@@ -18,6 +32,9 @@ public class Player : CharacterBase
         get => _killerName;
         set => _killerName = value;
     }
+
+    public int Ranking { get => _ranking; set => _ranking = value; }
+
     #endregion
 
     #region Methods
@@ -100,16 +117,6 @@ public class Player : CharacterBase
         else
         {
             isIdle = !isMoving;
-        }
-
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (m_hair is not null)
-            {
-                Destroy(m_hair.gameObject);
-            }
-            m_hair = Instantiate(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model, hairContainer);
         }
     }
 

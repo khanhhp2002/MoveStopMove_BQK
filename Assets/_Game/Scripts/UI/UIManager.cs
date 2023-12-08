@@ -61,7 +61,7 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     public void OpenLoseUI()
     {
-        OpenUI(LoseUI.Instance.CanvasGroup, LoseUI.Instance.PreventDisablePreviousUI);
+        OpenUI(GameoverUI.Instance.CanvasGroup, GameoverUI.Instance.PreventDisablePreviousUI);
     }
 
     /// <summary>
@@ -73,14 +73,14 @@ public class UIManager : Singleton<UIManager>
     {
         if (_currentActiveUI == canvasGroup) return;
         canvasGroup.gameObject.SetActive(true);
-        _currentActiveUI.interactable = false;
+        _currentActiveUI.blocksRaycasts = false;
         _currentActiveUI.DOFade(0, _fadeDuration);
         canvasGroup.DOFade(1, _fadeDuration).OnComplete(() =>
         {
             if (!preventDisablePreviousUI)
                 _currentActiveUI.gameObject.SetActive(false);
             _currentActiveUI = canvasGroup;
-            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
         });
     }
 }

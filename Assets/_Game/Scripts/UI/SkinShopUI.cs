@@ -34,13 +34,29 @@ public class SkinShopUI : UIBase<SkinShopUI>
     private byte _currentItemIndex;
     private SkinShopItem _currentItem;
 
+    /// <summary>
+    /// OnEnable is called when the object becomes enabled and active.
+    /// </summary>
     private void OnEnable()
     {
         HairShop();
         _currentShopType = ShopType.Hair;
         _currentItemIndex = 0;
         OnClickItem(_currentItemIndex, null);
+        ((Player)GameplayManager.Instance.Player).IsDance = true;
     }
+
+    /// <summary>
+    /// OnDisable is called when the object becomes disabled.
+    /// </summary>
+    private void OnDisable()
+    {
+        ((Player)GameplayManager.Instance.Player).IsDance = false;
+    }
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     private void Awake()
     {
         _itemPool = new ObjectPool<SkinShopItem>(_itemPrefab);
@@ -121,7 +137,7 @@ public class SkinShopUI : UIBase<SkinShopUI>
 
     private IEnumerator LoadHairItem()
     {
-        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
         _loadingImage.SetActive(true);
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental);
         int condition = RuntimeData.Instance.SkinStorage.Hairs.Count;
@@ -136,7 +152,7 @@ public class SkinShopUI : UIBase<SkinShopUI>
         }
         _loadingTween.Kill();
         _loadingImage.SetActive(false);
-        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
         _currentShopType = ShopType.Hair;
     }
 
@@ -152,7 +168,7 @@ public class SkinShopUI : UIBase<SkinShopUI>
 
     private IEnumerator LoadPantsItem()
     {
-        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
         _loadingImage.SetActive(true);
         _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental);
         int condition = RuntimeData.Instance.SkinStorage.Pants.Count;
@@ -167,7 +183,7 @@ public class SkinShopUI : UIBase<SkinShopUI>
         }
         _loadingTween.Kill();
         _loadingImage.SetActive(false);
-        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
         _currentShopType = ShopType.Pants;
     }
 

@@ -15,34 +15,34 @@ MonoBehaviour:
   Hairs:
   - Model: {fileID: 5010982540826013960, guid: 79d1fc56ace3d3544943cff77fd3786e, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: 63ee381ed65c1e0419c1e91223941ba1, type: 3}
+    Sprite: {fileID: 21300000, guid: b7c57a7d2a632e8468962acd1dd70c06, type: 3}
   - Model: {fileID: 794740660682236470, guid: 0e7e1896394031543bae03e012271a39, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: d5c361650d472834aac0d6f54fed6434, type: 3}
+    Sprite: {fileID: 21300000, guid: 32d2e797d7900f1419626b39d8e20ffb, type: 3}
   - Model: {fileID: 5425159569615799683, guid: 55cfa7cf4c80ff94b8d764bb5df45cd7, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: 75e4b1760e4c8f94c88d14aa5ef5f0c8, type: 3}
+    Sprite: {fileID: 21300000, guid: babff587e22de9443af19e776e5a3412, type: 3}
   - Model: {fileID: 2242645656771709675, guid: 8bb3539ce02339e4fb6603a9ff245219, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: ee5c2642883886241bfd5147a4be1684, type: 3}
+    Sprite: {fileID: 21300000, guid: 2b01252e5655f3843a8c7b217c075b92, type: 3}
   - Model: {fileID: 5176729085136916800, guid: 5ce62065fcc80334e830ee1e0b7c50c8, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: 1ac6fb7f17112e74c8b3d87e223a6ea8, type: 3}
+    Sprite: {fileID: 21300000, guid: 43be083816c3bf04eb0e06c0d79286fe, type: 3}
   - Model: {fileID: 8409864722471223972, guid: 1a13ba18430453348973fecb371f12ec, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: 7729bab31c3c8e648a5eff2f5c3ca895, type: 3}
+    Sprite: {fileID: 21300000, guid: 043eb30d1893d8f45b76627538bc59e7, type: 3}
   - Model: {fileID: 2799310446647449019, guid: fcbdc7c9421653942a3cbb5e656b207b, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: 8167f999ea88c014ba3652f1d43ac2da, type: 3}
+    Sprite: {fileID: 21300000, guid: 8ef758f3737ad9243a4073dbdd2ca777, type: 3}
   - Model: {fileID: 8935124194522142071, guid: 295c2a53e5153f54ab56ffd1150b192f, type: 3}
     Price: 500
     Sprite: {fileID: 21300000, guid: 40943183d31dba04b9f5fcac7716d89f, type: 3}
   - Model: {fileID: 1456543717770497983, guid: efceb03aca3b73248a97392b78927ba8, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: ada61ed378084bc4ead33cd7b9739cdc, type: 3}
+    Sprite: {fileID: 21300000, guid: 13317e4323cf89d4ca4e0a9909ab0d5a, type: 3}
   - Model: {fileID: 6305069246725191717, guid: 6dbf0718af6a24545a58056c6f60558b, type: 3}
     Price: 500
-    Sprite: {fileID: 21300000, guid: 53923956ee3d5d44eb492bf517dbdd53, type: 3}
+    Sprite: {fileID: 21300000, guid: bf617d9695b864440bfaa5b2b2ffdfd8, type: 3}
   Pants:
   - Material: {fileID: 2100000, guid: 055f63f8164ad414b8c9e8d82837fd4e, type: 2}
     Price: 500
