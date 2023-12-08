@@ -21,7 +21,7 @@ public class JoyStick : Singleton<JoyStick>
         transform.localScale = new Vector3(1, 1, 1);
         _canvasGroup.alpha = 1f;
         _canvasGroup.interactable = true;
-        _fixJoyStickPosition = true;
+        _fixJoyStickPosition = false;
         _maxRange = (int)(_rectTransform.rect.width * transform.localScale.x / 2);
     }
     private void FixedUpdate()
