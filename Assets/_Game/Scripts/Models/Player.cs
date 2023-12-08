@@ -104,9 +104,11 @@ public class Player : CharacterBase
     /// </summary>
     private void PlayerInput()
     {
-        _horizontal = Input.GetAxis("Horizontal");
-        _vertical = Input.GetAxis("Vertical");
-        direction = new Vector3(_horizontal, 0f, _vertical).normalized;
+        //_horizontal = Input.GetAxis("Horizontal");
+        //_vertical = Input.GetAxis("Vertical");
+        //direction = new Vector3(_horizontal, 0f, _vertical).normalized;
+        direction = JoyStick.Instance.GetDirection();
+        direction = new Vector3(direction.x, 0f, direction.y).normalized;
         bool isMoving = direction != Vector3.zero;
 
         if (!isMoving && !isIdle)
