@@ -117,6 +117,10 @@ public class CharacterBase : MonoBehaviour
         CanvasController();
     }
 
+    /// <summary>
+    /// Equips the weapon to the character.
+    /// </summary>
+    /// <param name="weaponData"></param>
     public void EquipWeapon(WeaponData weaponData)
     {
         if (m_weapon is not null)
@@ -128,6 +132,28 @@ public class CharacterBase : MonoBehaviour
         m_weapon.transform.localScale = this.weaponData.HandWeaponScale * Vector3.one;
         m_weapon.transform.localPosition = this.weaponData.HandWeaponOffset;
         m_weapon.transform.localRotation = Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Equips the hair to the character.
+    /// </summary>
+    /// <param name="hair"></param>
+    public void EquipHair(GameObject hair)
+    {
+        if (m_hair is not null)
+        {
+            Destroy(m_hair.gameObject);
+        }
+        m_hair = Instantiate(hair, hairContainer);
+    }
+
+    /// <summary>
+    /// Equips the pant to the character.
+    /// </summary>
+    /// <param name="pant"></param>
+    public void EquipPant(Material pant)
+    {
+        pantSkin.material = pant;
     }
 
     /// <summary>

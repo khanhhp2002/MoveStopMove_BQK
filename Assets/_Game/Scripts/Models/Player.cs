@@ -26,10 +26,9 @@ public class Player : CharacterBase
     /// </summary>
     protected override void Start()
     {
-        weaponData = WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance.UserData.EquippedWeapon);
-        EquipWeapon(weaponData);
-        pantSkin.material = RuntimeData.Instance.SkinStorage.EquipPant(GameplayManager.Instance.UserData.EquippedPant);
-        m_hair = Instantiate(RuntimeData.Instance.SkinStorage.Hairs[GameplayManager.Instance.UserData.EquippedHair].Model, hairContainer);
+        EquipWeapon(WeaponManager.Instance.GetWeaponDataByIndex(GameplayManager.Instance.UserData.EquippedWeapon));
+        EquipPant(RuntimeData.Instance.SkinStorage.EquipPant(GameplayManager.Instance.UserData.EquippedPant));
+        EquipHair(RuntimeData.Instance.SkinStorage.Hairs[GameplayManager.Instance.UserData.EquippedHair].Model);
         characterName.text = GameplayManager.Instance.UserData.Name;
         base.Start();
     }

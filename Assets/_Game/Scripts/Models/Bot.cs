@@ -48,12 +48,11 @@ public class Bot : CharacterBase, IPoolable<Bot>
     #region Methods
     protected override void OnEnable()
     {
-        weaponData = WeaponManager.Instance.GetRandomWeaponData();
-        EquipWeapon(weaponData);
-        pantSkin.material = RuntimeData.Instance.SkinStorage.EquipPant();
+        EquipWeapon(WeaponManager.Instance.GetRandomWeaponData());
+        EquipPant(RuntimeData.Instance.SkinStorage.EquipPant());
+        EquipHair(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model);
         _currentState = new IdleState();
         characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
-        m_hair = Instantiate(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model, hairContainer);
         base.OnEnable();
     }
 

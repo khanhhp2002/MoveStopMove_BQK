@@ -8,7 +8,6 @@ public class RuntimeData : Singleton<RuntimeData>
     /// </summary>
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         LoadUserData();
     }
 
