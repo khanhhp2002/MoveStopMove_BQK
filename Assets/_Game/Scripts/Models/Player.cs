@@ -161,7 +161,8 @@ public class Player : CharacterBase
         if (GameplayManager.Instance.UserData.IsVibrationEnabled)
             Handheld.Vibrate();
         SoundManager.Instance.PlaySFX(SFXType.Death);
-        UIManager.Instance.OpenReviveUI();
+        if (GameplayManager.Instance.AliveCounter is not 1)
+            UIManager.Instance.OpenReviveUI();
     }
 
     /// <summary>

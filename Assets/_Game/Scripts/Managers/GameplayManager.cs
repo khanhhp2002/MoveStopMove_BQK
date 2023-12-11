@@ -17,7 +17,7 @@ public class GameplayManager : Singleton<GameplayManager>
     public Action OnGameStatePause;
     public Action OnGameStateGameOver;
     public Action OnCounterChange;
-
+    public int MaxAliveCounter;
     private int _aliveCounter;
     public int AliveCounter
     {
@@ -39,6 +39,13 @@ public class GameplayManager : Singleton<GameplayManager>
     /// </summary>
     private void Awake()
     {
+        //tranh viec nguoi choi cham da diem vao man hinh
+        Input.multiTouchEnabled = false;
+        //target frame rate ve 60 fps
+        Application.targetFrameRate = 60;
+        //tranh viec tat man hinh
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         if (SaveManager.Instance.HasData<UserData>())
         {
             UserData = SaveManager.Instance.LoadData<UserData>();
@@ -98,7 +105,9 @@ public class GameplayManager : Singleton<GameplayManager>
         {
             case GameState.Preparing:
                 OnGameStatePrepare?.Invoke();
-                _aliveCounter = 50;
+                MaxAliveCounter = RuntimeData.Instance.ZoneData.ZoneDataList[RuntimeData.Instance.ZoneData.CurrentZoneIndex].MaxAliveCounter;
+                Debug.Log(MaxAliveCounter);
+                _aliveCounter = MaxAliveCounter;
                 //Reset bots count
                 //Reset player
                 //Spawn bots

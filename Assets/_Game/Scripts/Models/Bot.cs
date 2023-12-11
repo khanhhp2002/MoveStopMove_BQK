@@ -23,7 +23,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
     private NavigationIndicator _navigationIndicator;
     private Vector4 _screenMargin; // Left, Right, Top, Bottom
     private bool _isOnScreen = true;
-    private float _currentDogdeChance;
+    private float _currentDodgeChance;
 
     // Event.
     private Action<Bot> _returnPoolAction;
@@ -58,6 +58,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
 
     protected override void Start()
     {
+        _minimumDogdeChance = (byte)RuntimeData.Instance.ZoneData.ZoneDataList[RuntimeData.Instance.ZoneData.CurrentZoneIndex].BotDodgeChance;
         _screenMargin = new Vector4(
                        _screenMarginValue,
                         Screen.width - _screenMarginValue,
@@ -322,10 +323,10 @@ public class Bot : CharacterBase, IPoolable<Bot>
     public void OnBulletDetected(ThrowWeapon weaponBase)
     {
         if (weaponBase.Attacker == this) return;
-        _currentDogdeChance = 20 + 30 * (point / 60f);
-        _currentDogdeChance = Mathf.Clamp(_currentDogdeChance, _minimumDogdeChance, _maximumDogdeChance);
-        float _botDogdeChance = UnityEngine.Random.Range(0, 100);
-        if (_currentDogdeChance > _botDogdeChance)
+        _currentDodgeChance = _minimumDogdeChance + 30 * (point / 60f);
+        _currentDodgeChance = Mathf.Clamp(_currentDodgeChance, _minimumDogdeChance, _maximumDogdeChance);
+        float _botDodgeChance = UnityEngine.Random.Range(0, 100);
+        if (_currentDodgeChance > _botDodgeChance)
         {
             Vector3 incomingBulletDirection = weaponBase.MoveDirection;
             Quaternion rotationQuaternion = Quaternion.AngleAxis((UnityEngine.Random.Range(0, 2) == 1 ? 1 : -1) * UnityEngine.Random.Range(75f, 105f), Vector3.up);

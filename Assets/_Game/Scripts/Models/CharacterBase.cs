@@ -207,9 +207,11 @@ public class CharacterBase : MonoBehaviour
         if (cantAttack) return;
 
         // Look at the target
+        Vector3 lookDir = target.transform.position - m_transform.position;
+        lookDir.y = 0f;
         m_transform.rotation = Quaternion.Slerp(
             m_transform.rotation,
-            Quaternion.LookRotation(target.transform.position - m_transform.position),
+            Quaternion.LookRotation(lookDir),
             rotateSpeed);
 
         // Can attack

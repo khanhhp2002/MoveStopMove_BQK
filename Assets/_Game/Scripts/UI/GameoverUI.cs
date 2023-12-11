@@ -42,11 +42,16 @@ public class GameoverUI : UIBase<GameoverUI>
     private void OnEnable()
     {
         Init();
+        int lastZone = RuntimeData.Instance.ZoneData.CurrentZoneIndex;
         if ((GameplayManager.Instance.Player as Player).Ranking is 1)
         {
             _killerName.text = "You Win";
             _ranking.text = "#1";
             SoundManager.Instance.PlaySFX(SFXType.Win);
+            if (RuntimeData.Instance.ZoneData.CurrentZoneIndex is 0)
+                RuntimeData.Instance.ZoneData.CurrentZoneIndex = 1;
+            else
+                RuntimeData.Instance.ZoneData.CurrentZoneIndex = 0;
         }
         else
         {
@@ -55,28 +60,48 @@ public class GameoverUI : UIBase<GameoverUI>
             SoundManager.Instance.PlaySFX(SFXType.Lose);
         }
         _earnedGold.text = GameplayManager.Instance.Player.KillCount.ToString();
-        float sliderValue = 20 + (51 - (GameplayManager.Instance.Player as Player).Ranking) * 0.6f;
-        _slider.DOValue(sliderValue, 3f).OnUpdate(() =>
+        if (lastZone is 0)
         {
-            canvasGroup.blocksRaycasts = false;
-            if (!_isPhase1Unlock && _slider.value >= 20f)
+            float sliderValue = 20 + ((GameplayManager.Instance.MaxAliveCounter + 1) - (GameplayManager.Instance.Player as Player).Ranking) / (float)GameplayManager.Instance.MaxAliveCounter * 60f;
+            _slider.DOValue(sliderValue, 3f).OnUpdate(() =>
             {
-                _isPhase1Unlock = true;
-                _zone1.sprite = _zoneComplete;
-                _zone1Icon.color = _completeColor;
-                _zone1CompleteStatus.sprite = _unlock;
-            }
-            else if (!_isPhase2Unlock && _slider.value >= 80f)
+                canvasGroup.blocksRaycasts = false;
+                if (!_isPhase1Unlock && _slider.value >= 20f)
+                {
+                    _isPhase1Unlock = true;
+                    _zone1.sprite = _zoneComplete;
+                    _zone1Icon.color = _completeColor;
+                    _zone1CompleteStatus.sprite = _unlock;
+                }
+                else if (!_isPhase2Unlock && _slider.value >= 80f)
+                {
+                    _isPhase2Unlock = true;
+                    _zone2.sprite = _zoneComplete;
+                    _zone2Icon.color = _completeColor;
+                    _zone2CompleteStatus.sprite = _unlock;
+                }
+            }).OnComplete(() =>
             {
-                _isPhase2Unlock = true;
-                _zone2.sprite = _zoneComplete;
-                _zone2Icon.color = _completeColor;
-                _zone2CompleteStatus.sprite = _unlock;
-            }
-        }).OnComplete(() =>
+                canvasGroup.blocksRaycasts = true;
+            });
+        }
+        else
         {
-            canvasGroup.blocksRaycasts = true;
-        });
+            _isPhase1Unlock = true;
+            _isPhase2Unlock = true;
+            _zone1.sprite = _zoneComplete;
+            _zone1Icon.color = _completeColor;
+            _zone1CompleteStatus.sprite = _unlock;
+            _zone2.sprite = _zoneComplete;
+            _zone2Icon.color = _completeColor;
+            _zone2CompleteStatus.sprite = _unlock;
+            _slider.value = 80f;
+            float sliderValue = 80 + ((GameplayManager.Instance.MaxAliveCounter + 1) - (GameplayManager.Instance.Player as Player).Ranking) / (float)GameplayManager.Instance.MaxAliveCounter * 20f;
+            _slider.DOValue(sliderValue, 3f).OnComplete(() =>
+            {
+                canvasGroup.blocksRaycasts = true;
+            });
+        }
     }
 
     private void Init()
