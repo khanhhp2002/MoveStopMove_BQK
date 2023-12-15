@@ -17,4 +17,4 @@ MonoBehaviour:
     BotDodgeChance: 20
   - MaxAliveCounter: 50
     BotDodgeChance: 35
-  CurrentZoneIndex: 1
+  CurrentZoneIndex: 0

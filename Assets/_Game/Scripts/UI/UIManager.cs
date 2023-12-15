@@ -3,14 +3,18 @@ using DG.Tweening;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private float _fadeDuration = 0.5f;
+    [SerializeField] private CanvasGroup _parentCanvasGroup;
+    [SerializeField] private GameObject _loadingImage;
 
     private CanvasGroup _currentActiveUI;
+    private Tween _loadingTween;
 
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
     private void Start()
     {
+        _loadingTween = _loadingImage.transform.DORotate(new Vector3(0, 0, -360), 1f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental);
         _currentActiveUI = MenuUI.Instance.CanvasGroup;
         GameplayManager.Instance.OnGameStatePrepare += OpenMenuUI;
         GameplayManager.Instance.OnGameStatePlaying += OpenGameplayUI;
@@ -82,5 +86,12 @@ public class UIManager : Singleton<UIManager>
             _currentActiveUI = canvasGroup;
             canvasGroup.blocksRaycasts = true;
         });
+    }
+
+    public void AllowInteract()
+    {
+        _parentCanvasGroup.blocksRaycasts = true;
+        _loadingTween.Kill();
+        _loadingImage.SetActive(false);
     }
 }

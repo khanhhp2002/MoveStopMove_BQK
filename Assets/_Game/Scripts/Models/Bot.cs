@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 public class Bot : CharacterBase, IPoolable<Bot>
@@ -43,6 +44,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
         }
     }
     public CharacterBase Target => target;
+    public TMP_Text Name { get => characterName; set => characterName = value; }
     #endregion
 
     #region Methods
@@ -52,7 +54,7 @@ public class Bot : CharacterBase, IPoolable<Bot>
         EquipPant(RuntimeData.Instance.SkinStorage.EquipPant());
         EquipHair(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model);
         _currentState = new IdleState();
-        characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
+        //characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
         base.OnEnable();
     }
 
