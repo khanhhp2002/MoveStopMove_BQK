@@ -32,29 +32,29 @@ public class ReviveUI : UIBase<ReviveUI>
 
     private void ReviveWithGold()
     {
+        OnClose();
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         this.gameObject.SetActive(false);
         ((Player)GameplayManager.Instance.Player).Revive();
         UIManager.Instance.OpenGameplayUI();
-        OnClose();
         // respawn player
     }
 
     private void ReviveWithAds()
     {
+        OnClose();
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         this.gameObject.SetActive(false);
         ((Player)GameplayManager.Instance.Player).Revive();
         UIManager.Instance.OpenGameplayUI();
-        OnClose();
         // respawn player
     }
 
     private void Skip()
     {
+        OnClose();
         this.gameObject.SetActive(false);
         GameplayManager.Instance.SetGameState(GameState.GameOver);
-        OnClose();
     }
 
     private IEnumerator TimeCounter()

@@ -47,7 +47,7 @@ public class BotManager : Singleton<BotManager>
     /// </summary>
     private bool SpawnBot()
     {
-        if (_botPool.pooledCount is 0 || GameplayManager.Instance.AliveCounter - 1 <= _maxBots - _botPool.pooledCount || GameplayManager.Instance.Player.IsDead || GameplayManager.Instance.GameState == GameState.GameOver) return false;
+        if (_botPool.pooledCount is 0 || GameplayManager.Instance.AliveCounter - 1 <= _maxBots - _botPool.pooledCount || GameplayManager.Instance.GameState == GameState.GameOver) return false;
         StartCoroutine(SpawnVFX());
         return true;
     }
@@ -58,6 +58,7 @@ public class BotManager : Singleton<BotManager>
     /// <returns></returns>
     private IEnumerator SpawnVFX()
     {
+        Debug.Log("Spawn --------------------------------------");
         Vector3 randomPosition = new Vector3(Random.Range(-_spawnRadius, _spawnRadius), 0f, Random.Range(-_spawnRadius, _spawnRadius));
         Vector3 distance = randomPosition - GameplayManager.Instance.Player.transform.position;
         if (_firstLoad && distance.sqrMagnitude < 625)
@@ -94,10 +95,10 @@ public class BotManager : Singleton<BotManager>
         Invoke(nameof(SpawnBot), _delaySpawnTime);
     }
 
-    public void ForceSpawnAll()
+    /*public void ForceSpawnAll()
     {
         while (SpawnBot()) ;
-    }
+    }*/
 
     private void SetAllBotName()
     {
@@ -128,7 +129,6 @@ public class BotManager : Singleton<BotManager>
                 {
                     string name = $"#{result.nat} {result.name.first} {result.name.last}";
                     _namePool.Push(name);
-                    Debug.Log(name);
                 }
             }
         }

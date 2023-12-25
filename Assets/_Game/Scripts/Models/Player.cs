@@ -182,7 +182,7 @@ public class Player : CharacterBase
         isDead = false;
         radarController.gameObject.SetActive(true);
         SetAnimationParameters();
-        BotManager.Instance.ForceSpawnAll();
+        //BotManager.Instance.ForceSpawnAll();
     }
     #endregion
 }
