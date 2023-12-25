@@ -54,7 +54,6 @@ public class Bot : CharacterBase, IPoolable<Bot>
         EquipPant(RuntimeData.Instance.SkinStorage.EquipPant());
         EquipHair(RuntimeData.Instance.SkinStorage.Hairs[UnityEngine.Random.Range(0, RuntimeData.Instance.SkinStorage.Hairs.Count)].Model);
         _currentState = new IdleState();
-        //characterName.text = RandomStringGenerator.GetRandomString(UnityEngine.Random.Range(5, 10));
         base.OnEnable();
     }
 

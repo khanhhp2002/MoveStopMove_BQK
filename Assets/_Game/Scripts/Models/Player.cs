@@ -7,6 +7,7 @@ public class Player : CharacterBase
     [SerializeField] private Transform _targetLock;
     [SerializeField] private float _targetLockSpeed;
     [SerializeField] private float _groundOffset;
+    [SerializeField] private GameObject _attackRangeVisual;
 
     /// <summary>
     /// Change IsDance state.
@@ -23,8 +24,6 @@ public class Player : CharacterBase
 
     // Cached variables.
     private int _ranking;
-    private float _horizontal;
-    private float _vertical;
     private string _killerName;
 
     public string KillerName
@@ -38,6 +37,10 @@ public class Player : CharacterBase
     #endregion
 
     #region Methods
+    private void Awake()
+    {
+        OnCharacterChangeWeapon += OnPlayerChangeWeapon;
+    }
     /// <summary>
     /// Start is called before the first frame update.
     /// </summary>
@@ -120,6 +123,12 @@ public class Player : CharacterBase
         {
             isIdle = !isMoving;
         }
+    }
+
+    private void OnPlayerChangeWeapon()
+    {
+        _attackRangeVisual.transform.localScale = Vector3.one * (attackRange + weaponData.BonusAttackRange) * 2;
+        GameplayUI.Instance.OnChangeWeapon(attackSpeed - weaponData.BonusAttackSpeed);
     }
 
     /// <summary>

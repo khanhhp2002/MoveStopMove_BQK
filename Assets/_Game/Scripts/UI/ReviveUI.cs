@@ -36,6 +36,7 @@ public class ReviveUI : UIBase<ReviveUI>
         this.gameObject.SetActive(false);
         ((Player)GameplayManager.Instance.Player).Revive();
         UIManager.Instance.OpenGameplayUI();
+        OnClose();
         // respawn player
     }
 
@@ -45,6 +46,7 @@ public class ReviveUI : UIBase<ReviveUI>
         this.gameObject.SetActive(false);
         ((Player)GameplayManager.Instance.Player).Revive();
         UIManager.Instance.OpenGameplayUI();
+        OnClose();
         // respawn player
     }
 
@@ -52,6 +54,7 @@ public class ReviveUI : UIBase<ReviveUI>
     {
         this.gameObject.SetActive(false);
         GameplayManager.Instance.SetGameState(GameState.GameOver);
+        OnClose();
     }
 
     private IEnumerator TimeCounter()
@@ -67,7 +70,7 @@ public class ReviveUI : UIBase<ReviveUI>
         Skip();
     }
 
-    private void OnDisable()
+    private void OnClose()
     {
         _loadingTween.Kill();
         StopAllCoroutines();

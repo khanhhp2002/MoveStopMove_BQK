@@ -33,7 +33,7 @@ public class ThrowWeapon : BulletBase
         // Setup data
         Vector3 destination = spawnPosition + direction * (characterRange * scaleValue + weaponData.BonusAttackRange);
 
-        float duration = Vector3.Distance(spawnPosition, destination) / weaponData.MoveSpeed;
+        float duration = Vector3.Distance(spawnPosition, destination) / (weaponData.MoveSpeed * scaleValue);
 
         transform.position = spawnPosition;
 

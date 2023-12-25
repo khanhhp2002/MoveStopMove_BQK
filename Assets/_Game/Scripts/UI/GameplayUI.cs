@@ -6,13 +6,14 @@ public class GameplayUI : UIBase<GameplayUI>
 {
     [Header("Action Buttons"), Space(5f)]
     [SerializeField] private Button _settingButton;
-
+    [SerializeField] Slider _attackDelaySlider;
     [SerializeField] TMP_Text _aliveCounterDisplay;
 
     private void Start()
     {
         GameplayManager.Instance.OnCounterChange += OnCounterChange;
         _settingButton.onClick.AddListener(OpenSetting);
+
     }
 
     /// <summary>
@@ -27,5 +28,16 @@ public class GameplayUI : UIBase<GameplayUI>
     {
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         UIManager.Instance.OpenUI(SettingUI.Instance.CanvasGroup, SettingUI.Instance.PreventDisablePreviousUI);
+    }
+
+    public void OnChangeWeapon(float maxValue)
+    {
+        _attackDelaySlider.maxValue = maxValue;
+        _attackDelaySlider.value = 0f;
+    }
+
+    public void OnChangeAttackDelay(float value)
+    {
+        _attackDelaySlider.value = value;
     }
 }

@@ -10,7 +10,9 @@ public class BotManager : Singleton<BotManager>
     [SerializeField] private int _maxBots;
     [SerializeField] private float _spawnRadius;
     [SerializeField] private float _delaySpawnTime;
+    [SerializeField] private VFXController _spawnVFXPrefab;
     private List<Bot> _activeBot = new List<Bot>();
+    private ObjectPool<VFXController> _spawnVFXPool;
     private ObjectPool<Bot> _botPool;
     private Stack<string> _namePool = new Stack<string>();
     private bool _isGettingRandomName;
@@ -22,6 +24,7 @@ public class BotManager : Singleton<BotManager>
     public void Awake()
     {
         _botPool = new ObjectPool<Bot>(_botPrefab.gameObject, null, OnBotReturnToPool, _maxBots);
+        _spawnVFXPool = new ObjectPool<VFXController>(_spawnVFXPrefab.gameObject, null, null, _maxBots);
         _firstLoad = true;
         if (CheckNetworkStatus())
             StartCoroutine(GetDataFromApi());
@@ -32,7 +35,7 @@ public class BotManager : Singleton<BotManager>
     /// </summary>
     public void Start()
     {
-        GameplayManager.Instance.OnGameStatePlaying += SetAllBotName;
+        //GameplayManager.Instance.OnGameStatePlaying += SetAllBotName;
         for (int i = 0; i < _maxBots; i++)
         {
             SpawnBot();
@@ -45,12 +48,35 @@ public class BotManager : Singleton<BotManager>
     private bool SpawnBot()
     {
         if (_botPool.pooledCount is 0 || GameplayManager.Instance.AliveCounter - 1 <= _maxBots - _botPool.pooledCount || GameplayManager.Instance.Player.IsDead || GameplayManager.Instance.GameState == GameState.GameOver) return false;
+        StartCoroutine(SpawnVFX());
+        return true;
+    }
+
+    /// <summary>
+    /// Spawns a VFX.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SpawnVFX()
+    {
         Vector3 randomPosition = new Vector3(Random.Range(-_spawnRadius, _spawnRadius), 0f, Random.Range(-_spawnRadius, _spawnRadius));
+        Vector3 distance = randomPosition - GameplayManager.Instance.Player.transform.position;
+        if (_firstLoad && distance.sqrMagnitude < 625)
+        {
+            randomPosition = distance.normalized * 26f + GameplayManager.Instance.Player.transform.position;
+        }
+        VFXController vFXController = _spawnVFXPool.Pull(randomPosition);
+        Debug.Log("Spawn VFX");
+        yield return new WaitForSeconds(2f);
         Bot bot = _botPool.Pull(randomPosition);
         _activeBot.Add(bot);
         if (_namePool.Count > 0) bot.Name.text = _namePool.Pop();
         else bot.Name.text = RandomStringGenerator.GetRandomString(Random.Range(6, 11));
-        return true;
+        vFXController.ReturnToPool();
+        if (_firstLoad)
+        {
+            _firstLoad = false;
+            UIManager.Instance.AllowInteract();
+        }
     }
 
     /// <summary>
@@ -105,11 +131,6 @@ public class BotManager : Singleton<BotManager>
                     Debug.Log(name);
                 }
             }
-        }
-        if (_firstLoad)
-        {
-            _firstLoad = false;
-            UIManager.Instance.AllowInteract();
         }
         _isGettingRandomName = false;
     }

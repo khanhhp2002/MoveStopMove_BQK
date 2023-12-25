@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Zones
   m_EditorClassIdentifier: 
   ZoneDataList:
-  - MaxAliveCounter: 25
-    BotDodgeChance: 20
   - MaxAliveCounter: 50
-    BotDodgeChance: 35
+    BotDodgeChance: 30
+  - MaxAliveCounter: 100
+    BotDodgeChance: 40
   CurrentZoneIndex: 0

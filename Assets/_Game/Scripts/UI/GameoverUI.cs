@@ -38,6 +38,7 @@ public class GameoverUI : UIBase<GameoverUI>
 
     private bool _isPhase1Unlock = false;
     private bool _isPhase2Unlock = false;
+    private Tween _sliderTween;
 
     private void OnEnable()
     {
@@ -63,7 +64,7 @@ public class GameoverUI : UIBase<GameoverUI>
         if (lastZone is 0)
         {
             float sliderValue = 20 + ((GameplayManager.Instance.MaxAliveCounter + 1) - (GameplayManager.Instance.Player as Player).Ranking) / (float)GameplayManager.Instance.MaxAliveCounter * 60f;
-            _slider.DOValue(sliderValue, 3f).OnUpdate(() =>
+            _sliderTween = _slider.DOValue(sliderValue, 3f).OnUpdate(() =>
             {
                 canvasGroup.blocksRaycasts = false;
                 if (!_isPhase1Unlock && _slider.value >= 20f)
@@ -142,6 +143,7 @@ public class GameoverUI : UIBase<GameoverUI>
 
     IEnumerator ReturnHomeScreenAsync()
     {
+        _sliderTween.Kill();
         SoundManager.Instance.PlaySFX(SFXType.ButtonClick);
         GameplayManager.Instance.UserData.GoldAmount += GameplayManager.Instance.Player.KillCount;
         SaveManager.Instance.SaveData(GameplayManager.Instance.UserData);

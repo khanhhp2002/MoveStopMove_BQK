@@ -27,6 +27,7 @@ public class CharacterBase : MonoBehaviour
     [SerializeField] protected float localScaleIncreaseValue;
     [SerializeField] protected float attackRange;
     [SerializeField] protected float attackSpeed;
+    [SerializeField] protected bool isPlayer;
 
     // Animation name constants.
     protected const string IDLE_ANIMATION = "IsIdle";
@@ -57,10 +58,11 @@ public class CharacterBase : MonoBehaviour
     protected int killCount = 0;
     protected float scaleValue = 1;
     protected float attackTimer = 0f;
+    protected float defaultAttackSpeed = 3f;
 
     // Event.
     protected Action<CharacterBase> OnDeadCallBack;
-
+    protected Action OnCharacterChangeWeapon;
     // Cached variables.
     protected Transform m_transform;
     protected Vector3 direction = Vector3.zero;
@@ -132,6 +134,8 @@ public class CharacterBase : MonoBehaviour
         m_weapon.transform.localScale = this.weaponData.HandWeaponScale * Vector3.one;
         m_weapon.transform.localPosition = this.weaponData.HandWeaponOffset;
         m_weapon.transform.localRotation = Quaternion.identity;
+        radarController.SphereCollider.radius = attackRange + this.weaponData.BonusAttackRange - 0.5f;
+        OnCharacterChangeWeapon?.Invoke();
     }
 
     /// <summary>
@@ -181,7 +185,7 @@ public class CharacterBase : MonoBehaviour
         m_transform.position = Vector3.Lerp(
             m_transform.position,
             m_transform.position + direction,
-            moveSpeed * Time.fixedDeltaTime);
+            moveSpeed * scaleValue * Time.fixedDeltaTime);
 
         SetAnimationParameters();
     }
@@ -195,6 +199,7 @@ public class CharacterBase : MonoBehaviour
         if (attackTimer > 0f)
         {
             attackTimer -= Time.fixedDeltaTime;
+            if (isPlayer) GameplayUI.Instance.OnChangeAttackDelay(attackTimer);
         }
         else
         {
@@ -219,7 +224,7 @@ public class CharacterBase : MonoBehaviour
         {
             isAttack = true;
             if (weaponData.WeaponType == WeaponType.Boomerang) isUlti = true;
-            attackTimer += weaponData.BonusAttackSpeed;
+            attackTimer += (defaultAttackSpeed - weaponData.BonusAttackSpeed);
         }
 
         SetAnimationParameters();
@@ -247,7 +252,7 @@ public class CharacterBase : MonoBehaviour
         direction.y = 0f;
 
         WeaponManager.Instance.GetWeapon(weaponData.WeaponType, weaponData.ThrowWeaponPrefab)
-            .Throw(weaponHolder.position, direction, attackRange, scaleValue, this, weaponData, OnGetKill);
+            .Throw(weaponHolder.position, direction, attackRange + weaponData.BonusAttackRange, scaleValue, this, weaponData, OnGetKill);
 
         isAttacked = true;
     }

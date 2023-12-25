@@ -22,8 +22,8 @@ MonoBehaviour:
     MoveType: 1
     MoveSpeed: 10
     RotateSpeed: 450
-    BonusAttackRange: 2
-    BonusAttackSpeed: 2
+    BonusAttackRange: 0
+    BonusAttackSpeed: 0
     IsPiercingable: 0
     IsReturningable: 0
     ScreenWeaponOffsetX: 0
@@ -40,8 +40,8 @@ MonoBehaviour:
     MoveType: 1
     MoveSpeed: 10
     RotateSpeed: 450
-    BonusAttackRange: 2
-    BonusAttackSpeed: 2
+    BonusAttackRange: 1
+    BonusAttackSpeed: 1
     IsPiercingable: 0
     IsReturningable: 0
     ScreenWeaponOffsetX: 0
@@ -58,8 +58,8 @@ MonoBehaviour:
     MoveType: 1
     MoveSpeed: 10
     RotateSpeed: 540
-    BonusAttackRange: 2
-    BonusAttackSpeed: 2
+    BonusAttackRange: 3
+    BonusAttackSpeed: 0
     IsPiercingable: 0
     IsReturningable: 1
     ScreenWeaponOffsetX: -0.05

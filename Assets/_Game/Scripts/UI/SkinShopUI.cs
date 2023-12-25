@@ -296,7 +296,6 @@ public class SkinShopUI : UIBase<SkinShopUI>
                 GameplayManager.Instance.UserData.UnlockedPants.Add(_currentItemIndex);
                 break;
         }
-        GameplayManager.Instance.ChangeGoldAmount(-_currentItem.Price);
         OnClickItem(_currentItemIndex, null);
         UseItem();
         _currentItem.SetUnlock();

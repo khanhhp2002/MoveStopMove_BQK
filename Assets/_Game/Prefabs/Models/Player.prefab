@@ -2924,9 +2924,11 @@ MonoBehaviour:
   localScaleIncreaseValue: 15
   attackRange: 8
   attackSpeed: 2
+  isPlayer: 1
   _targetLock: {fileID: 0}
   _targetLockSpeed: 0.5
   _groundOffset: 0.001
+  _attackRangeVisual: {fileID: 2074924998996511502}
 --- !u!95 &3979821168175074057
 Animator:
   serializedVersion: 5

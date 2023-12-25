@@ -106,7 +106,7 @@ public class GameplayManager : Singleton<GameplayManager>
             case GameState.Preparing:
                 OnGameStatePrepare?.Invoke();
                 MaxAliveCounter = RuntimeData.Instance.ZoneData.ZoneDataList[RuntimeData.Instance.ZoneData.CurrentZoneIndex].MaxAliveCounter;
-                Debug.Log(MaxAliveCounter);
+                Debug.Log("Total bot: " + MaxAliveCounter);
                 _aliveCounter = MaxAliveCounter;
                 //Reset bots count
                 //Reset player
